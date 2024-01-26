@@ -28,7 +28,6 @@ const transactions: Transaction[] = [
     status: 'disputed',
     type: 'expense'
   },
-  // ... more transactions
 ];
 
   return (
