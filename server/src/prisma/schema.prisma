@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int             @id @default(autoincrement())
+  clerkId            String          @unique
+  firstName          String
+  lastName           String
+  email              String
+  user_group         User_Group[]
+  userActor          Transaction[]   @relation("userActor")
+  userActee          Transaction[]   @relation("userActee")
+}
+
+model Group {
+  id                 Int             @id @default(autoincrement())
+  title              String
+  description        String?
+  user_group         User_Group[]
+  transaction        Transaction[]
+}
+
+model User_Group {
+  id                 Int             @id @default(autoincrement())
+  userId             String
+  user               User            @relation(fields: [userId], references: [clerkId])
+  groupId            Int
+  group              Group           @relation(fields: [groupId], references: [id])
+}
+
+model Transaction {
+  id                 Int             @id @default(autoincrement())
+  groupId            Int?
+  group              Group?          @relation(fields: [groupId], references: [id])
+  type               String
+  date               String
+  transactor         String
+  userActor          User            @relation("userActor", fields: [transactor], references: [clerkId])
+  transactee         String
+  userActee          User            @relation("userActee", fields: [transactee], references: [clerkId])
+  description        String?
+  amount             Int
+  status             String          @default("pending")
+  notes              String?
+}
