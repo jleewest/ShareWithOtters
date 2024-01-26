@@ -1,15 +1,16 @@
 import React from "react"
+import logo from '../assets/logo.svg'
 
 const GroupOptions = () => {
   return(
-    <div>
-      <h1>Group Logo</h1>
-      <div>
+    <section className="group-options">
+      <img className="logo" src={logo} alt='logo' />
+      <section>
         <button>Add expense</button>
         <button>Add payment</button>
         <button>Invite friends</button>
-      </div>
-    </div>
+      </section>
+    </section>
   )
 }
 export default GroupOptions;
