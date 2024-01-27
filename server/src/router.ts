@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import { getUserByClerkId, addUser } from './controllers/user';
 //import transactionController from './controllers/transaction';
-//import groupController from './controllers/group';
+import { postGroup, editGroup } from './controllers/group';
 //import userGroupController from './controllers/user-group';
 
 //USER ROUTES
@@ -18,9 +18,8 @@ router.post('/user', addUser);
 //router.put('/transaction/:id/edit', transactionController.editTransaction);
 
 //GROUP ROUTES
-//router.post('/group', groupController.postGroup);
-//router.delete('/group/:id/delete', groupController.deleteGroup);
-//router.put('/group/:id/edit', groupController.editGroup);
+router.post('/group', postGroup);
+router.put('/group/:id/edit', editGroup);
 
 //USER_GROUP ROUTES
 //router.get('/user-group/:id', userGroupController.getGroupsByClerkId);
