@@ -21,10 +21,19 @@ export async function getGroupsByClerkId(req: Request, res: Response) {
 export async function addUserToGroup(req: Request, res: Response) {
   try {
     const userWithGroup = req.body;
-    const saveUserToGroup = await prisma.user_Group.create({
-      data: userWithGroup,
+    const { userId, groupId } = userWithGroup;
+    const findUserInGroup = await prisma.user_Group.findFirst({
+      where: { userId, groupId },
     });
-    res.json(saveUserToGroup);
+    if (findUserInGroup === null) {
+      const saveUserToGroup = await prisma.user_Group.create({
+        data: userWithGroup,
+      });
+      console.log('🦖', userWithGroup);
+      //res.json(saveUserToGroup);
+    } else {
+      res.json('User is already part of the group 😜');
+    }
   } catch (err) {
     res.sendStatus(500);
     console.log(err);

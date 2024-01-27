@@ -29,14 +29,14 @@
 
 	user_group: {
 		"userId": "clerkid1",
-		"groupId": "1"
+		"groupId": 1
 
 		"userId": "clerkid2",
-		"groupId": "1"
+		"groupId": 1
 
 	//ROUTES
 	//post   /user-group (body = clerkId and groupId)
-	//post   /user-group/delete (groupId and clerkId as parameters/body)
+	//delete   /user-group/delete (groupId and clerkId as parameters/body)
 	//get   /user-group/:id (clerkid)
 	}
 
