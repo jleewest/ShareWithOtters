@@ -77,7 +77,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
 }
 
 //SPLITS TRANSACTIONS AND POSTS TRANSACTION FOR EACH PERSON IN THE SPLIT (body incl: transactee[](incl transactor), amount[])
-export async function postTransaction(req: Request, res: Response) {
+export async function createTransaction(req: Request, res: Response) {
   try {
     const { transactee, amount, otherTransactionProperties } = req.body;
     const savedTransactions = [];
