@@ -3,7 +3,11 @@ const router = express.Router();
 import { getUserByClerkId, addUser } from './controllers/user';
 //import transactionController from './controllers/transaction';
 import { postGroup, editGroup } from './controllers/group';
-//import userGroupController from './controllers/user-group';
+import {
+  getGroupsByClerkId,
+  addUserToGroup,
+  deleteUserFromGroup,
+} from './controllers/user-group';
 
 //USER ROUTES
 router.get('/user/:id', getUserByClerkId);
@@ -22,9 +26,9 @@ router.post('/group', postGroup);
 router.put('/group/:id/edit', editGroup);
 
 //USER_GROUP ROUTES
-//router.get('/user-group/:id', userGroupController.getGroupsByClerkId);
-//router.post('/user-group', userGroupController.postGroupToUser);
-//router.delete('/user-group/delete', userGroupController.deleteUserFromGroup);
+router.get('/user-group/:id', getGroupsByClerkId);
+router.post('/user-group', addUserToGroup);
+router.delete('/user-group/delete', deleteUserFromGroup);
 
 router.get('/*', (_, res) => {
   res.status(404).send('RAWR! Requested resource not found 🦖\n');
