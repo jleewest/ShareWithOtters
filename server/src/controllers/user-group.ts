@@ -29,8 +29,7 @@ export async function addUserToGroup(req: Request, res: Response) {
       const saveUserToGroup = await prisma.user_Group.create({
         data: userWithGroup,
       });
-      console.log('🦖', userWithGroup);
-      //res.json(saveUserToGroup);
+      res.json(saveUserToGroup);
     } else {
       res.json('User is already part of the group 😜');
     }
