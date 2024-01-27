@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 //TO ADD USER TO GROUP, EXPENSE, OR PAYMENT
-async function getUserByClerkId(req: Request, res: Response) {
+export async function getUserByClerkId(req: Request, res: Response) {
   try {
     const id = req.params.id;
     const data = await prisma.user.findUnique({ where: { clerkId: id } });
@@ -16,7 +16,7 @@ async function getUserByClerkId(req: Request, res: Response) {
 }
 
 //TO ADD NEW USER TO DB IF FIRST TIME LOGGING INTO APP
-async function addUser(req: Request, res: Response) {
+export async function addUser(req: Request, res: Response) {
   try {
     const user = req.body;
     const clerkId = user.clerkId;
@@ -33,5 +33,3 @@ async function addUser(req: Request, res: Response) {
     console.log(err);
   }
 }
-
-module.exports = { getUserByClerkId, addUser };

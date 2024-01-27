@@ -1,14 +1,13 @@
 import express from 'express';
 const router = express.Router();
-//import userController from './controllers/user';
+import { getUserByClerkId, addUser } from './controllers/user';
 //import transactionController from './controllers/transaction';
 //import groupController from './controllers/group';
 //import userGroupController from './controllers/user-group';
 
 //USER ROUTES
-//router.get('/user', userController.getUsers);
-//router.get('/user/:id', userController.getUserByClerkId);
-//router.post('/user', userController.postUser);
+router.get('/user/:id', getUserByClerkId);
+router.post('/user', addUser);
 
 //TRANSACTION ROUTES
 //router.get('/transaction/accept', transactionController.getAllAcceptedTransactions);
