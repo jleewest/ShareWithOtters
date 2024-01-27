@@ -25,7 +25,7 @@ const PaymentForm = ({ open, onClose }: PaymentFormProps) => {
       <DialogContent>
         {/* Payment form fields */}
         <TextField autoFocus margin="dense" id="name" label="Payment Name" type="text" fullWidth />
-        {/* Add more fields as needed */}
+        {/* more fields as here */}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

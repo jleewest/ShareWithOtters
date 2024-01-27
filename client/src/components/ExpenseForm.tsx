@@ -25,7 +25,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
       <DialogContent>
         {/* Expense form fields */}
         <TextField autoFocus margin="dense" id="name" label="Expense Name" type="text" fullWidth />
-        {/* Add more fields as needed */}
+        {/*more fields here*/}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

@@ -25,7 +25,7 @@ const NoteForm = ({ open, onClose }: NoteFormProps) => {
       <DialogContent>
         {/* Note form fields */}
         <TextField autoFocus margin="dense" id="note" label="Note" type="text" fullWidth multiline rows={4} />
-        {/* Add more fields as needed */}
+        {/* more fields here*/}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
