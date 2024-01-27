@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getUserByClerkId, addUser } from './controllers/user';
+import { getUserByClerkId, addUser, getAllUsers } from './controllers/user';
 import {
   getTransactionsByClerkId,
   createTransaction,
@@ -17,6 +17,7 @@ import {
 
 //USER ROUTES
 router.get('/user/:id', getUserByClerkId);
+router.get('/user', getAllUsers);
 router.post('/user', addUser);
 
 //TRANSACTION ROUTES
@@ -24,11 +25,11 @@ router.get('/transaction/:id', getTransactionsByClerkId);
 router.post('/transaction', createTransaction);
 router.delete('/transaction/delete/:id', deleteTransaction);
 router.put('/transaction/accept/:id', updateTransactionStatus);
-router.put('/transaction/edit:id', editTransaction);
+router.put('/transaction/edit/:id', editTransaction);
 
 //GROUP ROUTES
 router.post('/group', postGroup);
-router.put('/group/:id/edit', editGroup);
+router.put('/group/edit/:id', editGroup);
 
 //USER_GROUP ROUTES
 router.get('/user-group/:id', getGroupsByClerkId);
