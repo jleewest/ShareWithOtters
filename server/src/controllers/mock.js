@@ -44,27 +44,27 @@
 		"type": "expense",
 		"date": "2024-01-19",
 		"transactor": "clerkid1",
-		"transactee": "clerkid2",
-		"description": "Hotel"
-    "amount": 100,
+		"transactee": ["clerkid2"],
+		"description": "Hotel",
+    "amount":[100],
 
 		"type": "income",
 		"date": "2024-01-19",
 		"transactor": "clerkid1",
-		"transactee": "clerkid2",
-		"description": "Hotel"
-    "amount": 200,
+		"transactee": ["clerkid2"],
+		"description": "Hotel",
+    "amount": [200],
 
 		"type": "income",
 		"date": "2024-01-19",
 		"transactor": "clerkid1",
 		"transactee": ["clerkid1", "clerkid2"],
-		"description": "Hotel"
+		"description": "Hotel",
     "amount": [100, 200],
 
 		//edit
 		"date": "2024-02-19",
-		"description": "Bank"
+		"description": "Bank",
     "amount": [300],
 		"notes": "Hello",
 
