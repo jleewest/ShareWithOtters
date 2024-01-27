@@ -28,7 +28,7 @@ router.put('/transaction/edit:id', editTransaction);
 
 //GROUP ROUTES
 router.post('/group', postGroup);
-router.put('/group/:id/edit', editGroup);
+router.put('/group/edit/:id', editGroup);
 
 //USER_GROUP ROUTES
 router.get('/user-group/:id', getGroupsByClerkId);

@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export async function postGroup(req: Request, res: Response) {
   try {
     const group = req.body;
-    const saveGroup = await prisma.group.create(group);
+    const saveGroup = await prisma.group.create({ data: group });
     res.json(saveGroup);
     res.status(201);
   } catch (err) {
@@ -17,7 +17,7 @@ export async function postGroup(req: Request, res: Response) {
   }
 }
 
-//TO EDIT A GROUP
+//TO EDIT A GROUP (by group id)
 export async function editGroup(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);

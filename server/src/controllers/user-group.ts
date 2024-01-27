@@ -21,7 +21,9 @@ export async function getGroupsByClerkId(req: Request, res: Response) {
 export async function addUserToGroup(req: Request, res: Response) {
   try {
     const userWithGroup = req.body;
-    const saveUserToGroup = await prisma.user_Group.create(userWithGroup);
+    const saveUserToGroup = await prisma.user_Group.create({
+      data: userWithGroup,
+    });
     res.json(saveUserToGroup);
   } catch (err) {
     res.sendStatus(500);

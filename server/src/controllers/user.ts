@@ -26,7 +26,7 @@ export async function addUser(req: Request, res: Response) {
       where: { clerkId: clerkId },
     });
     if (findUser === null) {
-      const savedUser = await prisma.user.create(user);
+      const savedUser = await prisma.user.create({ data: user });
       res.json(savedUser);
     }
     res.status(201);
