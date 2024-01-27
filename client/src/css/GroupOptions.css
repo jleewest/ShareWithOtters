@@ -1,0 +1,15 @@
+.group-options {
+  display: flex;
+  justify-content: center;
+}
+
+.group-options img {
+  border-radius: 50%;
+}
+
+.group-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly
+}
+

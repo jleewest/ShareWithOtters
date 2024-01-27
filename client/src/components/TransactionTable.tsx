@@ -1,5 +1,6 @@
 import React from "react";
 import TransactionItem from "./TransactionItem";
+import '../css/TransactionTable.css'
 
 export type Transaction = {
   id: number;
@@ -18,22 +19,22 @@ type TransactionTableProps = {
 
 const TransactionTable = ({ transactions }: TransactionTableProps) => {
   return (
-    <table>
+    <table className="transaction-table">
       <thead>
-        {/* <tr>
+        <tr>
           <th>Status</th>
           <th>Creator</th>
           <th>Date</th>
           <th>Description</th>
           <th>Amount</th>
-        </tr> */}
+        </tr>
       </thead>
       <tbody>
         {transactions.map(transaction => (
           <TransactionItem
             key={transaction.id}
             status={transaction.status}
-            type={transaction.type} // Pass the transaction type
+            type={transaction.type}
             creator={transaction.creator}
             date={transaction.date}
             description={transaction.description}

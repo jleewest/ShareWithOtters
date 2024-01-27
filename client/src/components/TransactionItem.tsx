@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 type TransactionItemProps = {
-  status: 'approved' | 'disputed';
+  initialStatus: 'approved' | 'pending';
+  status: 'approved' | 'pending';
   type: 'expense' | 'income';
   creator: string;
   date: string;
@@ -9,14 +10,22 @@ type TransactionItemProps = {
   amount: number;
 };
 
-const TransactionItem = ({ status, type, creator, date, description, amount }: TransactionItemProps) => {
+const TransactionItem = ({ initialStatus, type, creator, date, description, amount }: TransactionItemProps) => {
   const sign = type === 'expense' ? '-' : '+';
-  const statusColor = status === 'approved' ? 'green' : 'red';
+  // const statusColor = status === 'approved' ? 'green' : 'red';
   const amountColor = type === 'income' ? 'green' : 'purple';
+
+  const [status, setStatus] = useState(initialStatus);
+
+  const handleStatusClick = () => {
+    if (status === 'pending') {
+      setStatus('approved');
+    }
+  };
 
   return (
     <tr>
-      <td style={{ color: statusColor, fontWeight: 'bold' }}>{status}</td>
+      <td style={{ color: amountColor, fontWeight: 'bold' }}>{status}</td>
       <td>{creator}</td>
       <td>{date}</td>
       <td>{description}</td>
