@@ -12,6 +12,8 @@ export async function getUserByClerkId(req: Request, res: Response) {
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
@@ -31,5 +33,7 @@ export async function addUser(req: Request, res: Response) {
   } catch (err) {
     res.sendStatus(500);
     console.log(err);
+  } finally {
+    await prisma.$disconnect();
   }
 }
