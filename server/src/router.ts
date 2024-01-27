@@ -25,7 +25,7 @@ router.get('/transaction/:id', getTransactionsByClerkId);
 router.post('/transaction', createTransaction);
 router.delete('/transaction/delete/:id', deleteTransaction);
 router.put('/transaction/accept/:id', updateTransactionStatus);
-router.put('/transaction/edit:id', editTransaction);
+router.put('/transaction/edit/:id', editTransaction);
 
 //GROUP ROUTES
 router.post('/group', postGroup);

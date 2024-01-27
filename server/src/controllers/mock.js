@@ -65,7 +65,7 @@
 		//edit
 		"date": "2024-02-19",
 		"description": "Bank",
-    "amount": [300],
+    "amount": 300,
 		"notes": "Hello",
 
 	//ROUTES
