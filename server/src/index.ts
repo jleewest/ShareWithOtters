@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import router from './router';
 
@@ -12,16 +12,8 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(router);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('🦖');
-});
-
-//const db = require('./models/db.js');
-
 async function bootstrap() {
   try {
-    //await db.sequelize.sync();
-    //console.log('DB connected');
     app.listen(PORT, () => {
       console.log(`🚀 Server running at http://localhost:${PORT}`);
     });
