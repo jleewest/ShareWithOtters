@@ -2,6 +2,18 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
+//TO FILTER ALL USERS TO ADD TO GROUP
+export async function getAllUsers(req: Request, res: Response) {
+  try {
+    const data = await prisma.user.findMany();
+    res.json(data);
+    res.status(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+}
+
 //TO ADD USER TO GROUP, EXPENSE, OR PAYMENT
 export async function getUserByClerkId(req: Request, res: Response) {
   try {

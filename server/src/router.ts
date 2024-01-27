@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getUserByClerkId, addUser } from './controllers/user';
+import { getUserByClerkId, addUser, getAllUsers } from './controllers/user';
 import {
   getTransactionsByClerkId,
   createTransaction,
@@ -17,6 +17,7 @@ import {
 
 //USER ROUTES
 router.get('/user/:id', getUserByClerkId);
+router.get('/user', getAllUsers);
 router.post('/user', addUser);
 
 //TRANSACTION ROUTES
