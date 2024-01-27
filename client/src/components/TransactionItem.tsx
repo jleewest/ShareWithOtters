@@ -1,37 +1,48 @@
-import React, { useState } from 'react';
+import '../css/TransactionItem.css'
 
 type TransactionItemProps = {
-  initialStatus: 'approved' | 'pending';
-  status: 'approved' | 'pending';
+  id: number;
+  status: 'approved' | 'pending'| 'disputed';
   type: 'expense' | 'income';
   creator: string;
   date: string;
   description: string;
   amount: number;
+  onAccept: (id: number) => void; // Function to handle accepting a transaction
+  onAddNote: (id: number) => void; // Function to handle adding a note
 };
 
-const TransactionItem = ({ initialStatus, type, creator, date, description, amount }: TransactionItemProps) => {
+const TransactionItem = ({
+  id,
+  status,
+  type,
+  creator,
+  date,
+  description,
+  amount,
+  onAccept,
+  onAddNote
+}: TransactionItemProps) => {
   const sign = type === 'expense' ? '-' : '+';
-  // const statusColor = status === 'approved' ? 'green' : 'red';
   const amountColor = type === 'income' ? 'green' : 'purple';
 
-  const [status, setStatus] = useState(initialStatus);
-
-  const handleStatusClick = () => {
-    if (status === 'pending') {
-      setStatus('approved');
-    }
-  };
-
   return (
-    <tr>
-      <td style={{ color: amountColor, fontWeight: 'bold' }}>{status}</td>
+    <tr className='table-row'>
+      {status === 'pending' && (
+        <td>
+          <button onClick={() => onAccept(id)}>Accept</button>
+        </td>
+      )}
+      <td>
+        <button onClick={() => onAddNote(id)}>Add Note</button>
+      </td>
       <td>{creator}</td>
       <td>{date}</td>
       <td>{description}</td>
-      <td style={{ color: amountColor, fontWeight: 'bold' }}>{sign}${amount.toFixed(2)}</td>
+      <td style={{ color: amountColor, fontWeight: 'bold' }}>
+        {sign}${amount.toFixed(2)}
+      </td>
     </tr>
   );
 };
-
 export default TransactionItem;

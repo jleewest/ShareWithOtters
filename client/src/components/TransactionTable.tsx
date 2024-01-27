@@ -1,4 +1,3 @@
-import React from "react";
 import TransactionItem from "./TransactionItem";
 import '../css/TransactionTable.css'
 
@@ -8,7 +7,7 @@ export type Transaction = {
   creator: string;
   description: string;
   amount: number;
-  status: 'approved' | 'disputed';
+  status: 'approved' | 'disputed' | 'pending';
   type: 'expense' | 'income';
   notes?: string;
 };
@@ -32,14 +31,16 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
       <tbody>
         {transactions.map(transaction => (
           <TransactionItem
-            key={transaction.id}
-            status={transaction.status}
-            type={transaction.type}
-            creator={transaction.creator}
-            date={transaction.date}
-            description={transaction.description}
-            amount={transaction.amount}
-          />
+          id={transaction.id}
+          status={transaction.status}
+          type={transaction.type}
+          creator={transaction.creator}
+          date={transaction.date}
+          description={transaction.description}
+          amount={transaction.amount}
+          onAccept={() => {/* function to handle accept */}}
+          onAddNote={() => {/* function to handle add note */}}
+        />
         ))}
       </tbody>
     </table>
