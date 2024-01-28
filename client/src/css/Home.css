@@ -10,9 +10,9 @@
 
 /* HEADER */
 .Home .app-header {
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-weight: 500;
-  padding: 1rem;
+  padding: 1rem 1rem 1.5rem 1rem;
   display: flex;
   align-items: center;
 }
