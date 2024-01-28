@@ -7,6 +7,7 @@ import PieChart from './PieChart';
 import NoteForm from './NoteForm';
 import TransactionItem from './TransactionItem';
 import { Transaction } from './TransactionTable';
+import LendingSummary from './LendingSummary';
 
 const Dashboard = () => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
@@ -56,50 +57,13 @@ const Dashboard = () => {
       <GroupOptions />
 
       {/* Render only pending transactions here */}
-      <table className='table-container'>
-        <tbody>
-          {transactions
-            .filter((tx) => tx.status === 'pending')
-            .map((transaction) => (
-              <TransactionItem
-                key={transaction.id}
-                id={transaction.id}
-                status={transaction.status}
-                type={transaction.type}
-                creator={transaction.creator}
-                date={transaction.date}
-                description={transaction.description}
-                amount={transaction.amount}
-                onAccept={handleAcceptTransaction}
-                onAddNote={handleAddNote}
-              />
-            ))}
-        </tbody>
-      </table>
+      <TransactionTable status={'pending'} />
 
       <WaveChart />
+      <LendingSummary />
 
       {/* Render only approved transactions here */}
-      <table className='table-container'>
-        <tbody>
-          {transactions
-            .filter((tx) => tx.status === 'approved')
-            .map((transaction) => (
-              <TransactionItem
-                key={transaction.id}
-                id={transaction.id}
-                status={transaction.status}
-                type={transaction.type}
-                creator={transaction.creator}
-                date={transaction.date}
-                description={transaction.description}
-                amount={transaction.amount}
-                onAccept={() => {}} // Empty function since no action on approved
-                onAddNote={handleAddNote}
-              />
-            ))}
-        </tbody>
-      </table>
+      <TransactionTable status={'active'} />
 
       <PieChart />
 
