@@ -1,0 +1,41 @@
+/* APP BORDER */
+.Home .app-header,
+.app-footer {
+  background-color: var(--primary-color);
+}
+.Home .app-header,
+.app-footer > a {
+  color: white;
+}
+
+/* HEADER */
+.Home .app-header {
+  font-size: 2rem;
+  font-weight: 500;
+  padding: 1rem 1rem 1.5rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+/* MAIN */
+.Home .home-container {
+  margin: 1rem;
+}
+
+/* FOOTER */
+.Home .app-footer {
+  font-size: 0.5rem;
+  padding: 1rem 1rem 0.5rem 0;
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.Home .app-footer > a {
+  text-decoration: none;
+}
+
+.Home .app-footer > a:hover {
+  text-decoration: underline;
+}
