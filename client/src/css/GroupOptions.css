@@ -1,15 +1,17 @@
-.group-options {
+.GroupOptions {
   display: flex;
   justify-content: center;
+  gap: 1rem;
 }
 
-.group-options img {
+.GroupOptions img {
   max-height: 10rem;
   border-radius: 50%;
 }
 
-.group-btns {
+.GroupOptions .group-btns {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  gap: 0.5rem;
 }

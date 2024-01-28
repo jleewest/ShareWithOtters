@@ -21,7 +21,7 @@ const GroupOptions = () => {
   const closeInviteForm = () => setInviteFormOpen(false);
 
   return (
-    <div className='group-options'>
+    <div className='GroupOptions'>
       <img className='logo' src={logo} alt='logo' />
       <section className='group-btns'>
         <button onClick={openExpenseForm}>Add expense</button>
