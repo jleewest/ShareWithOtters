@@ -1,0 +1,47 @@
+/* APP BORDER */
+.Home .app-header,
+.app-footer {
+  background-color: var(--primary-color);
+}
+.Home .app-header,
+.app-footer > a {
+  color: white;
+}
+
+/* HEADER */
+.Home .app-header {
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.Home .app-header > img {
+  max-height: 3rem;
+  border-radius: 50px;
+}
+
+.Home .app-header > div {
+  padding-left: 0.25rem;
+}
+
+/* MAIN */
+.Home .home-container {
+  margin: 1rem;
+}
+
+/* FOOTER */
+.Home .app-footer {
+  font-size: 0.5rem;
+  padding: 1rem 1rem 0.5rem 0;
+  text-align: right;
+}
+
+.Home .app-footer > a {
+  text-decoration: none;
+}
+
+.Home .app-footer > a:hover {
+  text-decoration: underline;
+}
