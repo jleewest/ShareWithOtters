@@ -1,4 +1,4 @@
-import { User } from './index';
+import { User } from '../index';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 //const ROUTE = 'user';
@@ -20,8 +20,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 //}
 
 export async function getAllUsers(): Promise<User[]> {
-  console.log('🐘🐘🐘');
-  const response = await fetch(`${BASE_URL}/users`);
+  const response = await fetch(`${BASE_URL}/user`);
   if (response.ok) {
     const data = await response.json();
     return data as Promise<User[]>;
@@ -30,7 +29,7 @@ export async function getAllUsers(): Promise<User[]> {
 }
 
 export async function getUserByClerkId(id: string): Promise<User> {
-  const response = await fetch(`${BASE_URL}/users/${id}`);
+  const response = await fetch(`${BASE_URL}/user/${id}`);
   if (response.ok) {
     const data = await response.json();
     return data as Promise<User>;
@@ -39,7 +38,7 @@ export async function getUserByClerkId(id: string): Promise<User> {
 }
 
 export async function addUser(user: User): Promise<User> {
-  const response = await fetch(`${BASE_URL}/users/`, {
+  const response = await fetch(`${BASE_URL}/user/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
