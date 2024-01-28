@@ -7,6 +7,7 @@ import PieChart from './PieChart';
 import NoteForm from './NoteForm';
 import TransactionItem from './TransactionItem';
 import { Transaction } from './TransactionTable';
+import LendingSummary from './LendingSummary';
 
 const Dashboard = () => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
@@ -78,6 +79,7 @@ const Dashboard = () => {
       </table>
 
       <WaveChart />
+      <LendingSummary />
 
       {/* Render only approved transactions here */}
       <table className='table-container'>
