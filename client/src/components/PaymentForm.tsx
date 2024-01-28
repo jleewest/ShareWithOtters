@@ -1,4 +1,3 @@
-import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -24,7 +23,14 @@ const PaymentForm = ({ open, onClose }: PaymentFormProps) => {
       <DialogTitle>Add a Payment</DialogTitle>
       <DialogContent>
         {/* Payment form fields */}
-        <TextField autoFocus margin="dense" id="name" label="Payment Name" type="text" fullWidth />
+        <TextField
+          autoFocus
+          margin='dense'
+          id='name'
+          label='Payment Name'
+          type='text'
+          fullWidth
+        />
         {/* more fields as here */}
       </DialogContent>
       <DialogActions>

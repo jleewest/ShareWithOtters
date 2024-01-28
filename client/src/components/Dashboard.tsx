@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import GroupOptions from './GroupOptions';
 import WaveChart from './WaveChart';
 import TransactionTable from './TransactionTable';
@@ -31,18 +31,18 @@ const Dashboard = () => {
       creator: 'Alice',
       date: '01-26-2024',
       description: 'Lunch',
-      amount: 20.00,
+      amount: 20.0,
       status: 'approved',
-      type: 'income'
+      type: 'income',
     },
     {
       id: 1,
       creator: 'Bob',
       date: '01-20-2024',
       description: 'Groceries',
-      amount: 45.50,
+      amount: 45.5,
       status: 'pending',
-      type: 'expense'
+      type: 'expense',
     },
   ];
 
@@ -68,46 +68,50 @@ const Dashboard = () => {
       {/* Render only pending transactions here */}
       <table className='table-container'>
         <tbody>
-          {transactions.filter(tx => tx.status === 'pending').map((transaction) => (
-            <TransactionItem
-              key={transaction.id}
-              id={transaction.id}
-              status={transaction.status}
-              type={transaction.type}
-              creator={transaction.creator}
-              date={transaction.date}
-              description={transaction.description}
-              amount={transaction.amount}
-              onAccept={handleAcceptTransaction}
-              onAddNote={handleAddNote}
-            />
-          ))}
+          {transactions
+            .filter((tx) => tx.status === 'pending')
+            .map((transaction) => (
+              <TransactionItem
+                key={transaction.id}
+                id={transaction.id}
+                status={transaction.status}
+                type={transaction.type}
+                creator={transaction.creator}
+                date={transaction.date}
+                description={transaction.description}
+                amount={transaction.amount}
+                onAccept={handleAcceptTransaction}
+                onAddNote={handleAddNote}
+              />
+            ))}
         </tbody>
       </table>
 
-      <WaveChart/>
+      <WaveChart />
 
       {/* Render only approved transactions here */}
       <table className='table-container'>
         <tbody>
-          {transactions.filter(tx => tx.status === 'approved').map((transaction) => (
-            <TransactionItem
-              key={transaction.id}
-              id={transaction.id}
-              status={transaction.status}
-              type={transaction.type}
-              creator={transaction.creator}
-              date={transaction.date}
-              description={transaction.description}
-              amount={transaction.amount}
-              onAccept={() => {}} // Empty function since no action on approved
-              onAddNote={handleAddNote}
-            />
-          ))}
+          {transactions
+            .filter((tx) => tx.status === 'approved')
+            .map((transaction) => (
+              <TransactionItem
+                key={transaction.id}
+                id={transaction.id}
+                status={transaction.status}
+                type={transaction.type}
+                creator={transaction.creator}
+                date={transaction.date}
+                description={transaction.description}
+                amount={transaction.amount}
+                onAccept={() => {}} // Empty function since no action on approved
+                onAddNote={handleAddNote}
+              />
+            ))}
         </tbody>
       </table>
 
-      <PieChart/>
+      <PieChart />
 
       {/* Modals for forms */}
       <PaymentForm open={isPaymentFormOpen} onClose={closePaymentForm} />
