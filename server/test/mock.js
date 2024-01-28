@@ -1,4 +1,6 @@
-  user: {
+//USED FOR TESTING CONTROLLERS IN POSTMAN
+
+user: {
 		"clerkId" : "clerkid1",
 		"firstName": "Jenna",
 		"lastName" : "Westendorf",
