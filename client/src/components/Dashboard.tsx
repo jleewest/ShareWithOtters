@@ -4,25 +4,17 @@ import GroupOptions from './GroupOptions';
 import WaveChart from './WaveChart';
 import TransactionTable from './TransactionTable';
 import PieChart from './PieChart';
-import PaymentForm from './PaymentForm';
-import ExpenseForm from './ExpenseForm';
 import NoteForm from './NoteForm';
 import TransactionItem from './TransactionItem';
 import { Transaction } from './TransactionTable';
 
 const Dashboard = () => {
-  const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
-  const [isExpenseFormOpen, setExpenseFormOpen] = useState(false);
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
 
   // Handlers for opening each modal
-  const openPaymentForm = () => setPaymentFormOpen(true);
-  const openExpenseForm = () => setExpenseFormOpen(true);
   const openNoteForm = () => setNoteFormOpen(true);
 
   // Handlers for closing each modal
-  const closePaymentForm = () => setPaymentFormOpen(false);
-  const closeExpenseForm = () => setExpenseFormOpen(false);
   const closeNoteForm = () => setNoteFormOpen(false);
 
   // Sample transaction data
@@ -61,10 +53,7 @@ const Dashboard = () => {
   };
   return (
     <div>
-      <GroupOptions
-        onAddPayment={openPaymentForm}
-        onAddExpense={openExpenseForm}
-      />
+      <GroupOptions />
 
       {/* Render only pending transactions here */}
       <table className='table-container'>
@@ -115,8 +104,6 @@ const Dashboard = () => {
       <PieChart />
 
       {/* Modals for forms */}
-      <PaymentForm open={isPaymentFormOpen} onClose={closePaymentForm} />
-      <ExpenseForm open={isExpenseFormOpen} onClose={closeExpenseForm} />
       <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
     </div>
   );

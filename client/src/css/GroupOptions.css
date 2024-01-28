@@ -4,12 +4,12 @@
 }
 
 .group-options img {
+  max-height: 10rem;
   border-radius: 50%;
 }
 
 .group-btns {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly
+  justify-content: space-evenly;
 }
-
