@@ -17,15 +17,6 @@
   align-items: center;
 }
 
-.Home .app-header > img {
-  max-height: 3rem;
-  border-radius: 50px;
-}
-
-.Home .app-header > div {
-  padding-left: 0.25rem;
-}
-
 /* MAIN */
 .Home .home-container {
   margin: 1rem;
