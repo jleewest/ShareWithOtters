@@ -1,3 +1,4 @@
+import '../css/Dashboard.css';
 import { useState } from 'react';
 import GroupOptions from './GroupOptions';
 import WaveChart from './WaveChart';

@@ -3,12 +3,3 @@
   margin: 0;
   padding: 0;
 }
-
-body {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  min-height: 100vh; /* Full viewport height */
-  margin: 0; /* Removes default margin */
-  /* Additional styling as needed */
-}
