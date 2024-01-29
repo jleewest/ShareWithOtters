@@ -6,8 +6,25 @@ const prisma = new PrismaClient();
 export async function getTransactionsByClerkId(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const allTransactions = await prisma.transaction.findMany({
-      where: { transactor: id, transactee: id },
+    const allTransactorTransactions = await prisma.transaction.findMany({
+      where: { transactor: id },
+      include: {
+        userActor: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+        userActee: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+    const allTransacteeTransactions = await prisma.transaction.findMany({
+      where: { transactee: id, transactor: { not: id } },
       include: {
         userActor: {
           select: {
@@ -24,6 +41,11 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
       },
     });
 
+    const allTransactions = [
+      ...allTransactorTransactions,
+      ...allTransacteeTransactions,
+    ];
+
     //SORT TRANSACTIONS BY STATUS AND TYPE
     //pending
     const pending = allTransactions.filter(
@@ -31,13 +53,20 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
     );
     const pendingExpense = pending.filter(
       (transaction) =>
-        transaction.type === 'expense' && transaction.transactee === id
+        transaction.type === 'expense' &&
+        transaction.transactee === id &&
+        transaction.transactee !== transaction.transactor
+    );
+    const pendingOwedExpense = pending.filter(
+      (transaction) =>
+        transaction.type === 'expense' &&
+        transaction.transactor === id &&
+        transaction.transactee !== id
     );
     const pendingPayment = pending.filter(
       (transaction) =>
         transaction.type === 'payment' && transaction.transactee === id
     );
-
     //active
     const active = allTransactions.filter(
       (transaction) => transaction.status === 'active'
@@ -60,7 +89,10 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
         payment: pendingPayment,
       },
       active: {
-        expense: activeExpense,
+        expense: {
+          confirmedExpenses: activeExpense,
+          pendingExpenseFromOther: pendingOwedExpense,
+        },
         payment: {
           paid: paymentActor,
           received: paymentActee,
@@ -79,7 +111,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
 //SPLITS TRANSACTIONS AND POSTS TRANSACTION FOR EACH PERSON IN THE SPLIT (body incl: transactee[](incl transactor), amount[])
 export async function createTransaction(req: Request, res: Response) {
   try {
-    const { transactee, amount, otherTransactionProperties } = req.body;
+    const { transactee, amount, ...otherTransactionProperties } = req.body;
     const savedTransactions = [];
 
     //iterate through all transactees and post new transaction for each transactee
@@ -93,6 +125,7 @@ export async function createTransaction(req: Request, res: Response) {
       });
       savedTransactions.push(saveTransaction);
     }
+    console.log(savedTransactions);
     res.json(savedTransactions);
     res.status(201);
   } catch (err) {

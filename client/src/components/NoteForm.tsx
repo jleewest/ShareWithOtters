@@ -1,4 +1,3 @@
-import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -24,7 +23,16 @@ const NoteForm = ({ open, onClose }: NoteFormProps) => {
       <DialogTitle>Add a Note</DialogTitle>
       <DialogContent>
         {/* Note form fields */}
-        <TextField autoFocus margin="dense" id="note" label="Note" type="text" fullWidth multiline rows={4} />
+        <TextField
+          autoFocus
+          margin='dense'
+          id='note'
+          label='Note'
+          type='text'
+          fullWidth
+          multiline
+          rows={4}
+        />
         {/* more fields here*/}
       </DialogContent>
       <DialogActions>

@@ -1,49 +1,99 @@
-import TransactionItem from "./TransactionItem";
-import '../css/TransactionTable.css'
+import TransactionItem from './TransactionItem';
+import '../css/TransactionTable.css';
+import { Transaction } from '../index';
+import NoteForm from './NoteForm';
+import { useState } from 'react';
 
-export type Transaction = {
-  id: number;
-  date: string;
-  creator: string;
-  description: string;
-  amount: number;
-  status: 'approved' | 'disputed' | 'pending';
-  type: 'expense' | 'income';
-  notes?: string;
-};
+const TransactionTable = ({ status }) => {
+  const [isNoteFormOpen, setNoteFormOpen] = useState(false);
 
-type TransactionTableProps = {
-  transactions: Transaction[];
-};
+  // Handlers for opening each modal
+  const openNoteForm = () => setNoteFormOpen(true);
 
-const TransactionTable = ({ transactions }: TransactionTableProps) => {
+  // Handlers for closing each modal
+  const closeNoteForm = () => setNoteFormOpen(false);
+  // Function to handle the acceptance of a transaction
+
+  const handleAcceptTransaction = (id: number) => {
+    // Placeholder function to update status to 'approved'
+    console.log('Transaction accepted with ID:', id);
+    // Call a backend API to update the transaction status
+  };
+
+  // Function to handle adding a note to a transaction
+  const handleAddNote = (id: number) => {
+    openNoteForm();
+    // open a modal here to add a note
+  };
+  // Sample transaction data
+  const transactions: Transaction[] = [
+    {
+      id: 0,
+      transactor: 'Alice',
+      transactee: 'Bob',
+      date: '01-26-2024',
+      description: 'Lunch',
+      amount: 20.0,
+      type: 'income',
+      notes: '',
+      groupId: 1,
+    },
+    {
+      id: 1,
+      transactor: 'Bob',
+      transactee: 'Alice',
+      date: '01-20-2024',
+      description: 'Groceries',
+      amount: 45.5,
+      type: 'expense',
+      notes: '',
+      groupId: 1,
+    },
+  ];
+
+  //Populates table with transactions by table status
+  //if (status === 'pending') {
+  //  transactions = transactions.pending
+  //} else {
+  //  transactions = transactions.active
+  //}
+
   return (
-    <table className="transaction-table">
-      <thead>
-        <tr>
-          <th>Status</th>
-          <th>Creator</th>
-          <th>Date</th>
-          <th>Description</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        {transactions.map(transaction => (
-          <TransactionItem
-          id={transaction.id}
-          status={transaction.status}
-          type={transaction.type}
-          creator={transaction.creator}
-          date={transaction.date}
-          description={transaction.description}
-          amount={transaction.amount}
-          onAccept={() => {/* function to handle accept */}}
-          onAddNote={() => {/* function to handle add note */}}
-        />
-        ))}
-      </tbody>
-    </table>
+    <div className='TransactionTable'>
+      <table className='transaction-table'>
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Creator</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction) => (
+            <TransactionItem
+              key={transaction.id}
+              id={transaction.id}
+              type={transaction.type}
+              transactor={transaction.transactor}
+              date={transaction.date}
+              description={transaction.description}
+              amount={transaction.amount}
+              onAccept={() => {
+                /* function to handle accept */
+              }}
+              onAddNote={() => {
+                handleAddNote;
+                /* function to handle add note */
+              }}
+            />
+          ))}
+        </tbody>
+      </table>
+      {/* Modals for forms */}
+      <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
+    </div>
   );
 };
 

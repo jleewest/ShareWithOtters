@@ -1,10 +1,10 @@
-import '../css/TransactionItem.css'
+import '../css/TransactionItem.css';
+import { Transaction } from '../index';
 
 type TransactionItemProps = {
   id: number;
-  status: 'approved' | 'pending'| 'disputed';
-  type: 'expense' | 'income';
-  creator: string;
+  type: string;
+  transactor: string;
   date: string;
   description: string;
   amount: number;
@@ -14,14 +14,13 @@ type TransactionItemProps = {
 
 const TransactionItem = ({
   id,
-  status,
   type,
-  creator,
+  transactor,
   date,
   description,
   amount,
   onAccept,
-  onAddNote
+  onAddNote,
 }: TransactionItemProps) => {
   const sign = type === 'expense' ? '-' : '+';
   const amountColor = type === 'income' ? 'green' : 'purple';
@@ -36,7 +35,7 @@ const TransactionItem = ({
       <td>
         <button onClick={() => onAddNote(id)}>Add Note</button>
       </td>
-      <td>{creator}</td>
+      <td>{transactor}</td>
       <td>{date}</td>
       <td>{description}</td>
       <td style={{ color: amountColor, fontWeight: 'bold' }}>

@@ -1,4 +1,3 @@
-import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -24,7 +23,14 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
       <DialogTitle>Add an Expense</DialogTitle>
       <DialogContent>
         {/* Expense form fields */}
-        <TextField autoFocus margin="dense" id="name" label="Expense Name" type="text" fullWidth />
+        <TextField
+          autoFocus
+          margin='dense'
+          id='name'
+          label='Expense Name'
+          type='text'
+          fullWidth
+        />
         {/*more fields here*/}
       </DialogContent>
       <DialogActions>

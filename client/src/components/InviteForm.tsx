@@ -5,12 +5,12 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-type PaymentFormProps = {
+type InviteFormProps = {
   open: boolean;
   onClose: () => void;
 };
 
-const PaymentForm = ({ open, onClose }: PaymentFormProps) => {
+const InviteForm = ({ open, onClose }: InviteFormProps) => {
   // Form submission handler (to be implemented)
   const handleSubmit = () => {
     // Placeholder for form submission logic
@@ -20,14 +20,14 @@ const PaymentForm = ({ open, onClose }: PaymentFormProps) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add a Payment</DialogTitle>
+      <DialogTitle>Invite a Friend</DialogTitle>
       <DialogContent>
         {/* Payment form fields */}
         <TextField
           autoFocus
           margin='dense'
           id='name'
-          label='Payment Name'
+          label='Invitee Name'
           type='text'
           fullWidth
         />
@@ -41,4 +41,4 @@ const PaymentForm = ({ open, onClose }: PaymentFormProps) => {
   );
 };
 
-export default PaymentForm;
+export default InviteForm;
