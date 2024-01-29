@@ -24,7 +24,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
   const [isAddFriendsFormOpen, setAddFriendsFormOpen] = useState(false);
   const openAddFriendsForm = () => setAddFriendsFormOpen(true);
   const closeAddFriendsForm = () => setAddFriendsFormOpen(false);
-  // Form submission handler (to be implemented)
+
   const handleSubmit = async () => {
     // postTransaction will happen here!
     console.log('Form submitted');
@@ -32,11 +32,11 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
 
     const transactionData = {
       type: 'expense',
-      date: '',
+      date: '', //e.target.date
       transactor: user.id,
-      transactee: [user.id],
-      description: '',
-      amount: [],
+      transactee: [user.id], //import from AddFriends
+      description: '', //e.target.description
+      amount: [], //import from AddSplit
       notes: '',
     };
 
@@ -46,8 +46,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
   const handleNext = () => {
     //add inputs to setTransactions body
     openAddFriendsForm();
-    console.log('Form submitted');
-    onClose();
+    onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
   };
 
   return (
