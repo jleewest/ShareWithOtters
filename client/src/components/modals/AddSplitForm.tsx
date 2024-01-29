@@ -11,9 +11,16 @@ import SubmitExpenseForm from './SubmitExpenseForm';
 type AddSplitFormProps = {
   open: boolean;
   onClose: () => void;
+  handleSubmit: () => void;
+  transactionAmounts: number[];
 };
 
-const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
+const AddSplitForm = ({
+  open,
+  onClose,
+  handleSubmit,
+  transactionAmounts,
+}: AddSplitFormProps) => {
   const [isSubmitExpenseFormOpen, setSubmitExpenseFormOpen] = useState(false);
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
@@ -54,6 +61,7 @@ const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
       <SubmitExpenseForm
         open={isSubmitExpenseFormOpen}
         onClose={closeSubmitExpenseForm}
+        handleSubmit={handleSubmit}
       />
     </div>
   );

@@ -6,10 +6,15 @@ import Button from '@mui/material/Button';
 type SubmitExpenseFormProps = {
   open: boolean;
   onClose: () => void;
+  handleSubmit: () => void;
 };
 
-const SubmitExpenseForm = ({ open, onClose }: SubmitExpenseFormProps) => {
-  const handleSubmit = () => {
+const SubmitExpenseForm = ({
+  open,
+  onClose,
+  handleSubmit,
+}: SubmitExpenseFormProps) => {
+  handleSubmit = () => {
     // send cue for expense form to submit form
     console.log('Form submitted');
     onClose();
