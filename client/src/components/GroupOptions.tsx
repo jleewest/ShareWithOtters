@@ -1,9 +1,9 @@
 import logo from '../assets/otter-logo.svg';
 import '../css/GroupOptions.css';
 import { useState } from 'react';
-import PaymentForm from './PaymentForm';
-import ExpenseForm from './ExpenseForm';
-import InviteForm from './InviteForm';
+import PaymentForm from './modals/PaymentForm';
+import ExpenseForm from './modals/ExpenseForm';
+import InviteForm from './modals/InviteForm';
 
 const GroupOptions = () => {
   const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
