@@ -4,7 +4,7 @@ import { Transaction } from '../index';
 import NoteForm from './NoteForm';
 import { useState } from 'react';
 
-const TransactionTable = ({ status }) => {
+const TransactionTable = ({ status, }) => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
 
   // Handlers for opening each modal
@@ -31,6 +31,7 @@ const TransactionTable = ({ status }) => {
       id: 0,
       transactor: 'Alice',
       transactee: 'Bob',
+      status: 'pending',
       date: '01-26-2024',
       description: 'Lunch',
       amount: 20.0,
@@ -42,6 +43,7 @@ const TransactionTable = ({ status }) => {
       id: 1,
       transactor: 'Bob',
       transactee: 'Alice',
+      status: 'approved',
       date: '01-20-2024',
       description: 'Groceries',
       amount: 45.5,
@@ -51,6 +53,7 @@ const TransactionTable = ({ status }) => {
     },
   ];
 
+  const filteredTransactions = transactions.filter(tx => tx.status === status);
   //Populates table with transactions by table status
   //if (status === 'pending') {
   //  transactions = transactions.pending
@@ -64,34 +67,30 @@ const TransactionTable = ({ status }) => {
         <thead>
           <tr>
             <th>Status</th>
-            <th>Creator</th>
+            <th>Transactor</th>
             <th>Date</th>
             <th>Description</th>
             <th>Amount</th>
+            <th>Actions</th> {/* Column for Accept and Add Note buttons */}
           </tr>
         </thead>
         <tbody>
-          {transactions.map((transaction) => (
+          {filteredTransactions.map((transaction) => (
             <TransactionItem
               key={transaction.id}
               id={transaction.id}
+              status={transaction.status}
               type={transaction.type}
               transactor={transaction.transactor}
               date={transaction.date}
               description={transaction.description}
               amount={transaction.amount}
-              onAccept={() => {
-                /* function to handle accept */
-              }}
-              onAddNote={() => {
-                handleAddNote;
-                /* function to handle add note */
-              }}
+              onAccept={handleAcceptTransaction}
+              onAddNote={handleAddNote}
             />
           ))}
         </tbody>
       </table>
-      {/* Modals for forms */}
       <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
     </div>
   );

@@ -8,12 +8,14 @@ type TransactionItemProps = {
   date: string;
   description: string;
   amount: number;
+  status: 'pending' | 'approved';
   onAccept: (id: number) => void; // Function to handle accepting a transaction
   onAddNote: (id: number) => void; // Function to handle adding a note
 };
 
 const TransactionItem = ({
   id,
+  status,
   type,
   transactor,
   date,
@@ -44,4 +46,5 @@ const TransactionItem = ({
     </tr>
   );
 };
+
 export default TransactionItem;

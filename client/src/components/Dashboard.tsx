@@ -20,7 +20,7 @@ const Dashboard = () => {
         <LendingSummary />
 
         {/* Render only approved transactions here */}
-        <TransactionTable status={'active'} />
+        <TransactionTable status={'approved'} />
 
         <PieChart />
       </LocalizationProvider>

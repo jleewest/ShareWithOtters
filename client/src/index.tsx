@@ -25,6 +25,7 @@ export type Transaction = {
   groupId: number;
   type: string;
   date: string;
+  status: 'pending' | 'approved';
   transactor: string;
   transactee: string;
   description: string;
