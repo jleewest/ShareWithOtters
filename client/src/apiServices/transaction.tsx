@@ -31,7 +31,7 @@ export async function createTransaction(
   });
   if (response.ok) {
     const data = await response.json();
-    return data as Promise<Transaction>;
+    return data as Promise<TransactionData>;
   }
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }

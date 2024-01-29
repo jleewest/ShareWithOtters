@@ -7,11 +7,7 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import AddFriendsToExpenseForm from './AddFriendsToExpenseForm';
 import { useState } from 'react';
-import {
-  createTransaction,
-  getTransactionsByClerkId,
-} from '../../apiServices/transaction';
-import { useTransactionContext } from '../../index';
+import { createTransaction } from '../../apiServices/transaction';
 import { useUser } from '@clerk/clerk-react';
 
 type ExpenseFormProps = {
