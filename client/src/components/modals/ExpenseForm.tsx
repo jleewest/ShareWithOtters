@@ -36,12 +36,13 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
       transactor: user.id,
       transactee: [user.id],
       description: '',
-      amount: 2,
+      amount: [],
       notes: '',
     };
 
     createTransaction(transactionData);
   };
+
   const handleNext = () => {
     //add inputs to setTransactions body
     openAddFriendsForm();

@@ -38,7 +38,7 @@ export type TransactionData = {
   transactor: string;
   transactee: string[];
   description: string;
-  amount: number;
+  amount: number[];
   notes: string;
 };
 
