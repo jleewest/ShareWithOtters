@@ -5,36 +5,25 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
-import AddFriendsToExpenseForm from './AddFriendsToExpenseForm';
 import { useState } from 'react';
+import SubmitExpenseForm from './SubmitExpenseForm';
 
-type ExpenseFormProps = {
+type AddSplitFormProps = {
   open: boolean;
   onClose: () => void;
 };
 
-const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
-  const [isAddFriendsFormOpen, setAddFriendsFormOpen] = useState(false);
-  const openAddFriendsForm = () => setAddFriendsFormOpen(true);
-  const closeAddFriendsForm = () => setAddFriendsFormOpen(false);
-  // Form submission handler (to be implemented)
-  const handleSubmit = () => {
-    // Placeholder for form submission logic
-    console.log('Form submitted');
-    onClose();
-  };
-  const handleNext = () => {
-    openAddFriendsForm();
-    console.log('Form submitted');
-    onClose();
-  };
+const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
+  const [isSubmitExpenseFormOpen, setSubmitExpenseFormOpen] = useState(false);
+  const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
+  const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
 
   return (
-    <div className='ExpenseForm'>
+    <div className='AddFriendsToExpenseForm'>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Add an Expense</DialogTitle>
+        <DialogTitle>Add Split</DialogTitle>
         <DialogContent>
-          {/* Expense form fields */}
+          {/* Split form fields */}
           <DatePicker />
           <TextField
             autoFocus
@@ -55,16 +44,15 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleNext}>Next</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={openSubmitExpenseForm}>Next</Button>
         </DialogActions>
       </Dialog>
-      <AddFriendsToExpenseForm
-        open={isAddFriendsFormOpen}
-        onClose={closeAddFriendsForm}
+      <SubmitExpenseForm
+        open={isSubmitExpenseFormOpen}
+        onClose={closeSubmitExpenseForm}
       />
     </div>
   );
 };
 
-export default ExpenseForm;
+export default AddSplitForm;
