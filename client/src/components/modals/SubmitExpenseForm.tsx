@@ -9,9 +9,8 @@ type SubmitExpenseFormProps = {
 };
 
 const SubmitExpenseForm = ({ open, onClose }: SubmitExpenseFormProps) => {
-  // Form submission handler (to be implemented)
   const handleSubmit = () => {
-    // Placeholder for form submission logic
+    // send cue for expense form to submit form
     console.log('Form submitted');
     onClose();
   };

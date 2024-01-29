@@ -18,6 +18,10 @@ const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
 
+  //gets friend array from AddFriends
+  //adds expenses for each friend in friend array
+  //sends amount array to Expense form
+
   return (
     <div className='AddFriendsToExpenseForm'>
       <Dialog open={open} onClose={onClose}>

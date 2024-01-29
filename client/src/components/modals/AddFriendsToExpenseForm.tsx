@@ -21,6 +21,8 @@ const AddFriendsToExpenseForm = ({
   const openAddSplitForm = () => setAddSplitFormOpen(true);
   const closeAddSplitForm = () => setAddSplitFormOpen(false);
 
+  //filterFriends (getUsers --> filter by firstName, lastName, email?) and add to Friends array (setState) that will be sent to AddSplit form and expense from
+
   return (
     <div className='AddFriendsToExpenseForm'>
       <Dialog open={open} onClose={onClose}>
