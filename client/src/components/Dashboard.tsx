@@ -29,7 +29,7 @@ const Dashboard = () => {
     {
       id: 0,
       creator: 'Alice',
-      date: '01-26-2024',
+      date: '1-26-24',
       description: 'Lunch',
       amount: 20.00,
       status: 'approved',
@@ -38,7 +38,7 @@ const Dashboard = () => {
     {
       id: 1,
       creator: 'Bob',
-      date: '01-20-2024',
+      date: '1-20-24',
       description: 'Groceries',
       amount: 45.50,
       status: 'pending',
