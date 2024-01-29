@@ -1,4 +1,4 @@
-import { Transaction } from '../index';
+import { Transaction, TransactionData } from '../index';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -14,8 +14,8 @@ export async function getTransactionsByClerkId(
 }
 
 export async function createTransaction(
-  transaction: Transaction
-): Promise<Transaction> {
+  transaction: TransactionData
+): Promise<TransactionData> {
   const response = await fetch(`${BASE_URL}/transaction`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

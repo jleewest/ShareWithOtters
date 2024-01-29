@@ -32,6 +32,16 @@ export type Transaction = {
   notes: string;
 };
 
+export type TransactionData = {
+  type: string;
+  date: string;
+  transactor: string;
+  transactee: string[];
+  description: string;
+  amount: number;
+  notes: string;
+};
+
 export type TTransactionContext = {
   transactions: Transaction[];
   setTransactions: Dispatch<SetStateAction<Transaction[]>>;

@@ -7,6 +7,12 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers';
 import AddFriendsToExpenseForm from './AddFriendsToExpenseForm';
 import { useState } from 'react';
+import {
+  createTransaction,
+  getTransactionsByClerkId,
+} from '../../apiServices/transaction';
+import { useTransactionContext } from '../../index';
+import { useUser } from '@clerk/clerk-react';
 
 type ExpenseFormProps = {
   open: boolean;
@@ -14,16 +20,30 @@ type ExpenseFormProps = {
 };
 
 const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
+  const { user } = useUser();
   const [isAddFriendsFormOpen, setAddFriendsFormOpen] = useState(false);
   const openAddFriendsForm = () => setAddFriendsFormOpen(true);
   const closeAddFriendsForm = () => setAddFriendsFormOpen(false);
   // Form submission handler (to be implemented)
-  const handleSubmit = () => {
-    // Placeholder for form submission logic
+  const handleSubmit = async () => {
+    // postTransaction will happen here!
     console.log('Form submitted');
     onClose();
+
+    const transactionData = {
+      type: 'expense',
+      date: '',
+      transactor: user.id,
+      transactee: [user.id],
+      description: '',
+      amount: 2,
+      notes: '',
+    };
+
+    createTransaction(transactionData);
   };
   const handleNext = () => {
+    //add inputs to setTransactions body
     openAddFriendsForm();
     console.log('Form submitted');
     onClose();
