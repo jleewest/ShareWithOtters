@@ -53,14 +53,17 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
     );
 
     //switch expenses you paid to active from default pending
-    const yourExpenses = pending
-      .filter(
-        (transaction) =>
-          transaction.type === 'expense' &&
-          transaction.transactee === id &&
-          transaction.transactee === transaction.transactor
-      )
-      .map((transaction) => (transaction.status = 'active'));
+    const yourExpenses = () => {
+      pending
+        .filter(
+          (transaction) =>
+            transaction.type === 'expense' &&
+            transaction.transactee === id &&
+            transaction.transactor === id
+        )
+        .forEach((transaction) => (transaction.status = 'active'));
+    };
+    yourExpenses();
 
     //expenses you owe others
     const pendingExpense = pending.filter(
