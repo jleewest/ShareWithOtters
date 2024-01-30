@@ -60,14 +60,14 @@ export const useTransactionContext = () => {
 //context for TransactionData Context Provider
 export type TTransactionDataContext = {
   transactionData: TransactionData;
-  setTransactionData: Dispatch<SetStateAction<TransactionData>>;
+  setTransactionData: Dispatch<SetStateAction<TransactionData | null>>;
 };
 
 export const TransactionsDataContext =
   createContext<TTransactionDataContext | null>(null);
 
 export const useTransactionDataContext = () => {
-  const context = useContext(TransactionsContext);
+  const context = useContext(TransactionsDataContext);
   if (!context) throw Error('TransactionDataContext not provided');
   return context;
 };

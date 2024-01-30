@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import AddSplitForm from './AddSplitForm';
+import { useTransactionDataContext } from '../../index';
 
 //Should add friends to TransactionData context
 
@@ -30,10 +31,13 @@ const AddFriendsToExpenseForm = ({
   //const [transactionFriendsArray,setTransactionFriendsArray] = useState([]);
   const [newFriend, setNewFriend] = useState('');
 
+  const { transactionData } = useTransactionDataContext();
+
   const newFriends: string[] = [];
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     //filterFriends (getUsers --> filter by firstName, lastName, email?) and add to Friends array (setState) that will be sent to AddSplit form and expense from
+    console.log(transactionData, 'ADDFRIEND');
     setNewFriend(e.target.value);
   };
   const handleAddFriend = () => {
