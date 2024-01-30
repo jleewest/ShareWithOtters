@@ -47,12 +47,13 @@ const AddFriendsToExpenseForm = ({
     onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
   };
 
+  //if newFriends.length > 0 display friends added on top of TextField (newFriends)
+
   return (
     <div className='AddFriendsToExpenseForm'>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Add Friends</DialogTitle>
         <DialogContent>
-          <DatePicker />
           <TextField
             autoFocus
             margin='dense'

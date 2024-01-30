@@ -23,7 +23,7 @@ const SubmitExpenseForm = ({
   return (
     <div className='SubmitExpenseForm'>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Add a SubmitExpense</DialogTitle>
+        <DialogTitle>Submit your Expense!</DialogTitle>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
           <Button onClick={handleSubmit}>Submit</Button>
