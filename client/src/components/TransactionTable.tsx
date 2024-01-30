@@ -1,10 +1,10 @@
 import TransactionItem from './TransactionItem';
 import '../css/TransactionTable.css';
-import { Transaction } from '../index';
+import { Transaction, TransactionTableProps } from '../index';
 import NoteForm from './NoteForm';
 import { useState } from 'react';
 
-const TransactionTable = ({ status, }) => {
+const TransactionTable: React.FC<TransactionTableProps> = ({ status, refreshTransactions }) => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
 
   // Handlers for opening each modal
@@ -14,10 +14,11 @@ const TransactionTable = ({ status, }) => {
   const closeNoteForm = () => setNoteFormOpen(false);
   // Function to handle the acceptance of a transaction
 
-  const handleAcceptTransaction = (id: number) => {
-    // Placeholder function to update status to 'approved'
-    console.log('Transaction accepted with ID:', id);
+  const handleAcceptTransaction = async (transactionId: number) => {
+    // Placeholder function to update status to 'active'
+    console.log(`Transaction accepted with ID:'${transactionId}`);
     // Call a backend API to update the transaction status
+    await refreshTransactions();
   };
 
   // Function to handle adding a note to a transaction
@@ -43,7 +44,7 @@ const TransactionTable = ({ status, }) => {
       id: 1,
       transactor: 'Bob',
       transactee: 'Alice',
-      status: 'approved',
+      status: 'active',
       date: '01-20-2024',
       description: 'Groceries',
       amount: 45.5,
@@ -54,12 +55,12 @@ const TransactionTable = ({ status, }) => {
   ];
 
   const filteredTransactions = transactions.filter(tx => tx.status === status);
-  //Populates table with transactions by table status
-  //if (status === 'pending') {
+  // Populates table with transactions by table status
+  // if (status === 'pending') {
   //  transactions = transactions.pending
-  //} else {
+  // } else {
   //  transactions = transactions.active
-  //}
+  // }
 
   return (
     <div className='TransactionTable'>
@@ -85,11 +86,13 @@ const TransactionTable = ({ status, }) => {
               date={transaction.date}
               description={transaction.description}
               amount={transaction.amount}
+              notes={transaction.notes}
               onAccept={handleAcceptTransaction}
               onAddNote={handleAddNote}
             />
           ))}
         </tbody>
+
       </table>
       <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
     </div>

@@ -5,7 +5,11 @@ import PaymentForm from './modals/PaymentForm';
 import ExpenseForm from './modals/ExpenseForm';
 import InviteForm from './modals/InviteForm';
 
-const GroupOptions = () => {
+type GroupOptionsProps = {
+  refreshTransactions: () => void;
+};
+
+const GroupOptions = ({ refreshTransactions }: GroupOptionsProps) => {
   const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
   const [isExpenseFormOpen, setExpenseFormOpen] = useState(false);
   const [isInviteFormOpen, setInviteFormOpen] = useState(false);

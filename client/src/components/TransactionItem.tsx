@@ -8,7 +8,8 @@ type TransactionItemProps = {
   date: string;
   description: string;
   amount: number;
-  status: 'pending' | 'approved';
+  status: 'pending' | 'active';
+  notes: string;
   onAccept: (id: number) => void; // Function to handle accepting a transaction
   onAddNote: (id: number) => void; // Function to handle adding a note
 };
@@ -21,6 +22,7 @@ const TransactionItem = ({
   date,
   description,
   amount,
+  notes,
   onAccept,
   onAddNote,
 }: TransactionItemProps) => {
@@ -28,23 +30,16 @@ const TransactionItem = ({
   const amountColor = type === 'income' ? 'green' : 'purple';
 
   return (
-    <tr className='table-row'>
-      {status === 'pending' && (
-        <td>
-          <button onClick={() => onAccept(id)}>Accept</button>
-        </td>
-      )}
-      <td>
-        <button onClick={() => onAddNote(id)}>Add Note</button>
-      </td>
+    <tr className={`table-row ${notes ? 'has-note' : ''}`.trim()}>
+      {status === 'pending' && <td><button onClick={() => onAccept(id)}>Accept</button></td>}
+      <td><button onClick={() => onAddNote(id)}>Add Note</button></td>
       <td>{transactor}</td>
       <td>{date}</td>
       <td>{description}</td>
-      <td style={{ color: amountColor, fontWeight: 'bold' }}>
-        {sign}${amount.toFixed(2)}
-      </td>
+      <td style={{ color: amountColor, fontWeight: 'bold' }}>{sign}${amount.toFixed(2)}</td>
     </tr>
   );
 };
+
 
 export default TransactionItem;
