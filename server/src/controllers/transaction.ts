@@ -79,6 +79,13 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
         transaction.transactor === id &&
         transaction.transactee !== id
     );
+    //payments you marked paid, awaiting confirmation
+    const pendingActeeReceipt = pending.filter(
+      (transaction) =>
+        transaction.type === 'payment' &&
+        transaction.transactor === id &&
+        transaction.transactee !== id
+    );
     //payments others paid you
     const pendingPayment = pending.filter(
       (transaction) =>
@@ -115,6 +122,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
           pendingExpenseFromOther: pendingOwedExpense,
         },
         payment: {
+          pendingPaid: pendingActeeReceipt,
           paid: paymentActor,
           received: paymentActee,
         },
