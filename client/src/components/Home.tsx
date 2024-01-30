@@ -15,12 +15,14 @@ function Home() {
 
   //POST user to DB if newUser
   useEffect(() => {
-    addUser({
-      clerkId: user.clerkId,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-    });
+    if (user) {
+      addUser({
+        clerkId: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.primaryEmailAddress.emailAddress,
+      });
+    }
   }, [user]);
 
   //GET transactions from server
