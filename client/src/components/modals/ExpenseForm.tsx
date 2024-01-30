@@ -21,6 +21,9 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
   const openAddFriendsForm = () => setAddFriendsFormOpen(true);
   const closeAddFriendsForm = () => setAddFriendsFormOpen(false);
 
+  const transactionAmounts: number[] = [];
+  const transactionFriends: string[] = [user.id];
+
   const handleSubmit = async () => {
     // postTransaction will happen here!
     console.log('Form submitted');
@@ -30,9 +33,9 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
       type: 'expense',
       date: '', //e.target.date
       transactor: user.id,
-      transactee: [user.id], //import from AddFriends
+      transactee: transactionFriends, //import from AddFriends
       description: '', //e.target.description
-      amount: [], //import from AddSplit
+      amount: transactionAmounts, //import from AddSplit
       notes: '',
     };
 
@@ -72,12 +75,14 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
           <Button onClick={handleNext}>Next</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
         </DialogActions>
       </Dialog>
       <AddFriendsToExpenseForm
         open={isAddFriendsFormOpen}
         onClose={closeAddFriendsForm}
+        handleSubmit={handleSubmit}
+        transactionAmounts={transactionAmounts}
+        transactionFriends={transactionFriends}
       />
     </div>
   );

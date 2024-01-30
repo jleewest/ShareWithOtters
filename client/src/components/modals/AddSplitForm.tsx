@@ -11,25 +11,41 @@ import SubmitExpenseForm from './SubmitExpenseForm';
 type AddSplitFormProps = {
   open: boolean;
   onClose: () => void;
+  handleSubmit: () => void;
+  transactionAmounts: number[];
 };
 
-const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
+const AddSplitForm = ({
+  open,
+  onClose,
+  handleSubmit,
+  transactionAmounts,
+}: AddSplitFormProps) => {
   const [isSubmitExpenseFormOpen, setSubmitExpenseFormOpen] = useState(false);
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
+
+  //gets friend array from AddFriends
+  //creates TextField for each friend in array
+  //adds expenses for each friend in friend array
+  //need to get amount here from transactionData...
+  //sends amount array to Expense form
+  const handleNext = () => {
+    //add inputs to setTransactions body
+    openSubmitExpenseForm();
+    onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
+  };
 
   return (
     <div className='AddFriendsToExpenseForm'>
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Add Split</DialogTitle>
         <DialogContent>
-          {/* Split form fields */}
-          <DatePicker />
           <TextField
             autoFocus
             margin='dense'
             id='name'
-            label='Expense description'
+            label='Name'
             type='text'
             fullWidth
           />
@@ -44,12 +60,13 @@ const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={openSubmitExpenseForm}>Next</Button>
+          <Button onClick={handleNext}>Next</Button>
         </DialogActions>
       </Dialog>
       <SubmitExpenseForm
         open={isSubmitExpenseFormOpen}
         onClose={closeSubmitExpenseForm}
+        handleSubmit={handleSubmit}
       />
     </div>
   );

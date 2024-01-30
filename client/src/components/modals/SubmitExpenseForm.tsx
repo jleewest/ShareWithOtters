@@ -6,12 +6,16 @@ import Button from '@mui/material/Button';
 type SubmitExpenseFormProps = {
   open: boolean;
   onClose: () => void;
+  handleSubmit: () => void;
 };
 
-const SubmitExpenseForm = ({ open, onClose }: SubmitExpenseFormProps) => {
-  // Form submission handler (to be implemented)
-  const handleSubmit = () => {
-    // Placeholder for form submission logic
+const SubmitExpenseForm = ({
+  open,
+  onClose,
+  handleSubmit,
+}: SubmitExpenseFormProps) => {
+  handleSubmit = () => {
+    // send cue for expense form to submit form
     console.log('Form submitted');
     onClose();
   };
@@ -19,7 +23,7 @@ const SubmitExpenseForm = ({ open, onClose }: SubmitExpenseFormProps) => {
   return (
     <div className='SubmitExpenseForm'>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Add a SubmitExpense</DialogTitle>
+        <DialogTitle>Submit your Expense!</DialogTitle>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
           <Button onClick={handleSubmit}>Submit</Button>
