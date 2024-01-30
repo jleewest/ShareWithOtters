@@ -3,6 +3,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
+//when addSplit is submitted, should submit request. Submit modal returns response to request (if successful or not)
+
 type SubmitExpenseFormProps = {
   open: boolean;
   onClose: () => void;

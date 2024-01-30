@@ -41,6 +41,7 @@ export type TransactionData = {
   notes: string;
 };
 
+//context for Transaction Context Provider
 export type TTransactionContext = {
   transactions: Transaction[];
   setTransactions: Dispatch<SetStateAction<Transaction[]>>;
@@ -56,6 +57,7 @@ export const useTransactionContext = () => {
   return context;
 };
 
+//context for TransactionData Context Provider
 export type TTransactionDataContext = {
   transactionData: TransactionData;
   setTransactionData: Dispatch<SetStateAction<TransactionData>>;
