@@ -13,14 +13,36 @@ function Home() {
   //user.id === ClerkId
   const { user } = useUser();
 
+  if (!user) {
+    return (
+      <div className='Home'>
+        <header className='app-header'>
+          <Link className='otter-home' to='/'>
+            OtterShare
+          </Link>
+          <SignOutButton afterSignOutUrl='/'>
+            <button className='logout-button'>Logout</button>
+          </SignOutButton>
+        </header>
+        <main className='home-container'>
+          <div>
+            Something has gone 🦖RAW-WRong! Please logout and log back in
+          </div>
+        </main>
+        <footer className='app-footer'>
+          <a href='https://github.com/jleewest/IOU.git'>Open source code</a>
+        </footer>
+      </div>
+    );
+  }
   //POST user to DB if newUser
   useEffect(() => {
     if (user) {
       addUser({
         clerkId: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.primaryEmailAddress.emailAddress,
+        firstName: user.firstName || 'no first name',
+        lastName: user.lastName || 'no last name',
+        email: user.primaryEmailAddress?.emailAddress || 'no email',
       });
     }
   }, [user]);
