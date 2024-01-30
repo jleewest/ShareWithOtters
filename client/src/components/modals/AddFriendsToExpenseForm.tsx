@@ -4,9 +4,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers';
 import { useState } from 'react';
 import AddSplitForm from './AddSplitForm';
+
+//Should add friends to TransactionData context
 
 type AddFriendsToExpenseFormProps = {
   open: boolean;

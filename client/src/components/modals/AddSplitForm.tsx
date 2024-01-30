@@ -4,9 +4,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers';
 import { useState } from 'react';
 import SubmitExpenseForm from './SubmitExpenseForm';
+
+//should get array of friends and single amount from TransactionData context and update amount of TransactionData with array of amounts
 
 type AddSplitFormProps = {
   open: boolean;
