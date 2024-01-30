@@ -55,3 +55,17 @@ export const useTransactionContext = () => {
   if (!context) throw Error('TransactionContext not provided');
   return context;
 };
+
+export type TTransactionDataContext = {
+  transactionData: TransactionData;
+  setTransactionData: Dispatch<SetStateAction<TransactionData>>;
+};
+
+export const TransactionsDataContext =
+  createContext<TTransactionDataContext | null>(null);
+
+export const useTransactionDataContext = () => {
+  const context = useContext(TransactionsContext);
+  if (!context) throw Error('TransactionDataContext not provided');
+  return context;
+};
