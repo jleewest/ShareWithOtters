@@ -9,6 +9,7 @@ import AddFriendsToExpenseForm from './AddFriendsToExpenseForm';
 import { useState } from 'react';
 import { createTransaction } from '../../apiServices/transaction';
 import { useUser } from '@clerk/clerk-react';
+import { TransactionData, TransactionsDataContext } from '../../index';
 
 type ExpenseFormProps = {
   open: boolean;
@@ -17,6 +18,11 @@ type ExpenseFormProps = {
 
 const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
   const { user } = useUser();
+  const [transactionData, setTransactionData] = useState<TransactionData>();
+  const [date, setDate] = useState<string>();
+  const [description, setDescription] = useState<string>();
+  const [amount, setAmount] = useState<string>();
+
   const [isAddFriendsFormOpen, setAddFriendsFormOpen] = useState(false);
   const openAddFriendsForm = () => setAddFriendsFormOpen(true);
   const closeAddFriendsForm = () => setAddFriendsFormOpen(false);
@@ -29,61 +35,89 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
     console.log('Form submitted');
     onClose();
 
-    const transactionData = {
-      type: 'expense',
-      date: '', //e.target.date
-      transactor: user.id,
-      transactee: transactionFriends, //import from AddFriends
-      description: '', //e.target.description
-      amount: transactionAmounts, //import from AddSplit
-      notes: '',
-    };
-
-    createTransaction(transactionData);
+    createTransaction(transactionData!);
   };
 
   const handleNext = () => {
     //add inputs to setTransactions body
+    setTransactionData({
+      type: 'expense',
+      date: date!,
+      transactor: user.id,
+      transactee: [user.id], //import from AddFriends
+      description: description!, //e.target.description
+      amount: [Number(amount)], //import from AddSplit
+      notes: '',
+    });
     openAddFriendsForm();
     onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
   };
 
+  function handleDateChange(date: string | null) {
+    if (date && typeof date === 'object' && '$d' in date) {
+      setDate(date.$d);
+    }
+  }
+
+  // Form field change handling
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    switch (name) {
+      case 'description':
+        setDescription(value);
+        break;
+      case 'amount':
+        setAmount(value);
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <div className='ExpenseForm'>
-      <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Add an Expense</DialogTitle>
-        <DialogContent>
-          {/* Expense form fields */}
-          <DatePicker />
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Expense description'
-            type='text'
-            fullWidth
-          />
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Amount'
-            type='text'
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleNext}>Next</Button>
-        </DialogActions>
-      </Dialog>
-      <AddFriendsToExpenseForm
-        open={isAddFriendsFormOpen}
-        onClose={closeAddFriendsForm}
-        handleSubmit={handleSubmit}
-        transactionAmounts={transactionAmounts}
-        transactionFriends={transactionFriends}
-      />
+      <TransactionsDataContext.Provider
+        value={{ transactionData, setTransactionData }}
+      >
+        <Dialog open={open} onClose={onClose}>
+          <DialogTitle>Add an Expense</DialogTitle>
+          <DialogContent>
+            {/* Expense form fields */}
+            <DatePicker value={date} onChange={handleDateChange} />
+            <TextField
+              autoFocus
+              margin='dense'
+              id='name'
+              label='Expense description'
+              type='text'
+              fullWidth
+              value={description}
+              onChange={handleInputChange}
+            />
+            <TextField
+              autoFocus
+              margin='dense'
+              id='name'
+              label='Amount'
+              type='number'
+              fullWidth
+              value={amount}
+              onChange={handleInputChange}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={handleNext}>Next</Button>
+          </DialogActions>
+        </Dialog>
+        <AddFriendsToExpenseForm
+          open={isAddFriendsFormOpen}
+          onClose={closeAddFriendsForm}
+          handleSubmit={handleSubmit}
+          transactionAmounts={transactionAmounts}
+          transactionFriends={transactionFriends}
+        />
+      </TransactionsDataContext.Provider>
     </div>
   );
 };
