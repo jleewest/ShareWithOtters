@@ -21,7 +21,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
   const [transactionData, setTransactionData] = useState<TransactionData>();
   const [date, setDate] = useState<string>();
   const [description, setDescription] = useState<string>();
-  const [amount, setAmount] = useState<number>([]);
+  const [amount, setAmount] = useState<string>();
 
   const [isAddFriendsFormOpen, setAddFriendsFormOpen] = useState(false);
   const openAddFriendsForm = () => setAddFriendsFormOpen(true);
@@ -44,9 +44,9 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
       type: 'expense',
       date: date!,
       transactor: user.id,
-      transactee: transactionFriends, //import from AddFriends
+      transactee: [user.id], //import from AddFriends
       description: description!, //e.target.description
-      amount: [amount], //import from AddSplit
+      amount: [Number(amount)], //import from AddSplit
       notes: '',
     });
     openAddFriendsForm();
@@ -67,7 +67,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
         setDescription(value);
         break;
       case 'amount':
-        setAmount(Number(value));
+        setAmount(value);
         break;
       default:
         break;
@@ -99,7 +99,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
               margin='dense'
               id='name'
               label='Amount'
-              type='text'
+              type='number'
               fullWidth
               value={amount}
               onChange={handleInputChange}
