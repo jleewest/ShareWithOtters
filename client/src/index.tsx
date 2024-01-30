@@ -1,7 +1,6 @@
 import { useContext, createContext, Dispatch, SetStateAction } from 'react';
 
 export type User = {
-  id: number;
   clerkId: string;
   firstName: string;
   lastName: string;
