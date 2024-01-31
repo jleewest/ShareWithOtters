@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import TransactionItem from './TransactionItem';
 import '../css/TransactionTable.css';
 import NoteForm from './NoteForm';
@@ -7,45 +7,7 @@ import { updateTransactionStatus } from '../apiServices/transaction';
 
 const TransactionTable = ({ status, refreshTransactions }) => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
-  // Use the transactions from context if available, otherwise use mock data
-  const { transactions: contextTransactions, setTransactions } = useContext(TransactionsContext);
-  const [transactions, setTransactionsLocal] = useState([]);
-
-  // This effect sets the transactions state to the context's transactions if available,
-  // otherwise it falls back to mock data.
-  useEffect(() => {
-    if (contextTransactions && contextTransactions.length > 0) {
-      setTransactionsLocal(contextTransactions.filter(tx => tx.status === status));
-    } else {
-      // Mock transactions to display in the table
-      setTransactionsLocal([
-        {
-          id: 0,
-          transactor: 'Alice',
-          transactee: 'Bob',
-          date: '2024-01-26',
-          description: 'Lunch',
-          amount: 20.0,
-          type: 'income',
-          status: status,
-          notes: '',
-          groupId: 1,
-        },
-        {
-          id: 1,
-          transactor: 'Bob',
-          transactee: 'Alice',
-          date: '2024-01-20',
-          description: 'Groceries',
-          amount: 45.5,
-          type: 'expense',
-          status: status,
-          notes: '',
-          groupId: 1,
-        },
-      ]);
-    }
-  }, [contextTransactions, status]);
+  const { transactions } = useContext(TransactionsContext); // Use the transactions from context
 
   const handleAcceptTransaction = async (transactionId) => {
     try {
@@ -59,8 +21,10 @@ const TransactionTable = ({ status, refreshTransactions }) => {
   const handleAddNote = (transactionId) => {
     // Implement the logic for adding a note here
     openNoteForm();
-    // You might want to use transactionId for something related to notes
   };
+
+  const openNoteForm = () => setNoteFormOpen(true);
+  const closeNoteForm = () => setNoteFormOpen(false);
 
   return (
     <div className='TransactionTable'>
@@ -76,17 +40,23 @@ const TransactionTable = ({ status, refreshTransactions }) => {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((transaction) => (
-            <TransactionItem
-              key={transactions.id}
-              {...transaction}
-              onAccept={handleAcceptTransaction}
-              onAddNote={handleAddNote}
-            />
-          ))}
+          {transactions.length > 0 ? (
+            transactions.map((transaction) => (
+              <TransactionItem
+                key={transaction.id}
+                {...transaction}
+                onAccept={handleAcceptTransaction}
+                onAddNote={() => handleAddNote(transaction.id)}
+              />
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6">No transactions found</td>
+            </tr>
+          )}
         </tbody>
       </table>
-      <NoteForm open={isNoteFormOpen} onClose={setNoteFormOpen} />
+      <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
     </div>
   );
 };
