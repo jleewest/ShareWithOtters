@@ -6,8 +6,10 @@ const prisma = new PrismaClient();
 export async function getTransactionsByClerkId(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const allTransactorTransactions = await prisma.transaction.findMany({
-      where: { transactor: id },
+    const allTransactionData = await prisma.transaction.findMany({
+      where: {
+        OR: [{ transactor: id }, { transactee: id, transactor: { not: id } }],
+      },
       include: {
         userActor: {
           select: {
@@ -23,108 +25,72 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
         },
       },
     });
-    const allTransacteeTransactions = await prisma.transaction.findMany({
-      where: { transactee: id, transactor: { not: id } },
-      include: {
-        userActor: {
-          select: {
-            firstName: true,
-            lastName: true,
-          },
-        },
-        userActee: {
-          select: {
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
+
+    //filter expenses in which user is transactor
+    const allTransactions = allTransactionData.map((transaction) => {
+      if (
+        transaction.status === 'pending' &&
+        transaction.type === 'expense' &&
+        transaction.transactee === id &&
+        transaction.transactor === id
+      ) {
+        return { ...transaction, status: 'active' };
+      } else {
+        return transaction;
+      }
     });
 
-    const allTransactions = [
-      ...allTransactorTransactions,
-      ...allTransacteeTransactions,
-    ];
-
-    //SORT TRANSACTIONS BY STATUS AND TYPE
-    //pending
-    const pending = allTransactions.filter(
-      (transaction) => transaction.status === 'pending'
-    );
-
-    //switch expenses you paid to active from default pending
-    const yourExpenses = () => {
-      pending
-        .filter(
+    // Sort transactions by status and type
+    const sortedTransactions = {
+      pending: {
+        expense: allTransactions.filter(
           (transaction) =>
+            transaction.status === 'pending' &&
             transaction.type === 'expense' &&
             transaction.transactee === id &&
             transaction.transactor === id
-        )
-        .forEach((transaction) => (transaction.status = 'active'));
-    };
-    yourExpenses();
-
-    //expenses you owe others
-    const pendingExpense = pending.filter(
-      (transaction) =>
-        transaction.type === 'expense' &&
-        transaction.transactee === id &&
-        transaction.transactee !== transaction.transactor
-    );
-    //expenses others owe you
-    const pendingOwedExpense = pending.filter(
-      (transaction) =>
-        transaction.type === 'expense' &&
-        transaction.transactor === id &&
-        transaction.transactee !== id
-    );
-    //payments you marked paid, awaiting confirmation
-    const pendingActeeReceipt = pending.filter(
-      (transaction) =>
-        transaction.type === 'payment' &&
-        transaction.transactor === id &&
-        transaction.transactee !== id
-    );
-    //payments others paid you
-    const pendingPayment = pending.filter(
-      (transaction) =>
-        transaction.type === 'payment' && transaction.transactee === id
-    );
-    //active
-    const active = allTransactions.filter(
-      (transaction) => transaction.status === 'active'
-    );
-
-    //all expenses
-    const activeExpense = active.filter(
-      (transaction) => transaction.type === 'expense'
-    );
-
-    //
-    const paymentActor = active.filter(
-      (transaction) =>
-        transaction.type === 'payment' && transaction.transactor === id
-    );
-    const paymentActee = active.filter(
-      (transaction) =>
-        transaction.type === 'payment' && transaction.transactee === id
-    );
-
-    const sortedTransactions = {
-      pending: {
-        expense: pendingExpense,
-        payment: pendingPayment,
+        ),
+        payment: allTransactions.filter(
+          (transaction) =>
+            transaction.status === 'pending' &&
+            transaction.type === 'payment' &&
+            transaction.transactee === id
+        ),
       },
       active: {
         expense: {
-          confirmedExpenses: activeExpense,
-          pendingExpenseFromOther: pendingOwedExpense,
+          confirmedExpenses: allTransactions.filter(
+            (transaction) =>
+              transaction.status === 'active' && transaction.type === 'expense'
+          ),
+          awaitedPendingExpenseFromSentToOther: allTransactions.filter(
+            (transaction) =>
+              transaction.status === 'pending' &&
+              transaction.type === 'expense' &&
+              transaction.transactor === id &&
+              transaction.transactee !== id
+          ),
         },
         payment: {
-          pendingPaid: pendingActeeReceipt,
-          paid: paymentActor,
-          received: paymentActee,
+          pendingPaid: allTransactions.filter(
+            (transaction) =>
+              transaction.status === 'pending' &&
+              transaction.type === 'payment' &&
+              transaction.transactor === id &&
+              transaction.transactee !== id
+          ),
+          paid: allTransactions.filter(
+            (transaction) =>
+              transaction.status === 'active' &&
+              transaction.type === 'payment' &&
+              transaction.transactor === id
+          ),
+          received: allTransactions.filter(
+            (transaction) =>
+              transaction.status === 'active' &&
+              transaction.type === 'payment' &&
+              transaction.transactee === id
+          ),
         },
       },
     };
