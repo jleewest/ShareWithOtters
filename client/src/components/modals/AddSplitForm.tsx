@@ -13,8 +13,6 @@ import { User } from '../../index';
 import { createTransaction } from '../../apiServices/transaction';
 import { Transaction } from '../../index';
 
-//should get array of friends and single amount from TransactionData context and update amount of TransactionData with array of amounts
-
 type AddSplitFormProps = {
   openSplitForm: boolean;
   onCloseSplitForm: () => void;
@@ -28,7 +26,9 @@ const AddSplitForm = ({
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
   const [payees, setPayees] = useState<User[]>([]);
-  const [amounts, setAmounts] = useState<number[]>([]);
+  const [defaultAmounts, setDefaultAmounts] = useState<number[]>([]);
+  const [evenSplitAmount, setEvenSplitAmount] = useState<number>(0);
+  const [customAmounts, setCustomAmounts] = useState<number[]>([]);
   const { transactionData, setTransactionData } = useTransactionDataContext();
   const [submissionResponse, setSubmissionResponse] = useState<Transaction[]>(
     []
@@ -55,18 +55,20 @@ const AddSplitForm = ({
     const transactionDataAmount = transactionData.amount[0];
     const defaultEvenSplit =
       Math.round((transactionDataAmount / payees.length) * 100) / 100;
-    const defaultAmounts = Array(payees.length).fill(defaultEvenSplit);
-    setAmounts(defaultAmounts);
-  }, [payees]);
+    setEvenSplitAmount(defaultEvenSplit);
+    const defaultAmount = Array(payees.length).fill(defaultEvenSplit);
+    setDefaultAmounts(defaultAmount);
+  }, []);
 
   const handleChange =
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newAmounts = [...amounts];
+      const newAmounts = [...customAmounts];
       newAmounts[index] = Number(e.target.value);
-      setAmounts(newAmounts);
+      setCustomAmounts(newAmounts);
     };
 
   const handleSubmission = async () => {
+    console.log(transactionData);
     await createTransaction(transactionData).then((data) => {
       setSubmissionResponse(data);
     });
@@ -75,9 +77,15 @@ const AddSplitForm = ({
   };
 
   const handleNext = () => {
+    let payeeAmounts;
+    if (customAmounts.length > 0) {
+      payeeAmounts = customAmounts;
+    } else {
+      payeeAmounts = defaultAmounts;
+    }
     setTransactionData({
       ...transactionData,
-      amount: amounts,
+      amount: payeeAmounts,
     });
     handleSubmission();
   };
@@ -100,7 +108,7 @@ const AddSplitForm = ({
                     type='number'
                     fullWidth
                     name='amount'
-                    value={amounts[index] || amounts}
+                    value={customAmounts[index] || evenSplitAmount}
                     onChange={handleChange(index)}
                   />
                 </div>
