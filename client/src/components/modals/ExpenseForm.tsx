@@ -12,19 +12,20 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
   const [transactionData, setTransactionData] =
     useState<TransactionData | null>(null);
   const { user } = useUser();
-  if (!user) return null;
 
   useEffect(() => {
-    setTransactionData({
-      type: 'expense',
-      date: '',
-      transactor: user.id,
-      transactee: [user.id],
-      description: '',
-      amount: [],
-      notes: '',
-    });
-  }, []);
+    if (user) {
+      setTransactionData({
+        type: 'expense',
+        date: '',
+        transactor: user.id,
+        transactee: [user.id],
+        description: '',
+        amount: [],
+        notes: '',
+      });
+    }
+  }, [user]);
 
   return (
     <div className='ExpenseForm'>

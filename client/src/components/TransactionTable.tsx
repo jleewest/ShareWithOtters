@@ -8,17 +8,31 @@ type TransactionTableProps = {
   status: string;
 };
 
+type TransactionReturn = {
+  pending: { expense: Transaction[]; payment: Transaction[] };
+  active: {
+    expense: {
+      awaitedPendingExpenseFromSentToOther: Transaction[];
+      confirmedExpenses: Transaction[];
+    };
+    payment: {
+      paid: Transaction[];
+      pendingPaid: Transaction[];
+      received: Transaction[];
+    };
+  };
+};
+
 const TransactionTable = ({
   status,
 }: //refreshTransactions
 TransactionTableProps) => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
-  const [transactionsByStatus, setTransactionsByStatus] = useState<
-    Transaction[]
-  >([]);
+  const [transactionsByStatus, setTransactionsByStatus] =
+    useState<TransactionReturn>();
 
   if (status === 'pending') {
-    setTransactionsByStatus([...transactions.pending]);
+    setTransactionsByStatus([transactions.pending]);
   } else {
     setTransactionsByStatus(transactions.active);
   }

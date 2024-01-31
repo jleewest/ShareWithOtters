@@ -13,6 +13,27 @@ function Home() {
   //user.id === ClerkId
   const { user } = useUser();
 
+  //POST user to DB if newUser
+  useEffect(() => {
+    if (user) {
+      addUser({
+        clerkId: user.id,
+        firstName: user.firstName || 'no first name',
+        lastName: user.lastName || 'no last name',
+        email: user.primaryEmailAddress?.emailAddress || 'no email',
+      });
+    }
+  }, [user]);
+
+  //GET transactions from server
+  useEffect(() => {
+    if (user) {
+      getTransactionsByClerkId(user.id).then((data) => {
+        setTransactions(data);
+      });
+    }
+  }, [user]);
+
   if (!user) {
     return (
       <div className='Home'>
@@ -35,24 +56,6 @@ function Home() {
       </div>
     );
   }
-  //POST user to DB if newUser
-  useEffect(() => {
-    if (user) {
-      addUser({
-        clerkId: user.id,
-        firstName: user.firstName || 'no first name',
-        lastName: user.lastName || 'no last name',
-        email: user.primaryEmailAddress?.emailAddress || 'no email',
-      });
-    }
-  }, [user]);
-
-  //GET transactions from server
-  useEffect(() => {
-    getTransactionsByClerkId(user.id).then((data) => {
-      setTransactions(data);
-    });
-  }, [user]);
 
   return (
     <div className='Home'>
