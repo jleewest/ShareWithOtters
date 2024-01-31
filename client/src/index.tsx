@@ -59,8 +59,10 @@ export const useTransactionContext = () => {
 };
 
 export type TransactionTableProps = {
+  transactions: Transaction[]; // Add this line to include the transactions prop
   status: 'pending' | 'active';
   refreshTransactions: () => Promise<void>;
+};
 
 //context for TransactionData Context Provider
 export type TTransactionDataContext = {

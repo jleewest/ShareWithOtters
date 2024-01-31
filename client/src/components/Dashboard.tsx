@@ -13,7 +13,18 @@ import { Transaction } from '../index';
 
 
 const Dashboard = () => {
-  const { user } = useUser()
+  const { user } = useUser();
+
+if (!user) {
+  // Handle the case where user is null or undefined
+  return (
+    console.error('Error retrieving clerkId')
+  );
+}
+const clerkUserId = user.id;
+console.log(`Clerk User ID: ${clerkUserId}`);
+
+
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
 
@@ -42,13 +53,13 @@ const Dashboard = () => {
         <GroupOptions refreshTransactions={refreshTransactions}/>
 
         {/* Render only pending transactions here */}
-        <TransactionTable transactions={transactions} status={'pending'} />
+        <TransactionTable transactions={transactions} status={'pending'} refreshTransactions={refreshTransactions} />
 
         <WaveChart />
         <LendingSummary />
 
         {/* Render only approved transactions here */}
-        <TransactionTable transactions={transactions} status={'active'} />
+        <TransactionTable transactions={transactions} status={'active'} refreshTransactions={refreshTransactions} />
 
         <PieChart />
       </LocalizationProvider>

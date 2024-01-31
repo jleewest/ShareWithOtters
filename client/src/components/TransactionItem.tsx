@@ -1,5 +1,5 @@
 import '../css/TransactionItem.css';
-import { Transaction } from '../index';
+// import { Transaction } from '../index';
 
 type TransactionItemProps = {
   id: number;
