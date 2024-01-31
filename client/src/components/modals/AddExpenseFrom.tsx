@@ -47,6 +47,9 @@ const AddExpenseForm = ({
       amount: [Number(amount)], //import from AddSplit
       notes: '',
     });
+    setDate('');
+    setDescription('');
+    setAmount('');
     openAddFriendsForm();
     onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
   };

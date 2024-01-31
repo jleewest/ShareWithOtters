@@ -29,9 +29,6 @@ const AddFriendsToExpenseForm = ({
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const openAddSplitForm = () => setAddSplitFormOpen(true);
   const closeAddSplitForm = () => setAddSplitFormOpen(false);
-  //adds just clerkIds of friends
-  const [newFriendIds, setNewFriendIds] = useState<string[]>([]);
-  //adds friend to list of friends on transaction
   const [newFriendList, setNewFriendList] = useState<User[]>([]);
   const { user } = useUser();
   if (!user) return null;
@@ -63,13 +60,14 @@ const AddFriendsToExpenseForm = ({
 
   const handleNext = () => {
     const clerkIds = newFriendList.map((friend) => friend.clerkId);
-    setNewFriendIds([...transactionData.transactee, ...clerkIds]);
+    const newFriendIds = [...transactionData.transactee, ...clerkIds];
 
     //add inputs to setTransactions body
     setTransactionData({
       ...transactionData,
       transactee: newFriendIds,
     });
+    setNewFriendList([]);
     openAddSplitForm();
     onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
   };
