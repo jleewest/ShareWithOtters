@@ -3,18 +3,27 @@
 .app-footer {
   background-color: var(--primary-color);
 }
-.Home .app-header,
-.app-footer > a {
+
+/* HEADER */
+.Home .otter-home {
   color: white;
 }
 
-/* HEADER */
+.Home .logout-button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  background-color: var(--light-accent-color);
+  box-shadow: 0.6px 2.5px 7px rgba(0, 0, 0, 0.4);
+}
+
 .Home .app-header {
   font-size: 2rem;
   font-weight: 500;
   padding: 1rem 1rem 1.5rem 1rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 /* MAIN */
@@ -32,6 +41,7 @@
 
 .Home .app-footer > a {
   text-decoration: none;
+  color: white;
 }
 
 .Home .app-footer > a:hover {

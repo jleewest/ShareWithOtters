@@ -1,7 +1,6 @@
 import { useContext, createContext, Dispatch, SetStateAction } from 'react';
 
 export type User = {
-  id: number;
   clerkId: string;
   firstName: string;
   lastName: string;
@@ -33,6 +32,17 @@ export type Transaction = {
   notes: string;
 };
 
+export type TransactionData = {
+  type: string;
+  date: string;
+  transactor: string;
+  transactee: string[];
+  description: string;
+  amount: number[];
+  notes: string;
+};
+
+//context for Transaction Context Provider
 export type TTransactionContext = {
   transactions: Transaction[];
   setTransactions: Dispatch<SetStateAction<Transaction[]>>;
@@ -51,4 +61,18 @@ export const useTransactionContext = () => {
 export type TransactionTableProps = {
   status: 'pending' | 'active';
   refreshTransactions: () => Promise<void>;
+
+//context for TransactionData Context Provider
+export type TTransactionDataContext = {
+  transactionData: TransactionData;
+  setTransactionData: Dispatch<SetStateAction<TransactionData | null>>;
+};
+
+export const TransactionsDataContext =
+  createContext<TTransactionDataContext | null>(null);
+
+export const useTransactionDataContext = () => {
+  const context = useContext(TransactionsDataContext);
+  if (!context) throw Error('TransactionDataContext not provided');
+  return context;
 };

@@ -51,18 +51,42 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
     const pending = allTransactions.filter(
       (transaction) => transaction.status === 'pending'
     );
+
+    //switch expenses you paid to active from default pending
+    const yourExpenses = () => {
+      pending
+        .filter(
+          (transaction) =>
+            transaction.type === 'expense' &&
+            transaction.transactee === id &&
+            transaction.transactor === id
+        )
+        .forEach((transaction) => (transaction.status = 'active'));
+    };
+    yourExpenses();
+
+    //expenses you owe others
     const pendingExpense = pending.filter(
       (transaction) =>
         transaction.type === 'expense' &&
         transaction.transactee === id &&
         transaction.transactee !== transaction.transactor
     );
+    //expenses others owe you
     const pendingOwedExpense = pending.filter(
       (transaction) =>
         transaction.type === 'expense' &&
         transaction.transactor === id &&
         transaction.transactee !== id
     );
+    //payments you marked paid, awaiting confirmation
+    const pendingActeeReceipt = pending.filter(
+      (transaction) =>
+        transaction.type === 'payment' &&
+        transaction.transactor === id &&
+        transaction.transactee !== id
+    );
+    //payments others paid you
     const pendingPayment = pending.filter(
       (transaction) =>
         transaction.type === 'payment' && transaction.transactee === id
@@ -71,9 +95,13 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
     const active = allTransactions.filter(
       (transaction) => transaction.status === 'active'
     );
+
+    //all expenses
     const activeExpense = active.filter(
       (transaction) => transaction.type === 'expense'
     );
+
+    //
     const paymentActor = active.filter(
       (transaction) =>
         transaction.type === 'payment' && transaction.transactor === id
@@ -94,6 +122,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
           pendingExpenseFromOther: pendingOwedExpense,
         },
         payment: {
+          pendingPaid: pendingActeeReceipt,
           paid: paymentActor,
           received: paymentActee,
         },
