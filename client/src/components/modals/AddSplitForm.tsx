@@ -25,7 +25,6 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
   const [payees, setPayees] = useState<User[]>([]);
   const [amounts, setAmounts] = useState<number[]>([]);
-
   const { transactionData, setTransactionData } = useTransactionDataContext();
 
   useEffect(() => {
@@ -45,6 +44,16 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
     fetchData();
   }, [transactionData]);
 
+  useEffect(() => {
+    const transactionDataAmount = transactionData.amount[0];
+    const defaultEvenSplit =
+      Math.round((transactionDataAmount / payees.length) * 100) / 100;
+    const defaultAmounts = Array(payees.length).fill(defaultEvenSplit);
+    setAmounts(defaultAmounts);
+  }, [payees]);
+
+  //calculate default even split value
+
   const handleChange =
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newAmounts = [...amounts];
@@ -53,11 +62,11 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
     };
 
   //default value is even split
-  //adds expenses for each friend in friend array
   //need to get amount here from transactionData...
   //sends amount array to Expense form
 
   const handleNext = () => {
+    console.log(amounts);
     //add inputs to setTransactions body
     openSubmitExpenseForm();
     onClose();
@@ -66,7 +75,7 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
   return (
     <div className='AddFriendsToExpenseForm'>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Add Split</DialogTitle>
+        <DialogTitle>Add Split: ${transactionData.amount[0]}</DialogTitle>
         <DialogContent>
           {payees.length > 0 ? (
             payees.map((payee: User, index: number) => {
@@ -81,9 +90,8 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
                     type='number'
                     fullWidth
                     name='amount'
-                    value={amounts[index] || ''}
+                    value={amounts[index] || amounts}
                     onChange={handleChange(index)}
-                    required
                   />
                 </div>
               );
