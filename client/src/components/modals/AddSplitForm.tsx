@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import SubmitExpenseForm from './SubmitExpenseForm';
+import { useTransactionDataContext } from '../../index';
 
 //should get array of friends and single amount from TransactionData context and update amount of TransactionData with array of amounts
 
@@ -20,6 +21,8 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
 
+  const { transactionData, setTransactionData } = useTransactionDataContext();
+  console.log(transactionData);
   //gets friend array from AddFriends
   //creates TextField for each friend in array
   //adds expenses for each friend in friend array

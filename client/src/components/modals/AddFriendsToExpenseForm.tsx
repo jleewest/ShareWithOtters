@@ -10,6 +10,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
+import { useUser } from '@clerk/clerk-react';
 
 //Should add friends to TransactionData context
 
@@ -32,10 +33,13 @@ const AddFriendsToExpenseForm = ({
   const [newFriendIds, setNewFriendIds] = useState<string[]>([]);
   //adds friend to list of friends on transaction
   const [newFriendList, setNewFriendList] = useState<User[]>([]);
+  const { user } = useUser();
+  if (!user) return null;
 
   useEffect(() => {
     getAllUsers().then((data) => {
-      setAllUsers(data);
+      const filteredUsers = data.filter((users) => users.clerkId !== user.id);
+      setAllUsers(filteredUsers);
     });
   }, []);
 
@@ -54,8 +58,6 @@ const AddFriendsToExpenseForm = ({
       (user) => user !== newValue[0]
     );
     allUsersWithLabels = [];
-    console.log(allUsersWithLabels);
-    console.log(newValue);
     setNewFriendList(newValue);
   };
 
