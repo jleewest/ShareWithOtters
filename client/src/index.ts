@@ -42,10 +42,25 @@ export type TransactionData = {
   notes: string;
 };
 
+export type TransactionReturn = {
+  pending: { expense: Transaction[]; payment: Transaction[] };
+  active: {
+    expense: {
+      awaitedPendingExpenseFromSentToOther: Transaction[];
+      confirmedExpenses: Transaction[];
+    };
+    payment: {
+      paid: Transaction[];
+      pendingPaid: Transaction[];
+      received: Transaction[];
+    };
+  };
+};
+
 //context for Transaction Context Provider
 export type TTransactionContext = {
-  transactions: Transaction[];
-  setTransactions: Dispatch<SetStateAction<Transaction[]>>;
+  transactions: TransactionReturn;
+  setTransactions: Dispatch<SetStateAction<TransactionReturn>>;
 };
 
 export const TransactionsContext = createContext<TTransactionContext | null>(

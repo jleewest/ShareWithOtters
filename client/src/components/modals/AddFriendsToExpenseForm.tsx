@@ -27,14 +27,15 @@ const AddFriendsToExpenseForm = ({
   const openAddSplitForm = () => setAddSplitFormOpen(true);
   const closeAddSplitForm = () => setAddSplitFormOpen(false);
   const { user } = useUser();
-  if (!user) return null;
 
   useEffect(() => {
-    getAllUsers().then((data) => {
-      const filteredUsers = data.filter((users) => users.clerkId !== user.id);
-      setAllUsers(filteredUsers);
-    });
-  }, []);
+    if (user) {
+      getAllUsers().then((data) => {
+        const filteredUsers = data.filter((users) => users.clerkId !== user.id);
+        setAllUsers(filteredUsers);
+      });
+    }
+  }, [user]);
 
   const { transactionData, setTransactionData } = useTransactionDataContext();
 

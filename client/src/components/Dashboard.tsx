@@ -32,7 +32,6 @@ const Dashboard = () => {
     return console.error('Error retrieving clerkId');
   }
   const clerkUserId = user.id;
-  console.log(`Clerk User ID: ${clerkUserId}`);
 
   // Function to refresh the transactions data after a new payment is added
   const refreshTransactions = async () => {
@@ -50,19 +49,13 @@ const Dashboard = () => {
         <GroupOptions refreshTransactions={refreshTransactions} />
 
         {/* Render only pending transactions here */}
-        <TransactionTable
-          status={'pending'}
-          refreshTransactions={refreshTransactions}
-        />
+        <TransactionTable status={'pending'} />
 
         <WaveChart />
         <LendingSummary />
 
         {/* Render only approved transactions here */}
-        <TransactionTable
-          status={'active'}
-          refreshTransactions={refreshTransactions}
-        />
+        <TransactionTable status={'active'} />
 
         <PieChart />
       </LocalizationProvider>

@@ -1,11 +1,26 @@
-import TransactionItem from './TransactionItem';
 import '../css/TransactionTable.css';
 import { Transaction } from '../index';
 import { useTransactionContext } from '../index';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 type TransactionTableProps = {
   status: string;
+};
+
+export type TransactionPendingReturn = {
+  expense: Transaction[];
+  payment: Transaction[];
+};
+export type TransactionActiveReturn = {
+  expense: {
+    awaitedPendingExpenseFromSentToOther: Transaction[];
+    confirmedExpenses: Transaction[];
+  };
+  payment: {
+    paid: Transaction[];
+    pendingPaid: Transaction[];
+    received: Transaction[];
+  };
 };
 
 const TransactionTable = ({
@@ -14,14 +29,23 @@ const TransactionTable = ({
 TransactionTableProps) => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] = useState<
-    Transaction[]
-  >([]);
+    TransactionPendingReturn | TransactionActiveReturn
+  >();
 
-  if (status === 'pending') {
-    setTransactionsByStatus([...transactions.pending]);
-  } else {
-    setTransactionsByStatus(transactions.active);
-  }
+  //EXAMPLE
+  //if (transactionsByStatus && 'paid' in transactionsByStatus.payment) {
+  //  console.log(transactionsByStatus?.payment.paid);
+  //}
+  useEffect(() => {
+    // Use the appropriate transactions based on the status prop
+    if (status === 'pending') {
+      setTransactionsByStatus(transactions.pending);
+    } else {
+      setTransactionsByStatus(transactions.active);
+    }
+  }, [status, transactions]); // Run the effect when status or transactions change
+
+  console.log(transactionsByStatus);
 
   return (
     <div className='TransactionTable'>
@@ -37,7 +61,7 @@ TransactionTableProps) => {
           </tr>
         </thead>
         <tbody>
-          {transactionsByStatus.length > 0 ? (
+          {/*{transactionsByStatus.length > 0 ? (
             transactionsByStatus.map((transaction) => (
               <TransactionItem key={transaction.id} transaction={transaction} />
             ))
@@ -45,7 +69,7 @@ TransactionTableProps) => {
             <tr>
               <td>No transactions found</td>
             </tr>
-          )}
+          )}*/}
         </tbody>
       </table>
     </div>
