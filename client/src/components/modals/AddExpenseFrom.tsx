@@ -1,27 +1,29 @@
+import { useState } from 'react';
+import { useUser } from '@clerk/clerk-react';
+import { useTransactionDataContext } from '../../index';
+import AddFriendsToExpenseForm from './AddFriendsToExpenseForm';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { DatePicker } from '@mui/x-date-pickers';
-import AddFriendsToExpenseForm from './AddFriendsToExpenseForm';
-import { useState } from 'react';
-import { createTransaction } from '../../apiServices/transaction';
-import { useUser } from '@clerk/clerk-react';
-import { TransactionData, TransactionsDataContext } from '../../index';
+import { MobileDatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 type AddExpenseFormProps = {
-  open: boolean;
-  onClose: () => void;
+  openExpense: boolean;
+  onCloseExpense: () => void;
 };
 
-const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
+const AddExpenseForm = ({
+  openExpense,
+  onCloseExpense,
+}: AddExpenseFormProps) => {
+  const { setTransactionData } = useTransactionDataContext();
   const { user } = useUser();
   if (!user) return null;
-  const [transactionData, setTransactionData] =
-    useState<TransactionData | null>(null);
-  const [date, setDate] = useState<string>();
+  const [date, setDate] = useState<string>(new Date().toString());
   const [description, setDescription] = useState<string>();
   const [amount, setAmount] = useState<string>();
 
@@ -29,41 +31,33 @@ const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
   const openAddFriendsForm = () => setAddFriendsFormOpen(true);
   const closeAddFriendsForm = () => setAddFriendsFormOpen(false);
 
-  const transactionAmounts: number[] = [];
-  const transactionFriends: string[] = [user.id];
-
-  const handleSubmit = async () => {
-    // postTransaction will happen here!
-    console.log('Form submitted');
-    onClose();
-
-    createTransaction(transactionData!);
-  };
-
   const handleNext = () => {
-    //if (!date || !description || !amount) {
-    //  return;
-    //}
+    if (!date || !description || !amount) {
+      return;
+    }
     //add inputs to setTransactions body
     setTransactionData({
       type: 'expense',
       date: date,
       transactor: user.id,
-      transactee: [user.id], //import from AddFriends
-      description: description, //e.target.description
-      amount: [Number(amount)], //import from AddSplit
+      transactee: [user.id],
+      description: description,
+      amount: [Number(amount)],
       notes: '',
     });
+    setDate('');
+    setDescription('');
+    setAmount('');
     openAddFriendsForm();
-    onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
+    onCloseExpense();
   };
-
-  function handleDateChange(date: string | null) {
+  //date change handling
+  function handleDateChange(date: any) {
     if (date && typeof date === 'object' && '$d' in date) {
-      setDate(date.$d);
+      const newDate = new Date(date);
+      setDate(newDate.toString());
     }
   }
-
   // Form field change handling
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -81,48 +75,56 @@ const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
 
   return (
     <div className='AddExpenseForm'>
-      <TransactionsDataContext.Provider
-        value={{ transactionData, setTransactionData }}
+      <Dialog
+        open={openExpense}
+        onClose={() => {
+          setDate('');
+          setDescription('');
+          setAmount('');
+          onCloseExpense();
+        }}
       >
-        <Dialog open={open} onClose={onClose}>
-          <DialogTitle>Add an Expense</DialogTitle>
-          <DialogContent>
-            {/* Expense form fields */}
-            <DatePicker value={date} onChange={handleDateChange} />
-            <TextField
-              autoFocus
-              margin='dense'
-              id='name'
-              label='Expense description'
-              type='text'
-              fullWidth
-              value={description}
-              onChange={handleInputChange}
-            />
-            <TextField
-              autoFocus
-              margin='dense'
-              id='name'
-              label='Amount'
-              type='number'
-              fullWidth
-              value={amount}
-              onChange={handleInputChange}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={handleNext}>Next</Button>
-          </DialogActions>
-        </Dialog>
-        <AddFriendsToExpenseForm
-          open={isAddFriendsFormOpen}
-          onClose={closeAddFriendsForm}
-          handleSubmit={handleSubmit}
-          transactionAmounts={transactionAmounts}
-          transactionFriends={transactionFriends}
-        />
-      </TransactionsDataContext.Provider>
+        <DialogTitle>Add an Expense</DialogTitle>
+        <DialogContent>
+          {/* Expense form fields */}
+          <MobileDatePicker
+            onChange={handleDateChange}
+            defaultValue={dayjs(Date.now())}
+          />
+          <TextField
+            autoFocus
+            margin='dense'
+            id='name'
+            label='Expense description'
+            type='text'
+            name='description'
+            fullWidth
+            value={description}
+            onChange={handleInputChange}
+            required
+          />
+          <TextField
+            autoFocus
+            margin='dense'
+            id='name'
+            label='Amount'
+            type='number'
+            fullWidth
+            name='amount'
+            value={amount}
+            onChange={handleInputChange}
+            required
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onCloseExpense}>Cancel</Button>
+          <Button onClick={handleNext}>Next</Button>
+        </DialogActions>
+      </Dialog>
+      <AddFriendsToExpenseForm
+        openFriendForm={isAddFriendsFormOpen}
+        onCloseFriendForm={closeAddFriendsForm}
+      />
     </div>
   );
 };

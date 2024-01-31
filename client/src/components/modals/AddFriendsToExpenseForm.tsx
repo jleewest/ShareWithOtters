@@ -1,82 +1,100 @@
+import { useEffect, useState } from 'react';
+import { User } from '../../index';
+import { useTransactionDataContext } from '../../index';
+import { getAllUsers } from '../../apiServices/user';
+import { useUser } from '@clerk/clerk-react';
+import AddSplitForm from './AddSplitForm';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import AddSplitForm from './AddSplitForm';
-
-//Should add friends to TransactionData context
+import { Autocomplete } from '@mui/material';
 
 type AddFriendsToExpenseFormProps = {
-  open: boolean;
-  onClose: () => void;
-  handleSubmit: () => void;
-  transactionAmounts: number[];
-  transactionFriends: string[];
+  openFriendForm: boolean;
+  onCloseFriendForm: () => void;
 };
 
 const AddFriendsToExpenseForm = ({
-  open,
-  onClose,
-  handleSubmit,
-  transactionAmounts,
-  transactionFriends,
+  openFriendForm,
+  onCloseFriendForm,
 }: AddFriendsToExpenseFormProps) => {
   const [isAddSplitFormOpen, setAddSplitFormOpen] = useState(false);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const openAddSplitForm = () => setAddSplitFormOpen(true);
   const closeAddSplitForm = () => setAddSplitFormOpen(false);
-  //const [transactionFriendsArray,setTransactionFriendsArray] = useState([]);
-  const [newFriend, setNewFriend] = useState('');
+  const [newFriendList, setNewFriendList] = useState<User[]>([]);
+  const { user } = useUser();
+  if (!user) return null;
 
-  const newFriends: string[] = [];
+  useEffect(() => {
+    getAllUsers().then((data) => {
+      const filteredUsers = data.filter((users) => users.clerkId !== user.id);
+      setAllUsers(filteredUsers);
+    });
+  }, []);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //filterFriends (getUsers --> filter by firstName, lastName, email?) and add to Friends array (setState) that will be sent to AddSplit form and expense from
-    setNewFriend(e.target.value);
-  };
-  const handleAddFriend = () => {
-    newFriends.push(newFriend);
-    setNewFriend('');
+  const { transactionData, setTransactionData } = useTransactionDataContext();
+
+  let allUsersWithLabels = allUsers.map((user) => ({
+    ...user,
+    label: `${user.firstName} ${user.lastName}`,
+  }));
+
+  const handleChange = (
+    _: React.SyntheticEvent<Element, Event>,
+    newValue: any
+  ) => {
+    allUsersWithLabels = allUsersWithLabels.filter(
+      (user) => user !== newValue[0]
+    );
+    allUsersWithLabels = [];
+    setNewFriendList(newValue);
   };
 
   const handleNext = () => {
-    //add inputs to setTransactions body
-    transactionFriends = [...transactionFriends, ...newFriends];
-    openAddSplitForm();
-    onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
-  };
+    const clerkIds = newFriendList.map((friend) => friend.clerkId);
+    const newFriendIds = [...transactionData.transactee, ...clerkIds];
 
-  //if newFriends.length > 0 display friends added on top of TextField (newFriends)
+    setTransactionData({
+      ...transactionData,
+      transactee: newFriendIds,
+    });
+    setNewFriendList([]);
+    openAddSplitForm();
+    onCloseFriendForm();
+  };
 
   return (
     <div className='AddFriendsToExpenseForm'>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={openFriendForm} onClose={onCloseFriendForm}>
         <DialogTitle>Add Friends</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Add friend'
-            type='text'
-            fullWidth
-            onChange={onChange}
-            value={newFriend}
+          <Autocomplete
+            disablePortal
+            multiple
+            id='add-friends-selector'
+            options={allUsersWithLabels.filter(
+              (user) => !newFriendList.includes(user)
+            )}
+            value={newFriendList}
+            sx={{ width: 300 }}
+            onChange={handleChange}
+            renderInput={(params) => (
+              <TextField {...params} label='Add Friend' />
+            )}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAddFriend}>Add Friend</Button>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onCloseFriendForm}>Cancel</Button>
           <Button onClick={handleNext}>Next</Button>
         </DialogActions>
       </Dialog>
       <AddSplitForm
-        open={isAddSplitFormOpen}
-        onClose={closeAddSplitForm}
-        handleSubmit={handleSubmit}
-        transactionAmounts={transactionAmounts}
+        openSplitForm={isAddSplitFormOpen}
+        onCloseSplitForm={closeAddSplitForm}
       />
     </div>
   );
