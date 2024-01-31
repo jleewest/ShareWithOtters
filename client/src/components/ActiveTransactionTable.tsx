@@ -3,10 +3,6 @@ import { Transaction } from '../index';
 import { useTransactionContext } from '../index';
 import { useState, useEffect } from 'react';
 
-export type TransactionPendingReturn = {
-  expense: Transaction[];
-  payment: Transaction[];
-};
 export type TransactionActiveReturn = {
   expense: {
     awaitedPendingExpenseFromSentToOther: Transaction[];
@@ -21,22 +17,13 @@ export type TransactionActiveReturn = {
 
 const TransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
-  const [transactionsByStatus, setTransactionsByStatus] = useState<
-    TransactionPendingReturn | TransactionActiveReturn
-  >();
+  const [transactionsByStatus, setTransactionsByStatus] =
+    useState<TransactionActiveReturn>();
 
-  //EXAMPLE
-  //if (transactionsByStatus && 'paid' in transactionsByStatus.payment) {
-  //  console.log(transactionsByStatus?.payment.paid);
-  //}
+  // Use only transactions with active status
   useEffect(() => {
-    // Use the appropriate transactions based on the status prop
-    if (status === 'pending') {
-      setTransactionsByStatus(transactions.pending);
-    } else {
-      setTransactionsByStatus(transactions.active);
-    }
-  }, [status, transactions]); // Run the effect when status or transactions change
+    setTransactionsByStatus(transactions.active);
+  }, [transactions]);
 
   console.log(transactionsByStatus);
 
