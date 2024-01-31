@@ -21,15 +21,14 @@ const AddExpenseForm = ({
   onCloseExpense,
 }: AddExpenseFormProps) => {
   const { setTransactionData } = useTransactionDataContext();
-  const { user } = useUser();
-  if (!user) return null;
-  const [date, setDate] = useState<string>(new Date().toString());
   const [description, setDescription] = useState<string>();
+  const [date, setDate] = useState<string>(new Date().toString());
   const [amount, setAmount] = useState<string>();
-
   const [isAddFriendsFormOpen, setAddFriendsFormOpen] = useState(false);
   const openAddFriendsForm = () => setAddFriendsFormOpen(true);
   const closeAddFriendsForm = () => setAddFriendsFormOpen(false);
+  const { user } = useUser();
+  if (!user) return null;
 
   const handleNext = () => {
     if (!date || !description || !amount) {
@@ -52,7 +51,8 @@ const AddExpenseForm = ({
     onCloseExpense();
   };
   //date change handling
-  function handleDateChange(date: any) {
+  //@ts-expect-error date is coming from Day.js
+  function handleDateChange(date) {
     if (date && typeof date === 'object' && '$d' in date) {
       const newDate = new Date(date);
       setDate(newDate.toString());

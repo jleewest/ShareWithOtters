@@ -17,11 +17,11 @@ TransactionTableProps) => {
     Transaction[]
   >([]);
 
-  //if (status === 'pending') {
-  //  setTransactionsByStatus([...transactions.pending]);
-  //} else {
-  //  setTransactionsByStatus(transactions.active);
-  //}
+  if (status === 'pending') {
+    setTransactionsByStatus([...transactions.pending]);
+  } else {
+    setTransactionsByStatus(transactions.active);
+  }
 
   return (
     <div className='TransactionTable'>

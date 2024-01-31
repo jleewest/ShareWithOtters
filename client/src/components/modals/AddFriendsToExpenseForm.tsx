@@ -23,9 +23,9 @@ const AddFriendsToExpenseForm = ({
 }: AddFriendsToExpenseFormProps) => {
   const [isAddSplitFormOpen, setAddSplitFormOpen] = useState(false);
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [newFriendList, setNewFriendList] = useState<User[]>([]);
   const openAddSplitForm = () => setAddSplitFormOpen(true);
   const closeAddSplitForm = () => setAddSplitFormOpen(false);
-  const [newFriendList, setNewFriendList] = useState<User[]>([]);
   const { user } = useUser();
   if (!user) return null;
 
@@ -45,7 +45,8 @@ const AddFriendsToExpenseForm = ({
 
   const handleChange = (
     _: React.SyntheticEvent<Element, Event>,
-    newValue: any
+    //@ts-expect-error newValue from autocomplete
+    newValue
   ) => {
     allUsersWithLabels = allUsersWithLabels.filter(
       (user) => user !== newValue[0]

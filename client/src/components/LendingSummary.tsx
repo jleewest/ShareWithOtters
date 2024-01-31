@@ -1,9 +1,9 @@
 import { useTransactionContext } from '../index';
-import { useState } from 'react';
+//import { useState } from 'react';
 
 const LendingSummary = () => {
-  const [lentUsers, setLentUsers] = useState();
-  const [owedUsers, setOwedUser] = useState();
+  //const [lentUsers, setLentUsers] = useState();
+  //const [owedUsers, setOwedUser] = useState();
   const { transactions } = useTransactionContext();
 
   console.log(transactions);

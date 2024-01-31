@@ -12,16 +12,8 @@ import { useUser } from '@clerk/clerk-react';
 import { Transaction } from '../index';
 
 const Dashboard = () => {
-  const { user } = useUser();
-
-  if (!user) {
-    // Handle the case where user is null or undefined
-    return console.error('Error retrieving clerkId');
-  }
-  const clerkUserId = user.id;
-  console.log(`Clerk User ID: ${clerkUserId}`);
-
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { user } = useUser();
 
   useEffect(() => {
     // Fetch transactions for the logged-in user
@@ -35,6 +27,13 @@ const Dashboard = () => {
     fetchTransactions();
   }, [user]);
 
+  if (!user) {
+    // Handle the case where user is null or undefined
+    return console.error('Error retrieving clerkId');
+  }
+  const clerkUserId = user.id;
+  console.log(`Clerk User ID: ${clerkUserId}`);
+
   // Function to refresh the transactions data after a new payment is added
   const refreshTransactions = async () => {
     if (user) {
@@ -42,6 +41,9 @@ const Dashboard = () => {
       setTransactions(updatedTransactions);
     }
   };
+
+  console.log(transactions);
+
   return (
     <div className='Dashboard'>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
