@@ -1,7 +1,8 @@
 import '../css/Dashboard.css';
 import GroupOptions from './GroupOptions';
 import WaveChart from './WaveChart';
-import TransactionTable from './TransactionTable';
+import ActiveTransactionTable from './ActiveTransactionTable';
+import PendingTransactionTable from './PendingTransactionTable';
 import PieChart from './PieChart';
 import LendingSummary from './LendingSummary';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -31,7 +32,6 @@ const Dashboard = () => {
     // Handle the case where user is null or undefined
     return console.error('Error retrieving clerkId');
   }
-  const clerkUserId = user.id;
 
   // Function to refresh the transactions data after a new payment is added
   const refreshTransactions = async () => {
@@ -49,13 +49,13 @@ const Dashboard = () => {
         <GroupOptions refreshTransactions={refreshTransactions} />
 
         {/* Render only pending transactions here */}
-        <TransactionTable status={'pending'} />
+        <ActiveTransactionTable />
 
         <WaveChart />
         <LendingSummary />
 
         {/* Render only approved transactions here */}
-        <TransactionTable status={'active'} />
+        <PendingTransactionTable />
 
         <PieChart />
       </LocalizationProvider>
