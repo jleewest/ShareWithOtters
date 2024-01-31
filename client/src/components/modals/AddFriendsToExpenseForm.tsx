@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react';
+import { User } from '../../index';
+import { useTransactionDataContext } from '../../index';
+import { getAllUsers } from '../../apiServices/user';
+import AddSplitForm from './AddSplitForm';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import AddSplitForm from './AddSplitForm';
-import { useTransactionDataContext } from '../../index';
+import { Autocomplete } from '@mui/material';
 
 //Should add friends to TransactionData context
 
@@ -14,40 +17,57 @@ type AddFriendsToExpenseFormProps = {
   open: boolean;
   onClose: () => void;
   handleSubmit: () => void;
-  transactionAmounts: number[];
-  transactionFriends: string[];
 };
 
 const AddFriendsToExpenseForm = ({
   open,
   onClose,
   handleSubmit,
-  transactionAmounts,
-  transactionFriends,
 }: AddFriendsToExpenseFormProps) => {
   const [isAddSplitFormOpen, setAddSplitFormOpen] = useState(false);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const openAddSplitForm = () => setAddSplitFormOpen(true);
   const closeAddSplitForm = () => setAddSplitFormOpen(false);
-  //const [transactionFriendsArray,setTransactionFriendsArray] = useState([]);
-  const [newFriend, setNewFriend] = useState('');
+  //adds just clerkIds of friends
+  const [newFriendIds, setNewFriendIds] = useState<string[]>([]);
+  //adds friend to list of friends on transaction
+  const [newFriendList, setNewFriendList] = useState<User[]>([]);
 
-  const { transactionData } = useTransactionDataContext();
+  useEffect(() => {
+    getAllUsers().then((data) => {
+      setAllUsers(data);
+    });
+  }, []);
 
-  const newFriends: string[] = [];
+  const { transactionData, setTransactionData } = useTransactionDataContext();
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //filterFriends (getUsers --> filter by firstName, lastName, email?) and add to Friends array (setState) that will be sent to AddSplit form and expense from
-    console.log(transactionData, 'ADDFRIEND');
-    setNewFriend(e.target.value);
-  };
-  const handleAddFriend = () => {
-    newFriends.push(newFriend);
-    setNewFriend('');
+  let allUsersWithLabels = allUsers.map((user) => ({
+    ...user,
+    label: `${user.firstName} ${user.lastName}`,
+  }));
+
+  const handleChange = (
+    _: React.SyntheticEvent<Element, Event>,
+    newValue: any
+  ) => {
+    allUsersWithLabels = allUsersWithLabels.filter(
+      (user) => user !== newValue[0]
+    );
+    allUsersWithLabels = [];
+    console.log(allUsersWithLabels);
+    console.log(newValue);
+    setNewFriendList(newValue);
   };
 
   const handleNext = () => {
+    const clerkIds = newFriendList.map((friend) => friend.clerkId);
+    setNewFriendIds([...transactionData.transactee, ...clerkIds]);
+
     //add inputs to setTransactions body
-    transactionFriends = [...transactionFriends, ...newFriends];
+    setTransactionData({
+      ...transactionData,
+      transactee: newFriendIds,
+    });
     openAddSplitForm();
     onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
   };
@@ -59,19 +79,22 @@ const AddFriendsToExpenseForm = ({
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Add Friends</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Add friend'
-            type='text'
-            fullWidth
-            onChange={onChange}
-            value={newFriend}
+          <Autocomplete
+            disablePortal
+            multiple
+            id='add-friends-selector'
+            options={allUsersWithLabels.filter(
+              (user) => !newFriendList.includes(user)
+            )}
+            value={newFriendList}
+            sx={{ width: 300 }}
+            onChange={handleChange}
+            renderInput={(params) => (
+              <TextField {...params} label='Add Friend' />
+            )}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleAddFriend}>Add Friend</Button>
           <Button onClick={onClose}>Cancel</Button>
           <Button onClick={handleNext}>Next</Button>
         </DialogActions>
@@ -80,7 +103,6 @@ const AddFriendsToExpenseForm = ({
         open={isAddSplitFormOpen}
         onClose={closeAddSplitForm}
         handleSubmit={handleSubmit}
-        transactionAmounts={transactionAmounts}
       />
     </div>
   );

@@ -13,15 +13,9 @@ type AddSplitFormProps = {
   open: boolean;
   onClose: () => void;
   handleSubmit: () => void;
-  transactionAmounts: number[];
 };
 
-const AddSplitForm = ({
-  open,
-  onClose,
-  handleSubmit,
-  transactionAmounts,
-}: AddSplitFormProps) => {
+const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
   const [isSubmitExpenseFormOpen, setSubmitExpenseFormOpen] = useState(false);
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
