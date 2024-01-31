@@ -14,14 +14,9 @@ import dayjs from 'dayjs';
 type AddExpenseFormProps = {
   open: boolean;
   onClose: () => void;
-  handleSubmit: () => void;
 };
 
-const AddExpenseForm = ({
-  open,
-  onClose,
-  handleSubmit,
-}: AddExpenseFormProps) => {
+const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
   const { setTransactionData } = useTransactionDataContext();
   const { user } = useUser();
   if (!user) return null;
@@ -118,7 +113,6 @@ const AddExpenseForm = ({
       <AddFriendsToExpenseForm
         open={isAddFriendsFormOpen}
         onClose={closeAddFriendsForm}
-        handleSubmit={handleSubmit}
       />
     </div>
   );

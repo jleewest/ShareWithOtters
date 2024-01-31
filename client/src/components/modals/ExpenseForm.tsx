@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import { TransactionData, TransactionsDataContext } from '../../index';
 import AddExpenseForm from './AddExpenseFrom';
 import { useUser } from '@clerk/clerk-react';
-import { createTransaction } from '../../apiServices/transaction';
 
 type ExpenseFormProps = {
   open: boolean;
   onClose: () => void;
-  handleSubmit: () => void;
 };
 
 const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
@@ -28,25 +26,13 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
     });
   }, []);
 
-  const handleSubmit = async () => {
-    // postTransaction will happen here!
-    console.log('Form submitted');
-    onClose();
-
-    createTransaction(transactionData!);
-  };
-
   return (
     <div className='ExpenseForm'>
       {transactionData ? (
         <TransactionsDataContext.Provider
           value={{ transactionData, setTransactionData }}
         >
-          <AddExpenseForm
-            open={open}
-            onClose={onClose}
-            handleSubmit={handleSubmit}
-          />
+          <AddExpenseForm open={open} onClose={onClose} />
         </TransactionsDataContext.Provider>
       ) : (
         <p>Loading...</p>

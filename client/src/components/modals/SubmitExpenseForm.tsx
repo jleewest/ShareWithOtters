@@ -2,33 +2,31 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-
-//when addSplit is submitted, should submit request. Submit modal returns response to request (if successful or not)
+import { Transaction } from '../..';
 
 type SubmitExpenseFormProps = {
   open: boolean;
   onClose: () => void;
-  handleSubmit: () => void;
+  submissionResponse: Transaction[];
 };
 
 const SubmitExpenseForm = ({
   open,
   onClose,
-  handleSubmit,
+  submissionResponse,
 }: SubmitExpenseFormProps) => {
-  handleSubmit = () => {
-    // send cue for expense form to submit form
-    console.log('Form submitted');
-    onClose();
-  };
-
   return (
     <div className='SubmitExpenseForm'>
       <Dialog open={open} onClose={onClose}>
-        <DialogTitle>Submit your Expense!</DialogTitle>
+        {submissionResponse ? (
+          <DialogTitle>Your transaction has been added!</DialogTitle>
+        ) : (
+          <DialogTitle>
+            Whoops! Something went wrong. Try adding your transaction again.
+          </DialogTitle>
+        )}
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={onClose}>Close</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -17,13 +17,11 @@ import { useUser } from '@clerk/clerk-react';
 type AddFriendsToExpenseFormProps = {
   open: boolean;
   onClose: () => void;
-  handleSubmit: () => void;
 };
 
 const AddFriendsToExpenseForm = ({
   open,
   onClose,
-  handleSubmit,
 }: AddFriendsToExpenseFormProps) => {
   const [isAddSplitFormOpen, setAddSplitFormOpen] = useState(false);
   const [allUsers, setAllUsers] = useState<User[]>([]);
@@ -99,11 +97,7 @@ const AddFriendsToExpenseForm = ({
           <Button onClick={handleNext}>Next</Button>
         </DialogActions>
       </Dialog>
-      <AddSplitForm
-        open={isAddSplitFormOpen}
-        onClose={closeAddSplitForm}
-        handleSubmit={handleSubmit}
-      />
+      <AddSplitForm open={isAddSplitFormOpen} onClose={closeAddSplitForm} />
     </div>
   );
 };

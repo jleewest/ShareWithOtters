@@ -10,22 +10,26 @@ import { useTransactionDataContext } from '../../index';
 import { useEffect } from 'react';
 import { getUserByClerkId } from '../../apiServices/user';
 import { User } from '../../index';
+import { createTransaction } from '../../apiServices/transaction';
+import { Transaction } from '../../index';
 
 //should get array of friends and single amount from TransactionData context and update amount of TransactionData with array of amounts
 
 type AddSplitFormProps = {
   open: boolean;
   onClose: () => void;
-  handleSubmit: () => void;
 };
 
-const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
+const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
   const [isSubmitExpenseFormOpen, setSubmitExpenseFormOpen] = useState(false);
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
   const [payees, setPayees] = useState<User[]>([]);
   const [amounts, setAmounts] = useState<number[]>([]);
   const { transactionData, setTransactionData } = useTransactionDataContext();
+  const [submissionResponse, setSubmissionResponse] = useState<Transaction[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,8 +56,6 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
     setAmounts(defaultAmounts);
   }, [payees]);
 
-  //calculate default even split value
-
   const handleChange =
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newAmounts = [...amounts];
@@ -61,15 +63,22 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
       setAmounts(newAmounts);
     };
 
-  //default value is even split
-  //need to get amount here from transactionData...
-  //sends amount array to Expense form
-
-  const handleNext = () => {
-    console.log(amounts);
-    //add inputs to setTransactions body
+  //sends amount array to Expense form (handleNext)
+  //show both total expense and total left to split
+  const handleSubmission = async () => {
+    await createTransaction(transactionData).then((data) => {
+      setSubmissionResponse(data);
+    });
     openSubmitExpenseForm();
     onClose();
+  };
+
+  const handleNext = () => {
+    setTransactionData({
+      ...transactionData,
+      amount: amounts,
+    });
+    handleSubmission();
   };
 
   return (
@@ -108,7 +117,7 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
       <SubmitExpenseForm
         open={isSubmitExpenseFormOpen}
         onClose={closeSubmitExpenseForm}
-        handleSubmit={handleSubmit}
+        submissionResponse={submissionResponse}
       />
     </div>
   );
