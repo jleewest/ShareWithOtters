@@ -4,19 +4,25 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Transaction } from '../index';
 
 type NoteFormProps = {
   open: boolean;
   onClose: () => void;
+  transaction: Transaction;
 };
 
-const NoteForm = ({ open, onClose }: NoteFormProps) => {
+const NoteForm = ({ open, onClose, transaction }: NoteFormProps) => {
   // Form submission handler (to be implemented)
   const handleSubmit = () => {
+    console.log(transaction);
     // Placeholder for form submission logic
     console.log('Form submitted');
     onClose();
   };
+
+  //FIELDS SHOULD POPULATE CONDITIONALLY BASED ON WHETHER USER IS TRANSACTOR OR TRANSACTEE
+  //HANDLE SUBMIT SHOULD SEND POST REQUEST: EDITTRANSACTION(TRANSACTION.ID)
 
   return (
     <Dialog open={open} onClose={onClose}>

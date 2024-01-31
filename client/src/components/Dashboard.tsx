@@ -11,22 +11,17 @@ import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { Transaction } from '../index';
 
-
 const Dashboard = () => {
   const { user } = useUser();
 
-if (!user) {
-  // Handle the case where user is null or undefined
-  return (
-    console.error('Error retrieving clerkId')
-  );
-}
-const clerkUserId = user.id;
-console.log(`Clerk User ID: ${clerkUserId}`);
-
+  if (!user) {
+    // Handle the case where user is null or undefined
+    return console.error('Error retrieving clerkId');
+  }
+  const clerkUserId = user.id;
+  console.log(`Clerk User ID: ${clerkUserId}`);
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-
 
   useEffect(() => {
     // Fetch transactions for the logged-in user
@@ -50,16 +45,22 @@ console.log(`Clerk User ID: ${clerkUserId}`);
   return (
     <div className='Dashboard'>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <GroupOptions refreshTransactions={refreshTransactions}/>
+        <GroupOptions refreshTransactions={refreshTransactions} />
 
         {/* Render only pending transactions here */}
-        <TransactionTable transactions={transactions} status={'pending'} refreshTransactions={refreshTransactions} />
+        <TransactionTable
+          status={'pending'}
+          refreshTransactions={refreshTransactions}
+        />
 
         <WaveChart />
         <LendingSummary />
 
         {/* Render only approved transactions here */}
-        <TransactionTable transactions={transactions} status={'active'} refreshTransactions={refreshTransactions} />
+        <TransactionTable
+          status={'active'}
+          refreshTransactions={refreshTransactions}
+        />
 
         <PieChart />
       </LocalizationProvider>

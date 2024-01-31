@@ -1,30 +1,27 @@
-import React, { useContext } from 'react';
 import TransactionItem from './TransactionItem';
 import '../css/TransactionTable.css';
-import NoteForm from './NoteForm';
-import { TransactionsContext } from '../index'; // Import the TransactionsContext
-import { updateTransactionStatus } from '../apiServices/transaction';
+import { Transaction } from '../index';
+import { useTransactionContext } from '../index';
+import { useState } from 'react';
 
-const TransactionTable = ({ status, refreshTransactions }) => {
-  const [isNoteFormOpen, setNoteFormOpen] = useState(false);
-  const { transactions } = useContext(TransactionsContext); // Use the transactions from context
+type TransactionTableProps = {
+  status: string;
+};
 
-  const handleAcceptTransaction = async (transactionId) => {
-    try {
-      await updateTransactionStatus(transactionId); // Update transaction status in the backend
-      await refreshTransactions(); // Refresh the transactions list
-    } catch (error) {
-      console.error('Error accepting transaction:', error);
-    }
-  };
+const TransactionTable = ({
+  status,
+}: //refreshTransactions
+TransactionTableProps) => {
+  const { transactions } = useTransactionContext(); // Use the transactions from context
+  const [transactionsByStatus, setTransactionsByStatus] = useState<
+    Transaction[]
+  >([]);
 
-  const handleAddNote = (transactionId) => {
-    // Implement the logic for adding a note here
-    openNoteForm();
-  };
-
-  const openNoteForm = () => setNoteFormOpen(true);
-  const closeNoteForm = () => setNoteFormOpen(false);
+  //if (status === 'pending') {
+  //  setTransactionsByStatus([...transactions.pending]);
+  //} else {
+  //  setTransactionsByStatus(transactions.active);
+  //}
 
   return (
     <div className='TransactionTable'>
@@ -40,23 +37,17 @@ const TransactionTable = ({ status, refreshTransactions }) => {
           </tr>
         </thead>
         <tbody>
-          {transactions.length > 0 ? (
-            transactions.map((transaction) => (
-              <TransactionItem
-                key={transaction.id}
-                {...transaction}
-                onAccept={handleAcceptTransaction}
-                onAddNote={() => handleAddNote(transaction.id)}
-              />
+          {transactionsByStatus.length > 0 ? (
+            transactionsByStatus.map((transaction) => (
+              <TransactionItem key={transaction.id} transaction={transaction} />
             ))
           ) : (
             <tr>
-              <td colSpan="6">No transactions found</td>
+              <td>No transactions found</td>
             </tr>
           )}
         </tbody>
       </table>
-      <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
     </div>
   );
 };
