@@ -5,19 +5,19 @@ import Button from '@mui/material/Button';
 import { Transaction } from '../..';
 
 type SubmitExpenseFormProps = {
-  open: boolean;
-  onClose: () => void;
+  openSubmitForm: boolean;
+  onCloseSubmitForm: () => void;
   submissionResponse: Transaction[];
 };
 
 const SubmitExpenseForm = ({
-  open,
-  onClose,
+  openSubmitForm,
+  onCloseSubmitForm,
   submissionResponse,
 }: SubmitExpenseFormProps) => {
   return (
     <div className='SubmitExpenseForm'>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={openSubmitForm} onClose={onCloseSubmitForm}>
         {submissionResponse ? (
           <DialogTitle>Your transaction has been added!</DialogTitle>
         ) : (
@@ -26,7 +26,7 @@ const SubmitExpenseForm = ({
           </DialogTitle>
         )}
         <DialogActions>
-          <Button onClick={onClose}>Close</Button>
+          <Button onClick={onCloseSubmitForm}>Close</Button>
         </DialogActions>
       </Dialog>
     </div>

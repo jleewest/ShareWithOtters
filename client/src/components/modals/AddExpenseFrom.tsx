@@ -12,11 +12,14 @@ import { MobileDatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 
 type AddExpenseFormProps = {
-  open: boolean;
-  onClose: () => void;
+  openExpense: boolean;
+  onCloseExpense: () => void;
 };
 
-const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
+const AddExpenseForm = ({
+  openExpense,
+  onCloseExpense,
+}: AddExpenseFormProps) => {
   const { setTransactionData } = useTransactionDataContext();
   const { user } = useUser();
   if (!user) return null;
@@ -37,16 +40,16 @@ const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
       type: 'expense',
       date: date,
       transactor: user.id,
-      transactee: [user.id], //import from AddFriends
-      description: description, //e.target.description
-      amount: [Number(amount)], //import from AddSplit
+      transactee: [user.id],
+      description: description,
+      amount: [Number(amount)],
       notes: '',
     });
     setDate('');
     setDescription('');
     setAmount('');
     openAddFriendsForm();
-    onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
+    onCloseExpense();
   };
   //date change handling
   function handleDateChange(date: any) {
@@ -72,7 +75,15 @@ const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
 
   return (
     <div className='AddExpenseForm'>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog
+        open={openExpense}
+        onClose={() => {
+          setDate('');
+          setDescription('');
+          setAmount('');
+          onCloseExpense();
+        }}
+      >
         <DialogTitle>Add an Expense</DialogTitle>
         <DialogContent>
           {/* Expense form fields */}
@@ -106,13 +117,13 @@ const AddExpenseForm = ({ open, onClose }: AddExpenseFormProps) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onCloseExpense}>Cancel</Button>
           <Button onClick={handleNext}>Next</Button>
         </DialogActions>
       </Dialog>
       <AddFriendsToExpenseForm
-        open={isAddFriendsFormOpen}
-        onClose={closeAddFriendsForm}
+        openFriendForm={isAddFriendsFormOpen}
+        onCloseFriendForm={closeAddFriendsForm}
       />
     </div>
   );

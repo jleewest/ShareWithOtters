@@ -16,11 +16,14 @@ import { Transaction } from '../../index';
 //should get array of friends and single amount from TransactionData context and update amount of TransactionData with array of amounts
 
 type AddSplitFormProps = {
-  open: boolean;
-  onClose: () => void;
+  openSplitForm: boolean;
+  onCloseSplitForm: () => void;
 };
 
-const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
+const AddSplitForm = ({
+  openSplitForm,
+  onCloseSplitForm,
+}: AddSplitFormProps) => {
   const [isSubmitExpenseFormOpen, setSubmitExpenseFormOpen] = useState(false);
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
@@ -63,14 +66,12 @@ const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
       setAmounts(newAmounts);
     };
 
-  //sends amount array to Expense form (handleNext)
-  //show both total expense and total left to split
   const handleSubmission = async () => {
     await createTransaction(transactionData).then((data) => {
       setSubmissionResponse(data);
     });
     openSubmitExpenseForm();
-    onClose();
+    onCloseSplitForm();
   };
 
   const handleNext = () => {
@@ -83,7 +84,7 @@ const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
 
   return (
     <div className='AddFriendsToExpenseForm'>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={openSplitForm} onClose={onCloseSplitForm}>
         <DialogTitle>Add Split: ${transactionData.amount[0]}</DialogTitle>
         <DialogContent>
           {payees.length > 0 ? (
@@ -110,13 +111,13 @@ const AddSplitForm = ({ open, onClose }: AddSplitFormProps) => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onCloseSplitForm}>Cancel</Button>
           <Button onClick={handleNext}>Next</Button>
         </DialogActions>
       </Dialog>
       <SubmitExpenseForm
-        open={isSubmitExpenseFormOpen}
-        onClose={closeSubmitExpenseForm}
+        openSubmitForm={isSubmitExpenseFormOpen}
+        onCloseSubmitForm={closeSubmitExpenseForm}
         submissionResponse={submissionResponse}
       />
     </div>

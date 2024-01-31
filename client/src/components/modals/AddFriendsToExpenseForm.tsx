@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { User } from '../../index';
 import { useTransactionDataContext } from '../../index';
 import { getAllUsers } from '../../apiServices/user';
+import { useUser } from '@clerk/clerk-react';
 import AddSplitForm from './AddSplitForm';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,18 +11,15 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
-import { useUser } from '@clerk/clerk-react';
-
-//Should add friends to TransactionData context
 
 type AddFriendsToExpenseFormProps = {
-  open: boolean;
-  onClose: () => void;
+  openFriendForm: boolean;
+  onCloseFriendForm: () => void;
 };
 
 const AddFriendsToExpenseForm = ({
-  open,
-  onClose,
+  openFriendForm,
+  onCloseFriendForm,
 }: AddFriendsToExpenseFormProps) => {
   const [isAddSplitFormOpen, setAddSplitFormOpen] = useState(false);
   const [allUsers, setAllUsers] = useState<User[]>([]);
@@ -60,21 +58,18 @@ const AddFriendsToExpenseForm = ({
     const clerkIds = newFriendList.map((friend) => friend.clerkId);
     const newFriendIds = [...transactionData.transactee, ...clerkIds];
 
-    //add inputs to setTransactions body
     setTransactionData({
       ...transactionData,
       transactee: newFriendIds,
     });
     setNewFriendList([]);
     openAddSplitForm();
-    onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
+    onCloseFriendForm();
   };
-
-  //if newFriends.length > 0 display friends added on top of TextField (newFriends)
 
   return (
     <div className='AddFriendsToExpenseForm'>
-      <Dialog open={open} onClose={onClose}>
+      <Dialog open={openFriendForm} onClose={onCloseFriendForm}>
         <DialogTitle>Add Friends</DialogTitle>
         <DialogContent>
           <Autocomplete
@@ -93,11 +88,14 @@ const AddFriendsToExpenseForm = ({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onCloseFriendForm}>Cancel</Button>
           <Button onClick={handleNext}>Next</Button>
         </DialogActions>
       </Dialog>
-      <AddSplitForm open={isAddSplitFormOpen} onClose={closeAddSplitForm} />
+      <AddSplitForm
+        openSplitForm={isAddSplitFormOpen}
+        onCloseSplitForm={closeAddSplitForm}
+      />
     </div>
   );
 };

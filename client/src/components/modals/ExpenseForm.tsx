@@ -32,7 +32,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
         <TransactionsDataContext.Provider
           value={{ transactionData, setTransactionData }}
         >
-          <AddExpenseForm open={open} onClose={onClose} />
+          <AddExpenseForm openExpense={open} onCloseExpense={onClose} />
         </TransactionsDataContext.Provider>
       ) : (
         <p>Loading...</p>
