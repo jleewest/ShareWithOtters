@@ -1,17 +1,53 @@
+import React, { useContext, useEffect, useState } from 'react';
 import TransactionItem from './TransactionItem';
 import '../css/TransactionTable.css';
-import { TransactionTableProps } from '../index';
 import NoteForm from './NoteForm';
-import { useState } from 'react';
-import { updateTransactionStatus } from '../apiServices/transaction'; // Import the API service for updating transaction status
+import { TransactionsContext } from '../index'; // Import the TransactionsContext
+import { updateTransactionStatus } from '../apiServices/transaction';
 
-const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, status, refreshTransactions }) => {
+const TransactionTable = ({ status, refreshTransactions }) => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
+  // Use the transactions from context if available, otherwise use mock data
+  const { transactions: contextTransactions, setTransactions } = useContext(TransactionsContext);
+  const [transactions, setTransactionsLocal] = useState([]);
 
-  const openNoteForm = () => setNoteFormOpen(true);
-  const closeNoteForm = () => setNoteFormOpen(false);
+  // This effect sets the transactions state to the context's transactions if available,
+  // otherwise it falls back to mock data.
+  useEffect(() => {
+    if (contextTransactions && contextTransactions.length > 0) {
+      setTransactionsLocal(contextTransactions.filter(tx => tx.status === status));
+    } else {
+      // Mock transactions to display in the table
+      setTransactionsLocal([
+        {
+          id: 0,
+          transactor: 'Alice',
+          transactee: 'Bob',
+          date: '2024-01-26',
+          description: 'Lunch',
+          amount: 20.0,
+          type: 'income',
+          status: status,
+          notes: '',
+          groupId: 1,
+        },
+        {
+          id: 1,
+          transactor: 'Bob',
+          transactee: 'Alice',
+          date: '2024-01-20',
+          description: 'Groceries',
+          amount: 45.5,
+          type: 'expense',
+          status: status,
+          notes: '',
+          groupId: 1,
+        },
+      ]);
+    }
+  }, [contextTransactions, status]);
 
-  const handleAcceptTransaction = async (transactionId: number) => {
+  const handleAcceptTransaction = async (transactionId) => {
     try {
       await updateTransactionStatus(transactionId); // Update transaction status in the backend
       await refreshTransactions(); // Refresh the transactions list
@@ -20,12 +56,11 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, statu
     }
   };
 
-  const handleAddNote = (id: number) => {
-   //build this out
+  const handleAddNote = (transactionId) => {
+    // Implement the logic for adding a note here
     openNoteForm();
+    // You might want to use transactionId for something related to notes
   };
-
-  const filteredTransactions = transactions.filter(tx => tx.status === status);
 
   return (
     <div className='TransactionTable'>
@@ -41,9 +76,9 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, statu
           </tr>
         </thead>
         <tbody>
-          {filteredTransactions.map((transaction) => (
+          {transactions.map((transaction) => (
             <TransactionItem
-              key={transaction.id}
+              key={transactions.id}
               {...transaction}
               onAccept={handleAcceptTransaction}
               onAddNote={handleAddNote}
@@ -51,7 +86,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, statu
           ))}
         </tbody>
       </table>
-      <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
+      <NoteForm open={isNoteFormOpen} onClose={setNoteFormOpen} />
     </div>
   );
 };
