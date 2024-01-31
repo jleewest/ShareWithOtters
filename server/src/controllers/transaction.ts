@@ -48,7 +48,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
             transaction.status === 'pending' &&
             transaction.type === 'expense' &&
             transaction.transactee === id &&
-            transaction.transactor === id
+            transaction.transactor !== id
         ),
         payment: allTransactions.filter(
           (transaction) =>
