@@ -31,8 +31,15 @@ const GroupOptions = ({ refreshTransactions }: GroupOptionsProps) => {
         <button onClick={openInviteForm}>Invite friends</button>
       </section>
       {/* Modals for forms with refreshTransactions passed as a prop */}
-      <PaymentForm open={isPaymentFormOpen} onClose={closePaymentForm} refreshTransactions={refreshTransactions} />
-      <ExpenseForm open={isExpenseFormOpen} onClose={closeExpenseForm} /*refreshTransactions={refreshTransactions}*/ />
+      <PaymentForm
+        open={isPaymentFormOpen}
+        onClose={closePaymentForm}
+        refreshTransactions={refreshTransactions}
+      />
+      <ExpenseForm
+        open={isExpenseFormOpen}
+        onClose={closeExpenseForm} /*refreshTransactions={refreshTransactions}*/
+      />
       <InviteForm open={isInviteFormOpen} onClose={closeInviteForm} />
     </div>
   );

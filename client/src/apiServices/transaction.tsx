@@ -1,14 +1,14 @@
-import { Transaction, TransactionData } from '../index';
+import { Transaction, TransactionData, TransactionReturn } from '../index';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getTransactionsByClerkId(
   id: string
-): Promise<Transaction[]> {
+): Promise<TransactionReturn> {
   const response = await fetch(`${BASE_URL}/transaction/${id}`);
   if (response.ok) {
     const data = await response.json();
-    return data as Promise<Transaction[]>;
+    return data as Promise<TransactionReturn>;
   }
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }

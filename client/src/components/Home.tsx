@@ -1,6 +1,6 @@
 import Dashboard from './Dashboard';
 import '../css/Home.css';
-import { Transaction, TransactionsContext } from '../index';
+import { TransactionReturn, TransactionsContext } from '../index';
 import { useState, useEffect } from 'react';
 import { getTransactionsByClerkId } from '../apiServices/transaction';
 import { addUser } from '../apiServices/user';
@@ -9,7 +9,7 @@ import { SignOutButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 
 function Home() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<TransactionReturn>([]);
   //user.id === ClerkId
   const { user } = useUser();
 
