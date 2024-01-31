@@ -31,7 +31,6 @@ const Dashboard = () => {
     // Handle the case where user is null or undefined
     return console.error('Error retrieving clerkId');
   }
-  const clerkUserId = user.id;
 
   // Function to refresh the transactions data after a new payment is added
   const refreshTransactions = async () => {

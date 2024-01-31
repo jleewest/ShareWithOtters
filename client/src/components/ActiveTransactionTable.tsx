@@ -3,10 +3,6 @@ import { Transaction } from '../index';
 import { useTransactionContext } from '../index';
 import { useState, useEffect } from 'react';
 
-type TransactionTableProps = {
-  status: string;
-};
-
 export type TransactionPendingReturn = {
   expense: Transaction[];
   payment: Transaction[];
@@ -23,10 +19,7 @@ export type TransactionActiveReturn = {
   };
 };
 
-const TransactionTable = ({
-  status,
-}: //refreshTransactions
-TransactionTableProps) => {
+const TransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] = useState<
     TransactionPendingReturn | TransactionActiveReturn
