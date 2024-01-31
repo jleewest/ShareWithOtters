@@ -10,8 +10,6 @@ import { useTransactionDataContext } from '../../index';
 import { useEffect } from 'react';
 import { getUserByClerkId } from '../../apiServices/user';
 import { User } from '../../index';
-import { createTransaction } from '../../apiServices/transaction';
-import { Transaction } from '../../index';
 
 type AddSplitFormProps = {
   openSplitForm: boolean;
@@ -30,9 +28,6 @@ const AddSplitForm = ({
   const [evenSplitAmount, setEvenSplitAmount] = useState<number>(0);
   const [customAmounts, setCustomAmounts] = useState<number[]>([]);
   const { transactionData, setTransactionData } = useTransactionDataContext();
-  const [submissionResponse, setSubmissionResponse] = useState<Transaction[]>(
-    []
-  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,21 +55,14 @@ const AddSplitForm = ({
     setDefaultAmounts(defaultAmount);
   }, []);
 
+  const totalAmountToSplit = transactionData.amount[0];
+
   const handleChange =
     (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const newAmounts = [...customAmounts];
       newAmounts[index] = Number(e.target.value);
       setCustomAmounts(newAmounts);
     };
-
-  const handleSubmission = async () => {
-    console.log(transactionData);
-    await createTransaction(transactionData).then((data) => {
-      setSubmissionResponse(data);
-    });
-    openSubmitExpenseForm();
-    onCloseSplitForm();
-  };
 
   const handleNext = () => {
     let payeeAmounts;
@@ -83,17 +71,19 @@ const AddSplitForm = ({
     } else {
       payeeAmounts = defaultAmounts;
     }
+    console.log(payeeAmounts);
     setTransactionData({
       ...transactionData,
       amount: payeeAmounts,
     });
-    handleSubmission();
+    openSubmitExpenseForm();
+    onCloseSplitForm();
   };
 
   return (
     <div className='AddFriendsToExpenseForm'>
       <Dialog open={openSplitForm} onClose={onCloseSplitForm}>
-        <DialogTitle>Add Split: ${transactionData.amount[0]}</DialogTitle>
+        <DialogTitle>Add Split: ${totalAmountToSplit}</DialogTitle>
         <DialogContent>
           {payees.length > 0 ? (
             payees.map((payee: User, index: number) => {
@@ -126,7 +116,6 @@ const AddSplitForm = ({
       <SubmitExpenseForm
         openSubmitForm={isSubmitExpenseFormOpen}
         onCloseSubmitForm={closeSubmitExpenseForm}
-        submissionResponse={submissionResponse}
       />
     </div>
   );
