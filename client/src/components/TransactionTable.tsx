@@ -1,62 +1,31 @@
 import TransactionItem from './TransactionItem';
 import '../css/TransactionTable.css';
-import { Transaction } from '../index';
+import { TransactionTableProps } from '../index';
 import NoteForm from './NoteForm';
 import { useState } from 'react';
+import { updateTransactionStatus } from '../apiServices/transaction'; // Import the API service for updating transaction status
 
-const TransactionTable = ({ status }) => {
+const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, status, refreshTransactions }) => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
 
-  // Handlers for opening each modal
   const openNoteForm = () => setNoteFormOpen(true);
-
-  // Handlers for closing each modal
   const closeNoteForm = () => setNoteFormOpen(false);
-  // Function to handle the acceptance of a transaction
 
-  const handleAcceptTransaction = (id: number) => {
-    // Placeholder function to update status to 'approved'
-    console.log('Transaction accepted with ID:', id);
-    // Call a backend API to update the transaction status
+  const handleAcceptTransaction = async (transactionId: number) => {
+    try {
+      await updateTransactionStatus(transactionId); // Update transaction status in the backend
+      await refreshTransactions(); // Refresh the transactions list
+    } catch (error) {
+      console.error('Error accepting transaction:', error);
+    }
   };
 
-  // Function to handle adding a note to a transaction
   const handleAddNote = (id: number) => {
+   //build this out
     openNoteForm();
-    // open a modal here to add a note
   };
-  // Sample transaction data
-  const transactions: Transaction[] = [
-    {
-      id: 0,
-      transactor: 'Alice',
-      transactee: 'Bob',
-      date: '01-26-2024',
-      description: 'Lunch',
-      amount: 20.0,
-      type: 'income',
-      notes: '',
-      groupId: 1,
-    },
-    {
-      id: 1,
-      transactor: 'Bob',
-      transactee: 'Alice',
-      date: '01-20-2024',
-      description: 'Groceries',
-      amount: 45.5,
-      type: 'expense',
-      notes: '',
-      groupId: 1,
-    },
-  ];
 
-  //Populates table with transactions by table status
-  //if (status === 'pending') {
-  //  transactions = transactions.pending
-  //} else {
-  //  transactions = transactions.active
-  //}
+  const filteredTransactions = transactions.filter(tx => tx.status === status);
 
   return (
     <div className='TransactionTable'>
@@ -64,34 +33,24 @@ const TransactionTable = ({ status }) => {
         <thead>
           <tr>
             <th>Status</th>
-            <th>Creator</th>
+            <th>Transactor</th>
             <th>Date</th>
             <th>Description</th>
             <th>Amount</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {transactions.map((transaction) => (
+          {filteredTransactions.map((transaction) => (
             <TransactionItem
               key={transaction.id}
-              id={transaction.id}
-              type={transaction.type}
-              transactor={transaction.transactor}
-              date={transaction.date}
-              description={transaction.description}
-              amount={transaction.amount}
-              onAccept={() => {
-                /* function to handle accept */
-              }}
-              onAddNote={() => {
-                handleAddNote;
-                /* function to handle add note */
-              }}
+              {...transaction}
+              onAccept={handleAcceptTransaction}
+              onAddNote={handleAddNote}
             />
           ))}
         </tbody>
       </table>
-      {/* Modals for forms */}
       <NoteForm open={isNoteFormOpen} onClose={closeNoteForm} />
     </div>
   );

@@ -24,6 +24,7 @@ export type Transaction = {
   groupId: number;
   type: string;
   date: string;
+  status: 'pending' | 'active';
   transactor: string;
   transactee: string;
   description: string;
@@ -55,6 +56,12 @@ export const useTransactionContext = () => {
   const context = useContext(TransactionsContext);
   if (!context) throw Error('TransactionContext not provided');
   return context;
+};
+
+export type TransactionTableProps = {
+  transactions: Transaction[]; // Add this line to include the transactions prop
+  status: 'pending' | 'active';
+  refreshTransactions: () => Promise<void>;
 };
 
 //context for TransactionData Context Provider

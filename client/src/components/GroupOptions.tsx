@@ -5,17 +5,19 @@ import PaymentForm from './modals/PaymentForm';
 import ExpenseForm from './modals/ExpenseForm';
 import InviteForm from './modals/InviteForm';
 
-const GroupOptions = () => {
+type GroupOptionsProps = {
+  refreshTransactions: () => void;
+};
+
+const GroupOptions = ({ refreshTransactions }: GroupOptionsProps) => {
   const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
   const [isExpenseFormOpen, setExpenseFormOpen] = useState(false);
   const [isInviteFormOpen, setInviteFormOpen] = useState(false);
 
-  // Handlers for opening each modal
+  // Handlers for opening and closing each modal
   const openPaymentForm = () => setPaymentFormOpen(true);
   const openExpenseForm = () => setExpenseFormOpen(true);
   const openInviteForm = () => setInviteFormOpen(true);
-
-  // Handlers for closing each modal
   const closePaymentForm = () => setPaymentFormOpen(false);
   const closeExpenseForm = () => setExpenseFormOpen(false);
   const closeInviteForm = () => setInviteFormOpen(false);
@@ -28,9 +30,9 @@ const GroupOptions = () => {
         <button onClick={openPaymentForm}>Add payment</button>
         <button onClick={openInviteForm}>Invite friends</button>
       </section>
-      {/* Modals for forms */}
-      <PaymentForm open={isPaymentFormOpen} onClose={closePaymentForm} />
-      <ExpenseForm open={isExpenseFormOpen} onClose={closeExpenseForm} />
+      {/* Modals for forms with refreshTransactions passed as a prop */}
+      <PaymentForm open={isPaymentFormOpen} onClose={closePaymentForm} refreshTransactions={refreshTransactions} />
+      <ExpenseForm open={isExpenseFormOpen} onClose={closeExpenseForm} /*refreshTransactions={refreshTransactions}*/ />
       <InviteForm open={isInviteFormOpen} onClose={closeInviteForm} />
     </div>
   );
