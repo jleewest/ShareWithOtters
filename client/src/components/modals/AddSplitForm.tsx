@@ -8,6 +8,8 @@ import { useState } from 'react';
 import SubmitExpenseForm from './SubmitExpenseForm';
 import { useTransactionDataContext } from '../../index';
 import { useEffect } from 'react';
+import { getUserByClerkId } from '../../apiServices/user';
+import { User } from '../../index';
 
 //should get array of friends and single amount from TransactionData context and update amount of TransactionData with array of amounts
 
@@ -21,13 +23,29 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
   const [isSubmitExpenseFormOpen, setSubmitExpenseFormOpen] = useState(false);
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
+  const [payees, setPayees] = useState<User[]>([]);
 
   const { transactionData, setTransactionData } = useTransactionDataContext();
 
   useEffect(() => {
-    // Access and log the transactee array when the component mounts or when it changes
-    console.log('Transactee Array:', transactionData.transactee);
-  }, [transactionData.transactee]);
+    const fetchData = async () => {
+      const payeesData = [];
+
+      for (const clerkId of transactionData.transactee) {
+        try {
+          const userData = await getUserByClerkId(clerkId);
+          payeesData.push(userData);
+        } catch (error) {
+          console.log('Error fetching user');
+        }
+      }
+      setPayees(payeesData);
+    };
+    fetchData();
+  }, []);
+
+  console.log(payees);
+
   //gets friend array from AddFriends
   //creates TextField for each friend in array
   //adds expenses for each friend in friend array
