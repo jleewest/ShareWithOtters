@@ -24,6 +24,7 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
   const openSubmitExpenseForm = () => setSubmitExpenseFormOpen(true);
   const closeSubmitExpenseForm = () => setSubmitExpenseFormOpen(false);
   const [payees, setPayees] = useState<User[]>([]);
+  const [amounts, setAmounts] = useState<number[]>([]);
 
   const { transactionData, setTransactionData } = useTransactionDataContext();
 
@@ -42,19 +43,24 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
       setPayees(payeesData);
     };
     fetchData();
-  }, []);
+  }, [transactionData]);
 
-  console.log(payees);
+  const handleChange =
+    (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newAmounts = [...amounts];
+      newAmounts[index] = Number(e.target.value);
+      setAmounts(newAmounts);
+    };
 
-  //gets friend array from AddFriends
-  //creates TextField for each friend in array
+  //default value is even split
   //adds expenses for each friend in friend array
   //need to get amount here from transactionData...
   //sends amount array to Expense form
+
   const handleNext = () => {
     //add inputs to setTransactions body
     openSubmitExpenseForm();
-    onClose(); //move to close in AddFriends or have back button to return? then close all in submit?
+    onClose();
   };
 
   return (
@@ -62,22 +68,29 @@ const AddSplitForm = ({ open, onClose, handleSubmit }: AddSplitFormProps) => {
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Add Split</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Name'
-            type='text'
-            fullWidth
-          />
-          <TextField
-            autoFocus
-            margin='dense'
-            id='name'
-            label='Amount'
-            type='text'
-            fullWidth
-          />
+          {payees.length > 0 ? (
+            payees.map((payee: User, index: number) => {
+              return (
+                <div key={index}>
+                  <label>{payee.firstName}</label>
+                  <TextField
+                    autoFocus
+                    margin='dense'
+                    id='name'
+                    label='Amount'
+                    type='number'
+                    fullWidth
+                    name='amount'
+                    value={amounts[index] || ''}
+                    onChange={handleChange(index)}
+                    required
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <div>Loading...</div>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
