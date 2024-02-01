@@ -46,7 +46,7 @@ export type TransactionReturn = {
   pending: { expense: TransactionWithUser[]; payment: TransactionWithUser[] };
   active: {
     expense: {
-      awaitedPendingExpenseFromSentToOther: TransactionWithUser[];
+      awaitedPendingExpenseSentToOther: TransactionWithUser[];
       confirmedExpenses: TransactionWithUser[];
     };
     payment: {
@@ -66,6 +66,10 @@ export type TransactionWithUser = Transaction & {
     firstName: string;
     lastName: string;
   };
+};
+
+export type TransactionWithRenderType = TransactionWithUser & {
+  renderType: string;
 };
 
 //context for Transaction Context Provider

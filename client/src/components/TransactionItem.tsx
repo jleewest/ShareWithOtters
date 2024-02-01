@@ -1,12 +1,12 @@
 import '../css/TransactionItem.css';
-import { TransactionWithUser } from '../index';
+import { TransactionWithRenderType } from '../index';
 import NoteForm from './NoteForm';
 import { updateTransactionStatus } from '../apiServices/transaction';
 import { useState } from 'react';
 import moment from 'moment';
 
 type TransactionItemProps = {
-  transaction: TransactionWithUser;
+  transaction: TransactionWithRenderType;
 };
 
 const TransactionItem = ({ transaction }: TransactionItemProps) => {
@@ -14,8 +14,8 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
   const openNoteForm = () => setNoteFormOpen(true);
   const closeNoteForm = () => setNoteFormOpen(false);
   const sign = transaction.type === 'expense' ? '-' : '+';
-  const amountColor = transaction.type === 'income' ? 'green' : 'purple';
-
+  const amountColor = transaction.type === 'payment' ? 'green' : 'purple';
+  //const sign = if (transaction.type === 'expense'){return '-'} else if (transaction.type === 'payment' ){ }
   const handleAcceptTransaction = async () => {
     try {
       await updateTransactionStatus(transaction.id); // Update transaction status in the backend
