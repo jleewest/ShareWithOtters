@@ -1,6 +1,5 @@
 import '../css/Dashboard.css';
 import GroupOptions from './GroupOptions';
-import WaveChart from './WaveChart';
 import RecentTransactionTable from './RecentTransactionTable';
 import PendingTransactionTable from './PendingTransactionTable';
 import PieChart from './PieChart';
@@ -30,13 +29,10 @@ const Dashboard = () => {
     <div className='Dashboard'>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <GroupOptions refreshTransactions={refreshTransactions} />
-
         {/* Render only pending transactions here */}
         <PendingTransactionTable />
-
-        <WaveChart />
+        {/* Render summary of debts here */}
         <LendingSummary />
-
         {/* Render only approved transactions here */}
         <RecentTransactionTable />
 

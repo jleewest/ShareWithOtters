@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TransactionWithUser, useTransactionContext } from '../index';
 import { useUser } from '@clerk/clerk-react';
+import WaveChart from './WaveChart';
 
 type friendList = {
   clerkId: string;
@@ -153,6 +154,7 @@ const LendingSummary = () => {
       {netBalanceMsg ? (
         <div>
           <h2>Current Balance: {netBalanceMsg}</h2>
+          <WaveChart />
           {lentUsers.length > 0 ? (
             <div>
               <h2>Otters still owe you ${netLent}</h2>
