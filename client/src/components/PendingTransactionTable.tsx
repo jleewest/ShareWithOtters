@@ -1,5 +1,9 @@
 import '../css/TransactionTable.css';
-import { useTransactionContext, TransactionWithUser } from '../index';
+import {
+  useTransactionContext,
+  TransactionWithUser,
+  TransactionWithRenderType,
+} from '../index';
 import { useState, useEffect } from 'react';
 import TransactionItem from './TransactionItem';
 
@@ -12,19 +16,34 @@ const PendingTransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] =
     useState<TransactionWithUser[]>();
+  const [pendingExpense, setPendingExpense] =
+    useState<TransactionWithRenderType[]>();
+  const [pendingPayment, setPendingPayment] =
+    useState<TransactionWithRenderType[]>();
 
-  console.log(transactions, '🦖🦖');
   // Use only transactions with pending status
   useEffect(() => {
     if (transactions) {
-      setTransactionsByStatus([
-        ...transactions.pending.expense,
-        ...transactions.pending.payment,
-      ]);
+      setPendingExpense(
+        transactions.pending.expense.map((transaction) => ({
+          ...transaction,
+          renderType: 'pendingExpense',
+        }))
+      );
+      setPendingPayment(
+        transactions.pending.payment.map((transaction) => ({
+          ...transaction,
+          renderType: 'pendingPayment',
+        }))
+      );
     }
   }, [transactions]);
 
-  console.log(transactionsByStatus);
+  useEffect(() => {
+    if (pendingExpense && pendingPayment) {
+      setTransactionsByStatus([...pendingExpense, ...pendingPayment]);
+    }
+  }, [pendingExpense, pendingPayment]);
 
   return (
     <div className='TransactionTable'>

@@ -68,6 +68,10 @@ export type TransactionWithUser = Transaction & {
   };
 };
 
+export type TransactionWithRenderType = TransactionWithUser & {
+  renderType: string;
+};
+
 //context for Transaction Context Provider
 export type TTransactionContext = {
   transactions: TransactionReturn | undefined;

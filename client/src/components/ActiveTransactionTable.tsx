@@ -34,8 +34,6 @@ const TransactionTable = () => {
     }
   }, [transactions]);
 
-  console.log(transactionsByStatus);
-
   return (
     <div className='TransactionTable'>
       <table className='transaction-table'>
