@@ -1,7 +1,12 @@
 const WaveChart = () => {
   return (
-    <h1>Wave Chart Render Here</h1>
-  )
-}
+    <div
+      className='WaveChart'
+      style={{ border: '2px solid var(--dark-accent-color)' }}
+    >
+      <h1>Wave Chart Render Here</h1>
+    </div>
+  );
+};
 
-export default WaveChart
+export default WaveChart;

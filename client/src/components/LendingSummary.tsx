@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TransactionWithUser, useTransactionContext } from '../index';
 import { useUser } from '@clerk/clerk-react';
 import WaveChart from './WaveChart';
+import '../css/LendingSummary.css';
 
 type friendList = {
   clerkId: string;
@@ -63,7 +64,7 @@ const LendingSummary = () => {
 
       setFriendList(updatedFriendList);
     }
-  }, [transactions]);
+  }, [transactions, user]);
 
   //Sets net owe to each friend
   function updateFriendList(
@@ -130,15 +131,15 @@ const LendingSummary = () => {
   useEffect(() => {
     if (netOwed && netLent) {
       let balanceMsg;
-      let netBalance = netOwed - netLent;
+      const netBalance = netOwed - netLent;
       if (netBalance === 0) {
         balanceMsg = 'All Otters paid up!';
       }
       if (netBalance > 0) {
-        balanceMsg = `You owe: $${netBalance}`;
+        balanceMsg = `You owe $${netBalance}`;
       }
       if (netBalance < 0) {
-        balanceMsg = `You are owed: $${-netBalance}`;
+        balanceMsg = `You are owed $${-netBalance}`;
       }
       if (balanceMsg) {
         setNetBalanceMsg(balanceMsg);
@@ -153,10 +154,13 @@ const LendingSummary = () => {
     <div className='LendingSummary'>
       {netBalanceMsg ? (
         <div>
-          <h2>Current Balance: {netBalanceMsg}</h2>
+          <div className='current-balance'>
+            <h2>Current Balance:</h2>
+            <div>{netBalanceMsg}</div>
+          </div>
           <WaveChart />
           {lentUsers.length > 0 ? (
-            <div>
+            <div className='lent-balance'>
               <h2>Otters still owe you ${netLent}</h2>
               {lentUsers.map((user) => {
                 return (
@@ -171,7 +175,7 @@ const LendingSummary = () => {
           )}
 
           {owedUsers.length > 0 ? (
-            <div>
+            <div className='owed-balance'>
               <h2>You still owe Otters ${netOwed}</h2>
               {owedUsers.map((user) => {
                 return (
