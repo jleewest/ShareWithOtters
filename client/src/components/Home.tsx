@@ -9,7 +9,7 @@ import { SignOutButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 
 function Home() {
-  const [transactions, setTransactions] = useState<TransactionReturn>([]);
+  const [transactions, setTransactions] = useState<TransactionReturn>();
   //user.id === ClerkId
   const { user } = useUser();
 

@@ -1,21 +1,25 @@
 import '../css/TransactionTable.css';
-import { Transaction } from '../index';
-import { useTransactionContext } from '../index';
+import { useTransactionContext, TransactionWithUser } from '../index';
 import { useState, useEffect } from 'react';
+import TransactionItem from './TransactionItem';
 
 export type TransactionPendingReturn = {
-  expense: Transaction[];
-  payment: Transaction[];
+  expense: TransactionWithUser[];
+  payment: TransactionWithUser[];
 };
 
 const PendingTransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] =
-    useState<TransactionPendingReturn>();
+    useState<TransactionWithUser[]>();
 
+  console.log(transactions, '🦖🦖');
   // Use only transactions with pending status
   useEffect(() => {
-    setTransactionsByStatus(transactions.pending);
+    setTransactionsByStatus([
+      ...transactions.pending.expense,
+      ...transactions.pending.payment,
+    ]);
   }, [transactions]);
 
   console.log(transactionsByStatus);
@@ -34,7 +38,7 @@ const PendingTransactionTable = () => {
           </tr>
         </thead>
         <tbody>
-          {/*{transactionsByStatus.length > 0 ? (
+          {transactionsByStatus ? (
             transactionsByStatus.map((transaction) => (
               <TransactionItem key={transaction.id} transaction={transaction} />
             ))
@@ -42,7 +46,7 @@ const PendingTransactionTable = () => {
             <tr>
               <td>No transactions found</td>
             </tr>
-          )}*/}
+          )}
         </tbody>
       </table>
     </div>
