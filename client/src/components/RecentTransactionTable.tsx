@@ -91,7 +91,6 @@ const RecentTransactionTable = () => {
     pendingPaid,
     received,
   ]);
-  console.log(transactionsByStatus);
 
   return (
     <div className='RecentTransactions'>
