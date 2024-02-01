@@ -15,7 +15,7 @@ export type TransactionPendingReturn = {
 const PendingTransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] =
-    useState<TransactionWithUser[]>();
+    useState<TransactionWithRenderType[]>();
   const [pendingExpense, setPendingExpense] =
     useState<TransactionWithRenderType[]>();
   const [pendingPayment, setPendingPayment] =
@@ -46,30 +46,23 @@ const PendingTransactionTable = () => {
   }, [pendingExpense, pendingPayment]);
 
   return (
-    <div className='TransactionTable'>
-      <table className='transaction-table'>
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Transactor</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactionsByStatus ? (
-            transactionsByStatus.map((transaction) => (
-              <TransactionItem key={transaction.id} transaction={transaction} />
-            ))
-          ) : (
-            <tr>
-              <td>No transactions found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className='PendingTransactions'>
+      <div className='table-header'>
+        <div>Pending transactions...</div>
+        <div>Accept | Edit</div>
+      </div>
+      <div className='table-body'>
+        {transactionsByStatus ? (
+          transactionsByStatus.map((transaction) => (
+            <TransactionItem key={transaction.id} transaction={transaction} />
+          ))
+        ) : (
+          <div>
+            <div>No transactions found</div>
+          </div>
+        )}
+      </div>
+      <div className='table-footer'></div>
     </div>
   );
 };

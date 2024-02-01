@@ -23,7 +23,7 @@ export type TransactionActiveReturn = {
 const TransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] =
-    useState<TransactionWithUser[]>();
+    useState<TransactionWithRenderType[]>();
   const [
     awaitedPendingExpenseSentToOther,
     setAwaitedPendingExpenseSentToOther,
@@ -63,7 +63,7 @@ const TransactionTable = () => {
         }))
       );
       setReceived(
-        transactions.active.expense.confirmedExpenses.map((transaction) => ({
+        transactions.active.payment.received.map((transaction) => ({
           ...transaction,
           renderType: 'received',
         }))
@@ -95,32 +95,25 @@ const TransactionTable = () => {
     pendingPaid,
     received,
   ]);
+  console.log(transactionsByStatus);
 
   return (
-    <div className='TransactionTable'>
-      <table className='transaction-table'>
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Transactor</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactionsByStatus ? (
-            transactionsByStatus.map((transaction) => (
-              <TransactionItem key={transaction.id} transaction={transaction} />
-            ))
-          ) : (
-            <tr>
-              <td>No transactions found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className='ActiveTransactions'>
+      <div className='table-header'>
+        <div>Recent transactions</div>
+      </div>
+      <div className='table-body'>
+        {transactionsByStatus ? (
+          transactionsByStatus.map((transaction) => (
+            <TransactionItem key={transaction.id} transaction={transaction} />
+          ))
+        ) : (
+          <div>
+            <div>No transactions found</div>
+          </div>
+        )}
+      </div>
+      <div className='table-footer'></div>
     </div>
   );
 };
