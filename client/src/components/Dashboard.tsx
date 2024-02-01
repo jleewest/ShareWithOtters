@@ -32,13 +32,13 @@ const Dashboard = () => {
         <GroupOptions refreshTransactions={refreshTransactions} />
 
         {/* Render only pending transactions here */}
-        <ActiveTransactionTable />
+        <PendingTransactionTable />
 
         <WaveChart />
         <LendingSummary />
 
         {/* Render only approved transactions here */}
-        <PendingTransactionTable />
+        <ActiveTransactionTable />
 
         <PieChart />
       </LocalizationProvider>
