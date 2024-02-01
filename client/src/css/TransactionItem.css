@@ -24,7 +24,7 @@
 
 /* INDIVIDUAL COMPONENT */
 .TransactionItem .transaction-user {
-  font-size: 1.25rem;
+  font-size: 0.9rem;
   color: var(--secondary-color);
   font-weight: 700;
 }
@@ -33,7 +33,7 @@
   color: var(--dark-accent-color);
 }
 .TransactionItem .transaction-amount {
-  font-size: 1.25rem;
+  font-size: 0.9rem;
 }
 .TransactionItem .transaction-date,
 .transaction-description {

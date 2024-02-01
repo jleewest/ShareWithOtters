@@ -7,6 +7,7 @@ import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareCheck } from '@fortawesome/free-solid-svg-icons';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { useUser } from '@clerk/clerk-react';
 
 type TransactionItemProps = {
   transaction: TransactionWithRenderType;
@@ -16,9 +17,65 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
   const openNoteForm = () => setNoteFormOpen(true);
   const closeNoteForm = () => setNoteFormOpen(false);
-  const sign = transaction.type === 'expense' ? '-' : '+';
-  const amountColor = transaction.type === 'payment' ? 'green' : 'purple';
-  //const sign = if (transaction.type === 'expense'){return '-'} else if (transaction.type === 'payment' ){ }
+  const { user } = useUser();
+
+  //set amount color and sign
+  let sign;
+  let amountColor;
+  if (
+    transaction.renderType === 'pendingExpense' ||
+    transaction.renderType === 'awaitedPending' ||
+    transaction.renderType === 'confirmedExpense'
+  ) {
+    sign = '-';
+    amountColor = 'var(--dark-accent-color)';
+  } else if (
+    transaction.renderType === 'pendingPayment' ||
+    transaction.renderType === 'received'
+  ) {
+    sign = '+';
+    amountColor = 'var(--secondary-color)';
+  } else if (
+    transaction.renderType === 'paid' ||
+    transaction.renderType === 'pendingPaid'
+  ) {
+    amountColor = 'var(--light-accent-color)';
+  }
+
+  //set user message
+  let userMessage;
+  if (user) {
+    if (
+      (transaction.renderType === 'confirmedExpense' &&
+        user.id === transaction.transactor &&
+        transaction.transactor !== transaction.transactee) ||
+      transaction.renderType === 'awaitedPending'
+    ) {
+      userMessage = `You paid for ${transaction.userActee.firstName}`;
+    } else if (
+      transaction.renderType === 'pendingExpense' ||
+      (transaction.renderType === 'confirmedExpense' &&
+        user.id === transaction.transactor &&
+        transaction.transactor !== transaction.transactee)
+    ) {
+      userMessage = `${transaction.userActor.firstName} paid for you`;
+    } else if (
+      transaction.renderType === 'pendingPayment' ||
+      transaction.renderType === 'received'
+    ) {
+      userMessage = `${transaction.userActor.firstName} reimbursed you`;
+    } else if (
+      transaction.renderType === 'pendingPaid' ||
+      transaction.renderType === 'paid'
+    ) {
+      userMessage = `You paid back${transaction.userActee.firstName}`;
+    } else if (
+      transaction.renderType === 'confirmedExpense' &&
+      transaction.transactor === transaction.transactee
+    ) {
+      userMessage = `Your own expense`;
+    }
+  }
 
   const handleAcceptTransaction = async () => {
     try {
@@ -51,9 +108,7 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
           </button>
         </div>
         <div>
-          <div className='transaction-user'>
-            {transaction.userActor.firstName}
-          </div>
+          <div className='transaction-user'>{userMessage}</div>
           <div className='transaction-description'>
             {transaction.description}
           </div>
