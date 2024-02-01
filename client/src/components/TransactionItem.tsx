@@ -4,6 +4,9 @@ import NoteForm from './NoteForm';
 import { updateTransactionStatus } from '../apiServices/transaction';
 import { useState } from 'react';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSquareCheck } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 type TransactionItemProps = {
   transaction: TransactionWithRenderType;
@@ -27,22 +30,39 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
 
   return (
     <div className='TransactionItem'>
-      <tr className={`table-row ${transaction.notes ? 'has-note' : ''}`.trim()}>
-        {transaction.status === 'pending' && (
-          <td>
-            <button onClick={handleAcceptTransaction}>Accept</button>
-          </td>
-        )}
-        <td>
-          <button onClick={openNoteForm}>Add Note</button>
-        </td>
-        <td>{transaction.userActor.firstName}</td>
-        <td>{moment(transaction.date).format('ll')}</td>
-        <td>{transaction.description}</td>
-        <td style={{ color: amountColor, fontWeight: 'bold' }}>
-          {sign}${transaction.amount.toFixed(2)}
-        </td>
-      </tr>
+      <div className='buttons-and-descriptions'>
+        <div>
+          <button className='transaction-btn' onClick={handleAcceptTransaction}>
+            <FontAwesomeIcon
+              icon={faSquareCheck}
+              style={{ color: '#FFD43B' }}
+              size='2x'
+            />
+          </button>
+        </div>
+        <div>
+          <button className='transaction-btn' onClick={openNoteForm}>
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              style={{ color: '#ffd43b' }}
+              size='2x'
+            />
+          </button>
+        </div>
+        <div>
+          <div>{transaction.userActor.firstName}</div>
+          <div>{transaction.description}</div>
+        </div>
+        <div>{transaction.notes}</div>
+      </div>
+      <div>
+        <div className='amount-with-date'>
+          <div style={{ color: amountColor, fontWeight: 'bold' }}>
+            {sign}${transaction.amount.toFixed(2)}
+          </div>
+          <div>{moment(transaction.date).format('ll')}</div>
+        </div>
+      </div>
       <NoteForm
         open={isNoteFormOpen}
         onClose={closeNoteForm}
