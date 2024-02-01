@@ -16,4 +16,7 @@
 .table-body {
   background-color: white;
   padding: 0.2rem;
+  overflow: scroll;
+  max-height: 20rem;
+  overflow-x: hidden;
 }
