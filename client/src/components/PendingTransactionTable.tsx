@@ -16,10 +16,12 @@ const PendingTransactionTable = () => {
   console.log(transactions, '🦖🦖');
   // Use only transactions with pending status
   useEffect(() => {
-    setTransactionsByStatus([
-      ...transactions.pending.expense,
-      ...transactions.pending.payment,
-    ]);
+    if (transactions) {
+      setTransactionsByStatus([
+        ...transactions.pending.expense,
+        ...transactions.pending.payment,
+      ]);
+    }
   }, [transactions]);
 
   console.log(transactionsByStatus);
