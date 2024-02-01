@@ -46,7 +46,7 @@ export type TransactionReturn = {
   pending: { expense: TransactionWithUser[]; payment: TransactionWithUser[] };
   active: {
     expense: {
-      awaitedPendingExpenseFromSentToOther: TransactionWithUser[];
+      awaitedPendingExpenseSentToOther: TransactionWithUser[];
       confirmedExpenses: TransactionWithUser[];
     };
     payment: {

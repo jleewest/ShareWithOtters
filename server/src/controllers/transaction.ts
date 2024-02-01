@@ -63,7 +63,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
             (transaction) =>
               transaction.status === 'active' && transaction.type === 'expense'
           ),
-          awaitedPendingExpenseFromSentToOther: allTransactions.filter(
+          awaitedPendingExpenseSentToOther: allTransactions.filter(
             (transaction) =>
               transaction.status === 'pending' &&
               transaction.type === 'expense' &&
