@@ -153,10 +153,35 @@ const LendingSummary = () => {
       {netBalanceMsg ? (
         <div>
           <h2>Current Balance: {netBalanceMsg}</h2>
-          <h2>Otters still owe you ${netOwed}</h2>
-          {/*{lentUsers.length > 0 ? (lentUsers.map((user)=>{return <p>You have lent {user.firstName} ${user.amount} </p>;})):(<p>No one owes you money</p>)}*/}
-          <h2>You still owe Otters ${netLent}</h2>
-          {/*{owedUsers.length > 0 ? (owedUsers.map((user)=>{return <p>{user.firstName} lent you ${user.amount} </p>;})):(<p>No one owes you money</p>)}*/}
+          {lentUsers.length > 0 ? (
+            <div>
+              <h2>Otters still owe you ${netLent}</h2>
+              {lentUsers.map((user) => {
+                return (
+                  <p key={user.clerkId}>
+                    {user.firstName} owes you ${-user.amount}
+                  </p>
+                );
+              })}
+            </div>
+          ) : (
+            <div></div>
+          )}
+
+          {owedUsers.length > 0 ? (
+            <div>
+              <h2>You still owe Otters ${netOwed}</h2>
+              {owedUsers.map((user) => {
+                return (
+                  <p key={user.clerkId}>
+                    You owe {user.firstName} ${user.amount}
+                  </p>
+                );
+              })}
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       ) : (
         <div>Loading...</div>
