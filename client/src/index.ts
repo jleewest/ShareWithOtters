@@ -43,17 +43,28 @@ export type TransactionData = {
 };
 
 export type TransactionReturn = {
-  pending: { expense: Transaction[]; payment: Transaction[] };
+  pending: { expense: TransactionWithUser[]; payment: TransactionWithUser[] };
   active: {
     expense: {
-      awaitedPendingExpenseFromSentToOther: Transaction[];
-      confirmedExpenses: Transaction[];
+      awaitedPendingExpenseFromSentToOther: TransactionWithUser[];
+      confirmedExpenses: TransactionWithUser[];
     };
     payment: {
-      paid: Transaction[];
-      pendingPaid: Transaction[];
-      received: Transaction[];
+      paid: TransactionWithUser[];
+      pendingPaid: TransactionWithUser[];
+      received: TransactionWithUser[];
     };
+  };
+};
+
+export type TransactionWithUser = Transaction & {
+  userActee: {
+    firstName: string;
+    lastName: string;
+  };
+  userActor: {
+    firstName: string;
+    lastName: string;
   };
 };
 

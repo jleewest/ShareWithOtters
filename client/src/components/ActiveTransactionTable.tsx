@@ -2,6 +2,7 @@ import '../css/TransactionTable.css';
 import { Transaction } from '../index';
 import { useTransactionContext } from '../index';
 import { useState, useEffect } from 'react';
+import TransactionItem from './TransactionItem';
 
 export type TransactionActiveReturn = {
   expense: {
@@ -18,11 +19,17 @@ export type TransactionActiveReturn = {
 const TransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] =
-    useState<TransactionActiveReturn>();
+    useState<Transaction[]>();
 
   // Use only transactions with active status
   useEffect(() => {
-    setTransactionsByStatus(transactions.active);
+    setTransactionsByStatus([
+      ...transactions.active.expense.awaitedPendingExpenseFromSentToOther,
+      ...transactions.active.expense.confirmedExpenses,
+      ...transactions.active.payment.paid,
+      ...transactions.active.payment.pendingPaid,
+      ...transactions.active.payment.received,
+    ]);
   }, [transactions]);
 
   console.log(transactionsByStatus);
@@ -41,7 +48,7 @@ const TransactionTable = () => {
           </tr>
         </thead>
         <tbody>
-          {/*{transactionsByStatus.length > 0 ? (
+          {transactionsByStatus ? (
             transactionsByStatus.map((transaction) => (
               <TransactionItem key={transaction.id} transaction={transaction} />
             ))
@@ -49,7 +56,7 @@ const TransactionTable = () => {
             <tr>
               <td>No transactions found</td>
             </tr>
-          )}*/}
+          )}
         </tbody>
       </table>
     </div>

@@ -1,11 +1,12 @@
 import '../css/TransactionItem.css';
-import { Transaction } from '../index';
+import { TransactionWithUser } from '../index';
 import NoteForm from './NoteForm';
 import { updateTransactionStatus } from '../apiServices/transaction';
 import { useState } from 'react';
+import moment from 'moment';
 
 type TransactionItemProps = {
-  transaction: Transaction;
+  transaction: TransactionWithUser;
 };
 
 const TransactionItem = ({ transaction }: TransactionItemProps) => {
@@ -35,8 +36,8 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
         <td>
           <button onClick={openNoteForm}>Add Note</button>
         </td>
-        <td>{transaction.transactor}</td>
-        <td>{transaction.date}</td>
+        <td>{transaction.userActor.firstName}</td>
+        <td>{moment(transaction.date).format('ll')}</td>
         <td>{transaction.description}</td>
         <td style={{ color: amountColor, fontWeight: 'bold' }}>
           {sign}${transaction.amount.toFixed(2)}
