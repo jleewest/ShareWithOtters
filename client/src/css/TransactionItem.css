@@ -1,3 +1,5 @@
+/* TRANSACTION LIST FORMATTING */
+
 .TransactionItem {
   display: flex;
   justify-content: space-between;
@@ -14,4 +16,27 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+.TransactionItem .amount-with-date {
+  text-align: right;
+}
+
+/* INDIVIDUAL COMPONENT */
+.TransactionItem .transaction-user {
+  font-size: 1.25rem;
+  color: var(--secondary-color);
+  font-weight: 700;
+}
+.TransactionItem .transaction-note {
+  font-size: 0.75rem;
+  color: var(--dark-accent-color);
+}
+.TransactionItem .transaction-amount {
+  font-size: 1.25rem;
+}
+.TransactionItem .transaction-date,
+.transaction-description {
+  color: var(--secondary-color);
+  font-size: 0.75rem;
 }

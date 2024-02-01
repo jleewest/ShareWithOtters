@@ -19,6 +19,7 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
   const sign = transaction.type === 'expense' ? '-' : '+';
   const amountColor = transaction.type === 'payment' ? 'green' : 'purple';
   //const sign = if (transaction.type === 'expense'){return '-'} else if (transaction.type === 'payment' ){ }
+
   const handleAcceptTransaction = async () => {
     try {
       await updateTransactionStatus(transaction.id); // Update transaction status in the backend
@@ -50,17 +51,26 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
           </button>
         </div>
         <div>
-          <div>{transaction.userActor.firstName}</div>
-          <div>{transaction.description}</div>
+          <div className='transaction-user'>
+            {transaction.userActor.firstName}
+          </div>
+          <div className='transaction-description'>
+            {transaction.description}
+          </div>
         </div>
-        <div>{transaction.notes}</div>
+        <div className='transaction-note'>{transaction.notes}</div>
       </div>
       <div>
         <div className='amount-with-date'>
-          <div style={{ color: amountColor, fontWeight: 'bold' }}>
+          <div
+            className='transaction-amount'
+            style={{ color: amountColor, fontWeight: 'bold' }}
+          >
             {sign}${transaction.amount.toFixed(2)}
           </div>
-          <div>{moment(transaction.date).format('ll')}</div>
+          <div className='transaction-date'>
+            {moment(transaction.date).format('ll')}
+          </div>
         </div>
       </div>
       <NoteForm
