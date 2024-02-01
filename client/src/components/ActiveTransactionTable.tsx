@@ -1,10 +1,5 @@
 import '../css/TransactionTable.css';
-import { Transaction } from '../index';
-import {
-  useTransactionContext,
-  TransactionWithUser,
-  TransactionWithRenderType,
-} from '../index';
+import { useTransactionContext, TransactionWithRenderType } from '../index';
 import { useState, useEffect } from 'react';
 import TransactionItem from './TransactionItem';
 
@@ -34,6 +29,7 @@ const TransactionTable = () => {
   const [pendingPaid, setPendingPaid] = useState<TransactionWithRenderType[]>();
   const [received, setReceived] = useState<TransactionWithRenderType[]>();
 
+  // Set renderType to each transaction
   useEffect(() => {
     if (transactions) {
       setAwaitedPendingExpenseSentToOther(
@@ -71,7 +67,7 @@ const TransactionTable = () => {
     }
   }, [transactions]);
 
-  // Use only transactions with active status
+  //Set all pending transactions with renderTYpe
   useEffect(() => {
     if (
       awaitedPendingExpenseSentToOther &&

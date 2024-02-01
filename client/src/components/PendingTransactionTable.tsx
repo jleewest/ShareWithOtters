@@ -1,15 +1,11 @@
 import '../css/TransactionTable.css';
-import {
-  useTransactionContext,
-  TransactionWithUser,
-  TransactionWithRenderType,
-} from '../index';
+import { useTransactionContext, TransactionWithRenderType } from '../index';
 import { useState, useEffect } from 'react';
 import TransactionItem from './TransactionItem';
 
 export type TransactionPendingReturn = {
-  expense: TransactionWithUser[];
-  payment: TransactionWithUser[];
+  expense: TransactionWithRenderType[];
+  payment: TransactionWithRenderType[];
 };
 
 const PendingTransactionTable = () => {
@@ -21,7 +17,7 @@ const PendingTransactionTable = () => {
   const [pendingPayment, setPendingPayment] =
     useState<TransactionWithRenderType[]>();
 
-  // Use only transactions with pending status
+  // Set renderType to each transaction
   useEffect(() => {
     if (transactions) {
       setPendingExpense(
@@ -39,6 +35,7 @@ const PendingTransactionTable = () => {
     }
   }, [transactions]);
 
+  //Set all pending transactions with renderTYpe
   useEffect(() => {
     if (pendingExpense && pendingPayment) {
       setTransactionsByStatus([...pendingExpense, ...pendingPayment]);
@@ -49,7 +46,6 @@ const PendingTransactionTable = () => {
     <div className='PendingTransactions'>
       <div className='table-header'>
         <div>Pending transactions...</div>
-        <div>Accept | Edit</div>
       </div>
       <div className='table-body'>
         {transactionsByStatus ? (
