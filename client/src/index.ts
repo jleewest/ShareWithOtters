@@ -70,8 +70,8 @@ export type TransactionWithUser = Transaction & {
 
 //context for Transaction Context Provider
 export type TTransactionContext = {
-  transactions: TransactionReturn;
-  setTransactions: Dispatch<SetStateAction<TransactionReturn>>;
+  transactions: TransactionReturn | undefined;
+  setTransactions: Dispatch<SetStateAction<TransactionReturn | undefined>>;
 };
 
 export const TransactionsContext = createContext<TTransactionContext | null>(

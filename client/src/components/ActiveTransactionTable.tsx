@@ -23,13 +23,15 @@ const TransactionTable = () => {
 
   // Use only transactions with active status
   useEffect(() => {
-    setTransactionsByStatus([
-      ...transactions.active.expense.awaitedPendingExpenseFromSentToOther,
-      ...transactions.active.expense.confirmedExpenses,
-      ...transactions.active.payment.paid,
-      ...transactions.active.payment.pendingPaid,
-      ...transactions.active.payment.received,
-    ]);
+    if (transactions) {
+      setTransactionsByStatus([
+        ...transactions.active.expense.awaitedPendingExpenseFromSentToOther,
+        ...transactions.active.expense.confirmedExpenses,
+        ...transactions.active.payment.paid,
+        ...transactions.active.payment.pendingPaid,
+        ...transactions.active.payment.received,
+      ]);
+    }
   }, [transactions]);
 
   console.log(transactionsByStatus);
