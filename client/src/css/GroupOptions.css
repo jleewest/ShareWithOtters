@@ -18,5 +18,10 @@
 }
 
 .GroupOptions .group-btns > button {
-  box-shadow: 0.6px 3.5px 5px rgba(0, 0, 0, 0.7);
+  background-color: var(--secondary-color);
+}
+
+.GroupOptions .group-btns > button:hover {
+  background-color: var(--light-accent-color);
+  transition: all 3sec ease-in-out;
 }

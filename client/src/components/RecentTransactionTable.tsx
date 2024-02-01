@@ -15,7 +15,7 @@ export type TransactionActiveReturn = {
   };
 };
 
-const TransactionTable = () => {
+const RecentTransactionTable = () => {
   const { transactions } = useTransactionContext(); // Use the transactions from context
   const [transactionsByStatus, setTransactionsByStatus] =
     useState<TransactionWithRenderType[]>();
@@ -94,7 +94,7 @@ const TransactionTable = () => {
   console.log(transactionsByStatus);
 
   return (
-    <div className='ActiveTransactions'>
+    <div className='RecentTransactions'>
       <div className='table-header'>
         <div>Recent transactions</div>
       </div>
@@ -114,4 +114,4 @@ const TransactionTable = () => {
   );
 };
 
-export default TransactionTable;
+export default RecentTransactionTable;

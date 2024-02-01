@@ -26,9 +26,15 @@ const GroupOptions = ({ refreshTransactions }: GroupOptionsProps) => {
     <div className='GroupOptions'>
       <img className='logo' src={logo} alt='logo' />
       <section className='group-btns'>
-        <button onClick={openExpenseForm}>Add expense</button>
-        <button onClick={openPaymentForm}>Add payment</button>
-        <button onClick={openInviteForm}>Invite friends</button>
+        <button className='primary-btn' onClick={openExpenseForm}>
+          Add expense
+        </button>
+        <button className='primary-btn' onClick={openPaymentForm}>
+          Add payment
+        </button>
+        <button className='primary-btn' onClick={openInviteForm}>
+          Invite friends
+        </button>
       </section>
       {/* Modals for forms with refreshTransactions passed as a prop */}
       <PaymentForm

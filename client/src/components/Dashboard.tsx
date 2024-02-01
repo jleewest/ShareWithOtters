@@ -1,7 +1,7 @@
 import '../css/Dashboard.css';
 import GroupOptions from './GroupOptions';
 import WaveChart from './WaveChart';
-import ActiveTransactionTable from './ActiveTransactionTable';
+import RecentTransactionTable from './RecentTransactionTable';
 import PendingTransactionTable from './PendingTransactionTable';
 import PieChart from './PieChart';
 import LendingSummary from './LendingSummary';
@@ -38,7 +38,7 @@ const Dashboard = () => {
         <LendingSummary />
 
         {/* Render only approved transactions here */}
-        <ActiveTransactionTable />
+        <RecentTransactionTable />
 
         <PieChart />
       </LocalizationProvider>

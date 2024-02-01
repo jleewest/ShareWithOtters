@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   const [transactions, setTransactions] = useState<TransactionReturn>();
-  //user.id === ClerkId
   const { user } = useUser();
 
   //POST user to DB if newUser
@@ -42,7 +41,7 @@ function Home() {
             OtterShare
           </Link>
           <SignOutButton afterSignOutUrl='/'>
-            <button className='logout-button'>Logout</button>
+            <button className='primary-btn logout-button'>Logout</button>
           </SignOutButton>
         </header>
         <main className='home-container'>
@@ -64,7 +63,7 @@ function Home() {
           OtterShare
         </Link>
         <SignOutButton afterSignOutUrl='/'>
-          <button className='logout-button'>Logout</button>
+          <button className='primary-btn logout-button'>Logout</button>
         </SignOutButton>
       </header>
       <main className='home-container'>
