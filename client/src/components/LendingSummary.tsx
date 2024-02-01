@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TransactionWithUser, useTransactionContext } from '../index';
 import { useUser } from '@clerk/clerk-react';
 import WaveChart from './WaveChart';
+import '../css/LendingSummary.css';
 
 type friendList = {
   clerkId: string;
@@ -63,7 +64,7 @@ const LendingSummary = () => {
 
       setFriendList(updatedFriendList);
     }
-  }, [transactions]);
+  }, [transactions, user]);
 
   //Sets net owe to each friend
   function updateFriendList(
@@ -130,7 +131,7 @@ const LendingSummary = () => {
   useEffect(() => {
     if (netOwed && netLent) {
       let balanceMsg;
-      let netBalance = netOwed - netLent;
+      const netBalance = netOwed - netLent;
       if (netBalance === 0) {
         balanceMsg = 'All Otters paid up!';
       }
