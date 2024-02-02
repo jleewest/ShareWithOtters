@@ -8,9 +8,10 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
+  Filler,
 } from 'chart.js';
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Filler);
 
 export type DatedTransaction = {
   date: string;
@@ -119,7 +120,6 @@ const WaveChart = () => {
       const groupedTransactions: DatedTransaction[][] = [];
       sortedTransactions.forEach((transaction) => {
         const transactionDate = new Date(transaction.date).toLocaleDateString();
-        console.log(transactionDate);
         let existingArray = groupedTransactions.find(
           (existingDateGroup) =>
             new Date(existingDateGroup[0].date).toLocaleDateString() ===
@@ -167,24 +167,35 @@ const WaveChart = () => {
     labels: netDataDate,
     datasets: [
       {
+        fill: 'origin',
+      },
+      {
         data: netDataAmount,
-        backgroundColor: 'green',
-        pointBorderColor: 'green',
+        borderColor: 'rgb(15, 121, 134, 0.5)',
+        pointBorderColor: (context) => {
+          const value = context.raw || 0;
+          return value >= 0 ? '#0f7986' : '#c931a9';
+        },
+        backgroundColor: (context) => {
+          console.log(context.raw);
+          const value = context.raw || 0;
+          return value >= 0 ? 'rgb(15, 121, 134, 0.5)' : '#c931a9';
+        },
       },
     ],
   };
 
   const options = {
-    plugins: {
-      //legend: true,
-    },
-    //scales: {},
+    plugins: {},
   };
 
   return (
     <div
       className='WaveChart'
-      style={{ border: '2px solid var(--dark-accent-color)' }}
+      style={{
+        border: '2px solid var(--primary-color)',
+        borderRadius: '10px',
+      }}
     >
       <Line data={data} options={options}></Line>
     </div>
