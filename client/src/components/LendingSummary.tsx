@@ -147,9 +147,6 @@ const LendingSummary = () => {
     }
   }, [netOwed, netLent]);
 
-  console.log(netLent);
-  console.log(netOwed);
-  console.log(netBalanceMsg);
   return (
     <div className='LendingSummary'>
       {netBalanceMsg ? (
