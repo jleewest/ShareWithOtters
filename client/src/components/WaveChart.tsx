@@ -1,6 +1,16 @@
 import { useTransactionContext } from '../index';
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+} from 'chart.js';
+
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 export type DatedTransaction = {
   date: string;
@@ -20,6 +30,9 @@ const WaveChart = () => {
     useState<DatedTransaction[]>();
   const [confirmedActeeExpenses, setConfirmedActeeExpenses] =
     useState<DatedTransaction[]>();
+
+  const [netDataDate, setNetDataDate] = useState<string[]>([]);
+  const [netDataAmount, setNetDataAmount] = useState<number[]>([]);
   const { user } = useUser();
 
   // To each transaction: set date without time, amount, and renderType
@@ -133,28 +146,47 @@ const WaveChart = () => {
   useEffect(() => {
     if (groupedTransactions) {
       const calculateDailyNetBalance = () => {
-        const dailyNetBalance = groupedTransactions.map((dateArray) => {
+        let cumulativeBalance = 0;
+        const dailyBalance = groupedTransactions.map((dateArray) => {
           const date = dateArray[0].date;
-          const accumulatedAmount = dateArray.reduce(
+          cumulativeBalance += dateArray.reduce(
             (acc, transaction) => acc + transaction.amount,
             0
           );
-          return { x: date, y: accumulatedAmount };
+          return { date: date, amount: cumulativeBalance };
         });
-        console.log(dailyNetBalance);
+
+        setNetDataAmount(dailyBalance.map((balance) => balance.amount));
+        setNetDataDate(dailyBalance.map((balance) => balance.date));
       };
       calculateDailyNetBalance();
     }
   }, [groupedTransactions]);
 
-  console.log(groupedTransactions);
+  const data = {
+    labels: netDataDate,
+    datasets: [
+      {
+        data: netDataAmount,
+        backgroundColor: 'green',
+        pointBorderColor: 'green',
+      },
+    ],
+  };
+
+  const options = {
+    plugins: {
+      //legend: true,
+    },
+    //scales: {},
+  };
 
   return (
     <div
       className='WaveChart'
       style={{ border: '2px solid var(--dark-accent-color)' }}
     >
-      <h1>Wave Chart Render Here</h1>
+      <Line data={data} options={options}></Line>
     </div>
   );
 };
