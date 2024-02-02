@@ -23,20 +23,20 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [amount, setAmount] = useState<string>('');
-  const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
+  const [selectedFriends, setSelectedFriends] = useState<User | null>();
   const [allUsers, setAllUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       const users = await getAllUsers();
-      setAllUsers(users.filter(u => u.clerkId !== user?.id));
+      setAllUsers(users.filter((u) => u.clerkId !== user?.id));
     };
     fetchUsers();
   }, [user]);
 
   const handleSubmit = async () => {
     if (!date || !description || !amount || !user) {
-      console.error("Missing information");
+      console.error('Missing information');
       return;
     }
 
@@ -44,7 +44,7 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
       type: 'payment',
       date: date.toISOString(),
       transactor: user.id,
-      transactee: selectedFriends.map(friend => friend.clerkId),
+      transactee: [selectedFriends?.clerkId!],
       description,
       amount: [parseFloat(amount)],
       notes: '',
@@ -56,21 +56,44 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
       setDescription('');
       setDate(dayjs());
       setAmount('');
-      setSelectedFriends([]);
+      setSelectedFriends(null);
       onClose(); // Close the modal after successful submission
     } catch (error) {
       console.error('Failed to create payment transaction', error);
     }
   };
+  console.log(selectedFriends);
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add a Payment</DialogTitle>
       <DialogContent>
-        <MobileDatePicker label="Date" value={date} onChange={setDate} renderInput={(params) => <TextField {...params} />} />
-        <TextField autoFocus margin="dense" label="Payment description" type="text" fullWidth value={description} onChange={(e) => setDescription(e.target.value)} />
-        <TextField margin="dense" label="Amount" type="number" fullWidth value={amount} onChange={(e) => setAmount(e.target.value)} />
-        <Autocomplete multiple options={allUsers} getOptionLabel={(option) => `${option.firstName} ${option.lastName}`} onChange={(event, newValue) => setSelectedFriends(newValue)} renderInput={(params) => <TextField {...params} label="Select friends" />} />
+        <MobileDatePicker label='Date' value={date} onChange={setDate} />
+        <TextField
+          autoFocus
+          margin='dense'
+          label='Payment description'
+          type='text'
+          fullWidth
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <TextField
+          margin='dense'
+          label='Amount'
+          type='number'
+          fullWidth
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        <Autocomplete
+          options={allUsers}
+          getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+          onChange={(_, newValue) => setSelectedFriends(newValue)}
+          renderInput={(params) => (
+            <TextField {...params} label='Select friends' />
+          )}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
