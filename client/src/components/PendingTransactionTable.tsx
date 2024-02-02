@@ -2,6 +2,7 @@ import '../css/TransactionTable.css';
 import { useTransactionContext, TransactionWithRenderType } from '../index';
 import { useState, useEffect } from 'react';
 import TransactionItem from './TransactionItem';
+import { sortNewestFirst } from '../utils/transactionUtils';
 
 export type TransactionPendingReturn = {
   expense: TransactionWithRenderType[];
@@ -38,7 +39,9 @@ const PendingTransactionTable = () => {
   //Set all pending transactions with renderTYpe
   useEffect(() => {
     if (pendingExpense && pendingPayment) {
-      setTransactionsByStatus([...pendingExpense, ...pendingPayment]);
+      setTransactionsByStatus(
+        sortNewestFirst([...pendingExpense, ...pendingPayment])
+      );
     }
   }, [pendingExpense, pendingPayment]);
 
