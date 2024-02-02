@@ -1,19 +1,25 @@
 import Home from './components/Home';
 import './css/App.css';
 import { SignedOut, SignedIn, SignInButton } from '@clerk/clerk-react';
+import logo from './assets/otter-logo.svg';
 
 function App() {
   return (
-    <div className='app-container'>
+    <div className='App'>
       <SignedOut>
-        <h1>Login Page</h1>
-        <SignInButton redirectUrl='/'>
-          <button className='login-button primary-button'>Log In</button>
-        </SignInButton>
+        <div className='signed-out'>
+          <h1>OtterShare</h1>
+          <img className='login-logo' src={logo} alt='logo' />
+          <SignInButton redirectUrl='/'>
+            <button className='login-btn'>Log In</button>
+          </SignInButton>
+        </div>
       </SignedOut>
-      <SignedIn>
-        <Home />
-      </SignedIn>
+      <div className='signed-in'>
+        <SignedIn>
+          <Home />
+        </SignedIn>
+      </div>
     </div>
   );
 }
