@@ -1,7 +1,7 @@
 import logo from '../assets/otter-logo.svg';
 import '../css/GroupOptions.css';
 import { useState } from 'react';
-import PaymentForm from './modals/PaymentForm';
+import AddPaymentForm from './modals/AddPaymentForm';
 import ExpenseForm from './modals/ExpenseForm';
 import InviteForm from './modals/InviteForm';
 
@@ -9,7 +9,7 @@ type GroupOptionsProps = {
   refreshTransactions: () => void;
 };
 
-const GroupOptions = ({ refreshTransactions }: GroupOptionsProps) => {
+const GroupOptions = ({ /*refreshTransactions*/ }: GroupOptionsProps) => {
   const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
   const [isExpenseFormOpen, setExpenseFormOpen] = useState(false);
   const [isInviteFormOpen, setInviteFormOpen] = useState(false);
@@ -37,10 +37,10 @@ const GroupOptions = ({ refreshTransactions }: GroupOptionsProps) => {
         </button>
       </section>
       {/* Modals for forms with refreshTransactions passed as a prop */}
-      <PaymentForm
+      <AddPaymentForm
         open={isPaymentFormOpen}
         onClose={closePaymentForm}
-        refreshTransactions={refreshTransactions}
+        // SetTransactions={refreshTransactions}
       />
       <ExpenseForm
         open={isExpenseFormOpen}
