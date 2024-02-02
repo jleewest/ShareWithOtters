@@ -11,9 +11,10 @@ import { useUser } from '@clerk/clerk-react';
 
 type TransactionItemProps = {
   transaction: TransactionWithRenderType;
+  status: string;
 };
 
-const TransactionItem = ({ transaction }: TransactionItemProps) => {
+const TransactionItem = ({ transaction, status }: TransactionItemProps) => {
   const [isNoteFormOpen, setNoteFormOpen] = useState(false);
   const openNoteForm = () => setNoteFormOpen(true);
   const closeNoteForm = () => setNoteFormOpen(false);
@@ -90,13 +91,18 @@ const TransactionItem = ({ transaction }: TransactionItemProps) => {
     <div className='TransactionItem'>
       <div className='buttons-and-descriptions'>
         <div>
-          <button className='transaction-btn' onClick={handleAcceptTransaction}>
-            <FontAwesomeIcon
-              icon={faSquareCheck}
-              style={{ color: '#FFD43B' }}
-              size='2x'
-            />
-          </button>
+          {status === 'pending' && (
+            <button
+              className='transaction-btn'
+              onClick={handleAcceptTransaction}
+            >
+              <FontAwesomeIcon
+                icon={faSquareCheck}
+                style={{ color: '#FFD43B' }}
+                size='2x'
+              />
+            </button>
+          )}
         </div>
         <div>
           <button className='transaction-btn' onClick={openNoteForm}>

@@ -2,6 +2,7 @@ import '../css/TransactionTable.css';
 import { useTransactionContext, TransactionWithRenderType } from '../index';
 import { useState, useEffect } from 'react';
 import TransactionItem from './TransactionItem';
+import { sortNewestFirst } from '../utils/transactionUtils';
 
 export type TransactionActiveReturn = {
   expense: {
@@ -76,13 +77,15 @@ const RecentTransactionTable = () => {
       pendingPaid &&
       received
     ) {
-      setTransactionsByStatus([
-        ...awaitedPendingExpenseSentToOther,
-        ...confirmedExpenses,
-        ...paid,
-        ...pendingPaid,
-        ...received,
-      ]);
+      setTransactionsByStatus(
+        sortNewestFirst([
+          ...awaitedPendingExpenseSentToOther,
+          ...confirmedExpenses,
+          ...paid,
+          ...pendingPaid,
+          ...received,
+        ])
+      );
     }
   }, [
     awaitedPendingExpenseSentToOther,
@@ -100,7 +103,11 @@ const RecentTransactionTable = () => {
       <div className='table-body'>
         {transactionsByStatus ? (
           transactionsByStatus.map((transaction) => (
-            <TransactionItem key={transaction.id} transaction={transaction} />
+            <TransactionItem
+              key={transaction.id}
+              transaction={transaction}
+              status='active'
+            />
           ))
         ) : (
           <div>
