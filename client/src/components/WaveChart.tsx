@@ -5,7 +5,6 @@ import { useUser } from '@clerk/clerk-react';
 export type DatedTransaction = {
   date: string;
   amount: number;
-  renderType: string;
 };
 
 const WaveChart = () => {
@@ -30,14 +29,12 @@ const WaveChart = () => {
         transactions.pending.expense.map((transaction) => ({
           date: new Date(transaction.date).toLocaleDateString(),
           amount: transaction.amount,
-          renderType: 'pendingExpense',
         }))
       );
       setPendingPayment(
         transactions.pending.payment.map((transaction) => ({
           date: new Date(transaction.date).toLocaleDateString(),
-          amount: transaction.amount,
-          renderType: 'pendingPayment',
+          amount: -transaction.amount,
         }))
       );
       if (transactions) {
@@ -46,7 +43,6 @@ const WaveChart = () => {
             (transaction) => ({
               date: new Date(transaction.date).toLocaleDateString(),
               amount: transaction.amount,
-              renderType: 'awaitedPending',
             })
           )
         );
@@ -58,8 +54,7 @@ const WaveChart = () => {
             })
             .map((transaction) => ({
               date: new Date(transaction.date).toLocaleDateString(),
-              amount: transaction.amount,
-              renderType: 'confirmedActeeExpense',
+              amount: -transaction.amount,
             }))
         );
         setConfirmedActorExpenses(
@@ -71,14 +66,12 @@ const WaveChart = () => {
             .map((transaction) => ({
               date: new Date(transaction.date).toLocaleDateString(),
               amount: transaction.amount,
-              renderType: 'confirmedActorExpense',
             }))
         );
         setReceived(
           transactions.active.payment.received.map((transaction) => ({
             date: new Date(transaction.date).toLocaleDateString(),
-            amount: transaction.amount,
-            renderType: 'received',
+            amount: -transaction.amount,
           }))
         );
       }
@@ -136,18 +129,25 @@ const WaveChart = () => {
     received,
   ]);
 
-  console.log(groupedTransactions);
+  //reduce each date-array to net amount
+  useEffect(() => {
+    if (groupedTransactions) {
+      const calculateDailyNetBalance = () => {
+        const dailyNetBalance = groupedTransactions.map((dateArray) => {
+          const date = dateArray[0].date;
+          const accumulatedAmount = dateArray.reduce(
+            (acc, transaction) => acc + transaction.amount,
+            0
+          );
+          return { x: date, y: accumulatedAmount };
+        });
+        console.log(dailyNetBalance);
+      };
+      calculateDailyNetBalance();
+    }
+  }, [groupedTransactions]);
 
-  // Group transactions by month and calculate total lent and owed
-  //export const groupByMonth = (transactions: TransactionReturn) => {
-  //  return transactions.reduce((acc, transaction) => {
-  //    const month = new Date(transaction.date).getMonth();
-  //    if (!acc[month]) acc[month] = 0;
-  //    // Use absolute value of amount
-  //    acc[month] += Math.abs(transaction.amount);
-  //    return acc;
-  //  }, {} as Record<number, number>);
-  //};
+  console.log(groupedTransactions);
 
   return (
     <div
