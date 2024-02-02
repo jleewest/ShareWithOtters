@@ -41,7 +41,11 @@ const LendingSummary = () => {
       ];
 
       transactionsAdded
-        .filter((transaction) => transaction.transactor !== user.id)
+        .filter(
+          (transaction) =>
+            transaction.transactee === user.id &&
+            transaction.transactee !== transaction.transactor
+        )
         .forEach((transaction) => {
           updateFriendList(
             transaction.transactor,
@@ -52,7 +56,11 @@ const LendingSummary = () => {
         });
 
       transactionsSubtracted
-        .filter((transaction) => transaction.transactee !== user.id)
+        .filter(
+          (transaction) =>
+            transaction.transactor === user.id &&
+            transaction.transactee !== transaction.transactor
+        )
         .forEach((transaction) => {
           updateFriendList(
             transaction.transactee,
