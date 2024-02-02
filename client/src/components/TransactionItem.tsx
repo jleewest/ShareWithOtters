@@ -69,7 +69,7 @@ const TransactionItem = ({ transaction, status }: TransactionItemProps) => {
       transaction.renderType === 'pendingPaid' ||
       transaction.renderType === 'paid'
     ) {
-      userMessage = `You paid back${transaction.userActee.firstName}`;
+      userMessage = `You paid back ${transaction.userActee.firstName}`;
     } else if (
       transaction.renderType === 'confirmedExpense' &&
       transaction.transactor === transaction.transactee
