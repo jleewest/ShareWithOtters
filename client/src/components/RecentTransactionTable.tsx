@@ -101,7 +101,7 @@ const RecentTransactionTable = () => {
         <div>Recent transactions</div>
       </div>
       <div className='table-body'>
-        {transactionsByStatus ? (
+        {transactionsByStatus && transactionsByStatus.length > 0 ? (
           transactionsByStatus.map((transaction) => (
             <TransactionItem
               key={transaction.id}
@@ -111,7 +111,7 @@ const RecentTransactionTable = () => {
           ))
         ) : (
           <div>
-            <div>No transactions found</div>
+            <div>No recent transactions</div>
           </div>
         )}
       </div>

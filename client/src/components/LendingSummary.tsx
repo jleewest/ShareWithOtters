@@ -14,7 +14,7 @@ const LendingSummary = () => {
   const [lentUsers, setLentUsers] = useState<friendList[]>([]);
   const [netLent, setNetLent] = useState<number>();
   const [netOwed, setNetOwed] = useState<number>();
-  const [netBalanceMsg, setNetBalanceMsg] = useState<string>();
+  const [netBalanceMsg, setNetBalanceMsg] = useState<string>('No Transactions');
   const [owedUsers, setOwedUsers] = useState<friendList[]>([]);
   const [friendList, setFriendList] = useState<friendList[]>([]);
   const { transactions } = useTransactionContext();
