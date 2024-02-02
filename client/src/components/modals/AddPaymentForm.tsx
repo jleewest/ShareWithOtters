@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { useTransactionDataContext } from '../../index';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,7 +9,8 @@ import TextField from '@mui/material/TextField';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { Autocomplete } from '@mui/material';
 import { getAllUsers } from '../../apiServices/user';
-import { User } from '../../index';
+import { User, TransactionData } from '../../index'; // Ensure TransactionData is correctly imported
+import { createTransaction } from '../../apiServices/transaction';
 import dayjs from 'dayjs';
 
 type AddPaymentFormProps = {
@@ -18,45 +18,53 @@ type AddPaymentFormProps = {
   onClosePayment: () => void;
 };
 
-const AddPaymentForm: React.FC<AddPaymentFormProps> = ({
-  openPayment,
-  onClosePayment,
-}) => {
-  const { setTransactionData } = useTransactionDataContext();
+const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ openPayment, onClosePayment }) => {
+  const { user } = useUser();
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [amount, setAmount] = useState<string>('');
   const [selectedFriends, setSelectedFriends] = useState<User[]>([]);
   const [allUsers, setAllUsers] = useState<User[]>([]);
-  const { user } = useUser();
 
   useEffect(() => {
     const fetchUsers = async () => {
       const users = await getAllUsers();
       setAllUsers(users.filter(u => u.clerkId !== user?.id));
     };
-
     fetchUsers();
   }, [user]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!date || !description || !amount || !user) {
       console.error("Missing information");
       return;
     }
 
-    setTransactionData({
+    const newTransaction: TransactionData = {
       type: 'payment',
       date: date.toISOString(),
       transactor: user.id,
       transactee: selectedFriends.map(friend => friend.clerkId),
       description,
-      amount: [parseFloat(amount)],
+      amount: [parseFloat(amount)], // Ensure amount is an array of numbers if your backend expects it this way
       notes: '',
-    });
+    };
 
-    onClosePayment(); // Close the modal after setting the transaction data
+    try {
+      await createTransaction(newTransaction);
+      console.log('Payment successfully created');
+      // Reset form fields and close modal
+      setDescription('');
+      setDate(dayjs());
+      setAmount('');
+      setSelectedFriends([]);
+      onClosePayment();
+    } catch (error) {
+      console.error('Failed to create payment transaction', error);
+    }
   };
+
+
 
   return (
     <Dialog open={openPayment} onClose={onClosePayment}>
@@ -89,9 +97,7 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({
           multiple
           options={allUsers}
           getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-          onChange={(event, newValue) => {
-            setSelectedFriends(newValue);
-          }}
+          onChange={(event, newValue) => setSelectedFriends(newValue)}
           renderInput={(params) => <TextField {...params} label="Select friends" />}
         />
       </DialogContent>
@@ -104,3 +110,4 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({
 };
 
 export default AddPaymentForm;
+

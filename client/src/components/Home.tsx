@@ -11,6 +11,9 @@ import { Link } from 'react-router-dom';
 function Home() {
   const [transactions, setTransactions] = useState<TransactionReturn>();
   const { user } = useUser();
+  if (user) {
+    console.log(user)
+  }
 
   //POST user to DB if newUser
   useEffect(() => {
