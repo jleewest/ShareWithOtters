@@ -51,7 +51,7 @@ const PendingTransactionTable = () => {
         <div>Pending transactions...</div>
       </div>
       <div className='table-body'>
-        {transactionsByStatus ? (
+        {transactionsByStatus && transactionsByStatus.length > 0 ? (
           transactionsByStatus.map((transaction) => (
             <TransactionItem
               key={transaction.id}
@@ -61,7 +61,7 @@ const PendingTransactionTable = () => {
           ))
         ) : (
           <div>
-            <div>No transactions found</div>
+            <div>No pending transactions</div>
           </div>
         )}
       </div>
