@@ -133,7 +133,7 @@ export async function createTransaction(req: Request, res: Response) {
 export async function deleteTransaction(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
-    const saved = await prisma.transaction.delete({ where: { id: id } });
+    const saved = await prisma.transaction.delete({ where: { id } });
     req.body = JSON.stringify({ message: 'Message successfully deleted' });
     res.json(saved);
   } catch (err) {
@@ -147,7 +147,7 @@ export async function updateTransactionStatus(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
     const message = await prisma.transaction.update({
-      where: { id: id },
+      where: { id },
       data: { status: 'active' },
     });
     res.json(message);
@@ -163,7 +163,7 @@ export async function editTransaction(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
     const message = await prisma.transaction.update({
-      where: { id: id },
+      where: { id },
       data: {
         date: req.body.date,
         amount: req.body.amount,
