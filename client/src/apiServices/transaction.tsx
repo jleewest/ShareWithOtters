@@ -19,15 +19,7 @@ export async function createTransaction(
   const response = await fetch(`${BASE_URL}/transaction`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      type: transaction.type,
-      date: transaction.date,
-      transactor: transaction.transactor,
-      transactee: transaction.transactee,
-      description: transaction.description,
-      amount: transaction.amount,
-      notes: transaction.notes,
-    }),
+    body: JSON.stringify(transaction),
   });
   if (response.ok) {
     const data = await response.json();
