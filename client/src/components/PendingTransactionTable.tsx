@@ -53,7 +53,11 @@ const PendingTransactionTable = () => {
       <div className='table-body'>
         {transactionsByStatus ? (
           transactionsByStatus.map((transaction) => (
-            <TransactionItem key={transaction.id} transaction={transaction} />
+            <TransactionItem
+              key={transaction.id}
+              transaction={transaction}
+              status='pending'
+            />
           ))
         ) : (
           <div>
