@@ -7,12 +7,13 @@ import { addUser } from '../apiServices/user';
 import { useUser } from '@clerk/clerk-react';
 import { SignOutButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
+import DarkModeToggle from '../css/DarkModeToggle';
 
 function Home() {
   const [transactions, setTransactions] = useState<TransactionReturn>();
   const { user } = useUser();
   if (user) {
-    console.log(user)
+    console.log(user);
   }
 
   //POST user to DB if newUser
@@ -43,9 +44,14 @@ function Home() {
           <Link className='otter-home' to='/'>
             OtterShare
           </Link>
-          <SignOutButton afterSignOutUrl='/'>
-            <button className='primary-btn logout-button'>Logout</button>
-          </SignOutButton>
+          <div>
+            <div className='login-dark-mode'>
+              <DarkModeToggle />
+            </div>
+            <SignOutButton afterSignOutUrl='/'>
+              <button className='primary-btn logout-button'>Logout</button>
+            </SignOutButton>
+          </div>
         </header>
         <main className='home-container'>
           <div>
@@ -65,9 +71,14 @@ function Home() {
         <Link className='otter-home' to='/'>
           OtterShare
         </Link>
-        <SignOutButton afterSignOutUrl='/'>
-          <button className='primary-btn logout-button'>Logout</button>
-        </SignOutButton>
+        <div className='header-right'>
+          <div className='login-dark-mode'>
+            <DarkModeToggle />
+          </div>
+          <SignOutButton afterSignOutUrl='/'>
+            <button className='primary-btn logout-button'>Logout</button>
+          </SignOutButton>
+        </div>
       </header>
       <main className='home-container'>
         <TransactionsContext.Provider value={{ transactions, setTransactions }}>
