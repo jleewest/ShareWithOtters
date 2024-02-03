@@ -28,7 +28,7 @@ const AddSplitForm = ({
   const [evenSplitAmount, setEvenSplitAmount] = useState<number>(0);
   const [customAmounts, setCustomAmounts] = useState<number[]>([]);
   const { transactionData, setTransactionData } = useTransactionDataContext();
-
+  console.log(transactionData);
   useEffect(() => {
     const fetchData = async () => {
       const payeesData = [];
@@ -54,7 +54,6 @@ const AddSplitForm = ({
     const defaultAmount = Array(payees.length).fill(defaultEvenSplit);
     setDefaultAmounts(defaultAmount);
   }, [payees.length, transactionData.amount]);
-
   const totalAmountToSplit = transactionData.amount[0];
 
   const handleChange =

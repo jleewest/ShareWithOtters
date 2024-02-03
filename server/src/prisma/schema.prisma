@@ -4,48 +4,48 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/lendgroup"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id                 Int             @id @default(autoincrement())
-  clerkId            String          @unique
-  firstName          String
-  lastName           String
-  email              String
-  user_group         User_Group[]
-  userActor          Transaction[]   @relation("userActor")
-  userActee          Transaction[]   @relation("userActee")
+  id         Int           @id @default(autoincrement())
+  clerkId    String        @unique
+  firstName  String
+  lastName   String
+  email      String
+  userActee  Transaction[] @relation("userActee")
+  userActor  Transaction[] @relation("userActor")
+  user_group User_Group[]
 }
 
 model Group {
-  id                 Int             @id @default(autoincrement())
-  title              String
-  description        String?
-  user_group         User_Group[]
-  transaction        Transaction[]
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String?
+  transaction Transaction[]
+  user_group  User_Group[]
 }
 
 model User_Group {
-  id                 Int             @id @default(autoincrement())
-  userId             String
-  user               User            @relation(fields: [userId], references: [clerkId])
-  groupId            Int
-  group              Group           @relation(fields: [groupId], references: [id])
+  id      Int    @id @default(autoincrement())
+  userId  String
+  groupId Int
+  group   Group  @relation(fields: [groupId], references: [id])
+  user    User   @relation(fields: [userId], references: [clerkId])
 }
 
 model Transaction {
-  id                 Int             @id @default(autoincrement())
-  groupId            Int?
-  group              Group?          @relation(fields: [groupId], references: [id])
-  type               String
-  date               String
-  transactor         String
-  userActor          User            @relation("userActor", fields: [transactor], references: [clerkId])
-  transactee         String
-  userActee          User            @relation("userActee", fields: [transactee], references: [clerkId])
-  description        String?
-  amount             Int
-  status             String          @default("pending")
-  notes              String?
+  id          Int     @id @default(autoincrement())
+  groupId     Int?
+  type        String
+  date        String
+  transactor  String
+  transactee  String
+  description String?
+  amount      Int
+  status      String  @default("pending")
+  notes       String?
+  group       Group?  @relation(fields: [groupId], references: [id])
+  userActee   User    @relation("userActee", fields: [transactee], references: [clerkId])
+  userActor   User    @relation("userActor", fields: [transactor], references: [clerkId])
 }

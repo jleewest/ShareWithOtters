@@ -31,16 +31,29 @@ const WaveChart = () => {
     useState<DatedTransaction[]>();
   const [confirmedActeeExpenses, setConfirmedActeeExpenses] =
     useState<DatedTransaction[]>();
+  const [paid, setPaid] = useState<DatedTransaction[]>();
+  const [pendingPaid, setPendingPaid] = useState<DatedTransaction[]>();
 
   const [netDataDate, setNetDataDate] = useState<string[]>([]);
   const [netDataAmount, setNetDataAmount] = useState<number[]>([]);
   const { user } = useUser();
-
   // To each transaction: set date without time, amount, and renderType
   useEffect(() => {
     if (transactions && user) {
       setPendingExpense(
         transactions.pending.expense.map((transaction) => ({
+          date: new Date(transaction.date).toLocaleDateString(),
+          amount: -transaction.amount,
+        }))
+      );
+      setPaid(
+        transactions.active.payment.paid.map((transaction) => ({
+          date: new Date(transaction.date).toLocaleDateString(),
+          amount: transaction.amount,
+        }))
+      );
+      setPendingPaid(
+        transactions.active.payment.pendingPaid.map((transaction) => ({
           date: new Date(transaction.date).toLocaleDateString(),
           amount: transaction.amount,
         }))
@@ -62,10 +75,11 @@ const WaveChart = () => {
         );
         setConfirmedActeeExpenses(
           transactions.active.expense.confirmedExpenses
-            .filter((transaction) => {
-              transaction.transactee === user.id &&
-                transaction.transactor !== user.id;
-            })
+            .filter(
+              (transaction) =>
+                transaction.transactee === user.id &&
+                transaction.transactor !== user.id
+            )
             .map((transaction) => ({
               date: new Date(transaction.date).toLocaleDateString(),
               amount: -transaction.amount,
@@ -73,10 +87,11 @@ const WaveChart = () => {
         );
         setConfirmedActorExpenses(
           transactions.active.expense.confirmedExpenses
-            .filter((transaction) => {
-              transaction.transactee !== user.id &&
-                transaction.transactor === user.id;
-            })
+            .filter(
+              (transaction) =>
+                transaction.transactor === user.id &&
+                transaction.transactee !== user.id
+            )
             .map((transaction) => ({
               date: new Date(transaction.date).toLocaleDateString(),
               amount: transaction.amount,
@@ -97,6 +112,8 @@ const WaveChart = () => {
     if (
       pendingExpense &&
       pendingPayment &&
+      paid &&
+      pendingPaid &&
       confirmedActeeExpenses &&
       confirmedActorExpenses &&
       awaitedPending &&
@@ -105,6 +122,8 @@ const WaveChart = () => {
       const allTransactions = [
         ...pendingExpense,
         ...pendingPayment,
+        ...paid,
+        ...pendingPaid,
         ...confirmedActeeExpenses,
         ...confirmedActorExpenses,
         ...awaitedPending,
@@ -136,6 +155,8 @@ const WaveChart = () => {
   }, [
     pendingExpense,
     pendingPayment,
+    paid,
+    pendingPaid,
     confirmedActeeExpenses,
     confirmedActorExpenses,
     awaitedPending,
@@ -155,7 +176,6 @@ const WaveChart = () => {
           );
           return { date: date, amount: cumulativeBalance };
         });
-
         setNetDataAmount(dailyBalance.map((balance) => balance.amount));
         setNetDataDate(dailyBalance.map((balance) => balance.date));
       };
@@ -172,12 +192,14 @@ const WaveChart = () => {
       {
         data: netDataAmount,
         borderColor: 'rgb(15, 121, 134, 0.5)',
-        pointBorderColor: (context) => {
+        // eslint-disable-next-line
+        pointBorderColor: (context: any) => {
+          console.log(context);
           const value = context.raw || 0;
           return value >= 0 ? '#0f7986' : '#c931a9';
         },
-        backgroundColor: (context) => {
-          console.log(context.raw);
+        // eslint-disable-next-line
+        backgroundColor: (context: any) => {
           const value = context.raw || 0;
           return value >= 0 ? 'rgb(15, 121, 134, 0.5)' : '#c931a9';
         },
@@ -188,7 +210,6 @@ const WaveChart = () => {
   const options = {
     plugins: {},
   };
-
   return (
     <div
       className='WaveChart'
@@ -197,6 +218,7 @@ const WaveChart = () => {
         borderRadius: '10px',
       }}
     >
+      {/*@ts-expect-error fill not available on react-chartjs*/}
       <Line data={data} options={options}></Line>
     </div>
   );
