@@ -193,6 +193,7 @@ const WaveChart = () => {
         data: netDataAmount,
         borderColor: 'rgb(15, 121, 134, 0.5)',
         pointBorderColor: (context) => {
+          console.log(context);
           const value = context.raw || 0;
           return value >= 0 ? '#0f7986' : '#c931a9';
         },

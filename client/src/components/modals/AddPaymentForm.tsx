@@ -44,7 +44,7 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
       type: 'payment',
       date: date.toISOString(),
       transactor: user.id,
-      transactee: [selectedFriends?.clerkId!],
+      transactee: [selectedFriends?.clerkId || 'No transactee yet'],
       description,
       amount: [parseFloat(amount)],
       notes: '',
