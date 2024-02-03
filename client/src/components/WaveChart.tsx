@@ -192,12 +192,14 @@ const WaveChart = () => {
       {
         data: netDataAmount,
         borderColor: 'rgb(15, 121, 134, 0.5)',
-        pointBorderColor: (context) => {
+        // eslint-disable-next-line
+        pointBorderColor: (context: any) => {
           console.log(context);
           const value = context.raw || 0;
           return value >= 0 ? '#0f7986' : '#c931a9';
         },
-        backgroundColor: (context) => {
+        // eslint-disable-next-line
+        backgroundColor: (context: any) => {
           const value = context.raw || 0;
           return value >= 0 ? 'rgb(15, 121, 134, 0.5)' : '#c931a9';
         },
@@ -208,7 +210,6 @@ const WaveChart = () => {
   const options = {
     plugins: {},
   };
-
   return (
     <div
       className='WaveChart'
@@ -217,6 +218,7 @@ const WaveChart = () => {
         borderRadius: '10px',
       }}
     >
+      {/*@ts-expect-error fill not available on react-chartjs*/}
       <Line data={data} options={options}></Line>
     </div>
   );
