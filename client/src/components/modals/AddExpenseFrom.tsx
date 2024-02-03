@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { MobileDatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import ExpenseMultiStepForm from './expenseMultistep/ExpenseMultistepForm';
 
 type AddExpenseFormProps = {
   openExpense: boolean;
@@ -85,6 +86,10 @@ const AddExpenseForm = ({
         }}
       >
         <DialogTitle>Add an Expense</DialogTitle>
+        <ExpenseMultiStepForm
+          onCloseExpense={onCloseExpense}
+          openExpense={openExpense}
+        ></ExpenseMultiStepForm>
         <DialogContent>
           {/* Expense form fields */}
           <MobileDatePicker
