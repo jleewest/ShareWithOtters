@@ -43,13 +43,16 @@
   height: auto;
 }
 
-
+.logout-dark-mode {
+  display: flex;
+  justify-content: right;
+  padding: 1rem;
+}
 
 body {
   background-color: var(--background-color);
   color: var(--text-color);
 }
-
 
 .primary-btn {
   box-shadow: 0.6px 2.5px 7px rgba(0, 0, 0, 0.4);

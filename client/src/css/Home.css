@@ -26,6 +26,22 @@
   border: none;
 }
 
+.Home .header-right {
+  display: flex;
+  justify-content: right;
+}
+
+.Home .login-dark-mode {
+  padding: 0 1rem;
+  width: calc(19rem * 0.25);
+  height: calc(5rem * 0.25);
+}
+
+.dark-mode-toggle img {
+  width: 75% !important;
+  height: auto;
+}
+
 /* MAIN */
 .Home .home-container {
   margin: 1rem;

@@ -7,9 +7,11 @@ import logo from './assets/otter-logo.svg';
 function App() {
   return (
     <div className='App'>
-      <DarkModeToggle/>
       <SignedOut>
         <div className='signed-out'>
+          <div className='logout-dark-mode'>
+            <DarkModeToggle />
+          </div>
           <h1>OtterShare</h1>
           <img className='login-logo' src={logo} alt='logo' />
           <SignInButton redirectUrl='/'>
