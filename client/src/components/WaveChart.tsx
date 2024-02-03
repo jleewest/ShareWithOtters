@@ -194,7 +194,6 @@ const WaveChart = () => {
         borderColor: 'rgb(15, 121, 134, 0.5)',
         // eslint-disable-next-line
         pointBorderColor: (context: any) => {
-          console.log(context);
           const value = context.raw || 0;
           return value >= 0 ? '#0f7986' : '#c931a9';
         },

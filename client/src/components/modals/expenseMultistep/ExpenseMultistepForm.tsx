@@ -3,6 +3,7 @@ import { useState } from 'react';
 import StepOne from './StepOne';
 import { useTransactionDataContext } from '../../..';
 import StepTwo from './StepTwo';
+import StepThree from './StepThree';
 
 type AddExpenseFormProps = {
   openExpense: boolean;
@@ -40,7 +41,13 @@ const ExpenseMultiStepForm = ({
           />
         );
       case 2:
-        return 'Step Three (ADD SPLIT)';
+        return (
+          <StepThree
+            handleNext={handleNext}
+            activeStep={activeStep}
+            steps={steps}
+          />
+        );
       case 3:
         return 'Step Four (SUBMIT)';
       default:
