@@ -1,28 +1,19 @@
 import { Stepper, Step, StepLabel, Button, Dialog } from '@mui/material';
 import { useState } from 'react';
 import StepOne from './StepOne';
-//import { useTransactionDataContext } from '../../..';
-import { useUser } from '@clerk/clerk-react';
-
-//const useStyles = makeStyles({
-//  root: {
-//    width: '50%',
-//    margin: '6rem auto',
-//    border: '1px solid #999',
-//  },
-//});
+import { useTransactionDataContext } from '../../..';
+import StepTwo from './StepTwo';
 
 type AddExpenseFormProps = {
   openExpense: boolean;
   onCloseExpense: () => void;
 };
 
-const ExpenseMultiStepForm = ({ onCloseExpense, openExpense }) => {
-  //const classes = useStyles();
-  const { user } = useUser();
-  if (!user) return null;
-
-  //const { setTransactionData } = useTransactionDataContext();
+const ExpenseMultiStepForm = ({
+  onCloseExpense,
+  openExpense,
+}: AddExpenseFormProps) => {
+  const { setTransactionData } = useTransactionDataContext();
   const [activeStep, setActiveStep] = useState(0);
 
   //CREATE STEPS
@@ -41,7 +32,13 @@ const ExpenseMultiStepForm = ({ onCloseExpense, openExpense }) => {
           />
         );
       case 1:
-        return 'Step Two (ADD OTTERS)';
+        return (
+          <StepTwo
+            handleNext={handleNext}
+            activeStep={activeStep}
+            steps={steps}
+          />
+        );
       case 2:
         return 'Step Three (ADD SPLIT)';
       case 3:
@@ -53,24 +50,23 @@ const ExpenseMultiStepForm = ({ onCloseExpense, openExpense }) => {
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
-    //  setTransactionData({
-    //    type: 'expense',
-    //    date: date,
-    //    transactor: user.id,
-    //    transactee: [user.id],
-    //    description: description,
-    //    amount: [Number(amount)],
-    //    notes: '',
-    //  });
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  //const handleBack = () => {
+  //  setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  //};
 
   const handleCancel = () => {
     setActiveStep(0);
+    setTransactionData({
+      type: 'expense',
+      date: '',
+      transactor: '',
+      transactee: [],
+      description: '',
+      amount: [],
+      notes: '',
+    });
     onCloseExpense();
   };
 

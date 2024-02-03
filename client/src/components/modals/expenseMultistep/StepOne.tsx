@@ -1,9 +1,10 @@
 import { useState } from 'react';
-//import { useTransactionDataContext } from '../../../index';
+import { useTransactionDataContext } from '../../../index';
 import TextField from '@mui/material/TextField';
 import { MobileDatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { Button } from '@mui/material';
+import { useUser } from '@clerk/clerk-react';
 
 type StepOneProps = {
   handleNext: () => void;
@@ -12,10 +13,13 @@ type StepOneProps = {
 };
 
 const StepOne = ({ handleNext, activeStep, steps }: StepOneProps) => {
-  //const { setTransactionData } = useTransactionDataContext();
+  const { setTransactionData } = useTransactionDataContext();
   const [description, setDescription] = useState<string>();
   const [date, setDate] = useState<string>(new Date().toString());
   const [amount, setAmount] = useState<string>();
+
+  const { user } = useUser();
+  if (!user) return null;
 
   const setTransaction = () => {
     if (!date || !description || !amount) {
