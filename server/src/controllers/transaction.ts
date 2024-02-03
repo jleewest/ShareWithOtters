@@ -180,3 +180,31 @@ export async function editTransaction(req: Request, res: Response) {
     res.sendStatus(500);
   }
 }
+
+// GetAllTransactions
+
+export async function getAllTransactions(req: Request, res: Response) {
+  try {
+    const allTransactions = await prisma.transaction.findMany({
+      include: {
+        userActor: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+        userActee: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    res.json(allTransactions);
+  } catch (error) {
+    console.error("Failed to get all transactions", error);
+    res.status(500).send("Internal Server Error");
+  }
+}

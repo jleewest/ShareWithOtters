@@ -7,6 +7,7 @@ import {
   deleteTransaction,
   updateTransactionStatus,
   editTransaction,
+  getAllTransactions,
 } from './controllers/transaction';
 import { postGroup, editGroup } from './controllers/group';
 import {
@@ -22,6 +23,7 @@ router.post('/user', addUser);
 
 //TRANSACTION ROUTES
 router.get('/transaction/:id', getTransactionsByClerkId);
+router.get('/transactions', getAllTransactions);
 router.post('/transaction', createTransaction);
 router.delete('/transaction/delete/:id', deleteTransaction);
 router.put('/transaction/accept/:id', updateTransactionStatus);
