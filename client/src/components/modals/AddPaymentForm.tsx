@@ -62,7 +62,6 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
       console.error('Failed to create payment transaction', error);
     }
   };
-  console.log(selectedFriends);
 
   return (
     <Dialog open={open} onClose={onClose}>

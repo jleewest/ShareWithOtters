@@ -56,7 +56,7 @@ const TransactionItem = ({ transaction, status }: TransactionItemProps) => {
     } else if (
       transaction.renderType === 'pendingExpense' ||
       (transaction.renderType === 'confirmedExpense' &&
-        user.id === transaction.transactor &&
+        user.id === transaction.transactee &&
         transaction.transactor !== transaction.transactee)
     ) {
       userMessage = `${transaction.userActor.firstName} paid for you`;

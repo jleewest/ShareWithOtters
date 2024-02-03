@@ -10,11 +10,16 @@ type friendList = {
   amount: number;
 };
 
+type balanceMsg = {
+  balanceMsg: string;
+  balanceColor: string;
+};
+
 const LendingSummary = () => {
   const [lentUsers, setLentUsers] = useState<friendList[]>([]);
   const [netLent, setNetLent] = useState<number>();
   const [netOwed, setNetOwed] = useState<number>();
-  const [netBalanceMsg, setNetBalanceMsg] = useState<string>('No Transactions');
+  const [netBalanceMsg, setNetBalanceMsg] = useState<balanceMsg>();
   const [owedUsers, setOwedUsers] = useState<friendList[]>([]);
   const [friendList, setFriendList] = useState<friendList[]>([]);
   const { transactions } = useTransactionContext();
@@ -138,19 +143,23 @@ const LendingSummary = () => {
   //combine total for current balance and set message
   useEffect(() => {
     if (netOwed && netLent) {
+      let balanceColor = '';
       let balanceMsg;
       const netBalance = netOwed - netLent;
       if (netBalance === 0) {
         balanceMsg = 'All Otters paid up!';
+        balanceColor = 'var(--light-accent-color)';
       }
       if (netBalance > 0) {
         balanceMsg = `You owe $${netBalance}`;
+        balanceColor = 'var(--dark-accent-color)';
       }
       if (netBalance < 0) {
         balanceMsg = `You are owed $${-netBalance}`;
+        balanceColor = 'var(--secondary-color)';
       }
       if (balanceMsg) {
-        setNetBalanceMsg(balanceMsg);
+        setNetBalanceMsg({ balanceMsg, balanceColor });
       }
     }
   }, [netOwed, netLent]);
@@ -161,7 +170,9 @@ const LendingSummary = () => {
         <div>
           <div className='current-balance'>
             <h2>Current Balance:</h2>
-            <div>{netBalanceMsg}</div>
+            <div style={{ color: netBalanceMsg.balanceColor }}>
+              {netBalanceMsg.balanceMsg}
+            </div>
           </div>
           <WaveChart />
           {lentUsers.length > 0 ? (
