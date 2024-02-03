@@ -28,15 +28,17 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
 
     //filter expenses in which user is transactor
     const allTransactions = allTransactionData.map((transaction) => {
+      const dollarAmount = transaction.amount / 100;
+
       if (
         transaction.status === 'pending' &&
         transaction.type === 'expense' &&
         transaction.transactee === id &&
         transaction.transactor === id
       ) {
-        return { ...transaction, status: 'active' };
+        return { ...transaction, status: 'active', amount: dollarAmount };
       } else {
-        return transaction;
+        return { ...transaction, amount: dollarAmount };
       }
     });
 
@@ -114,7 +116,7 @@ export async function createTransaction(req: Request, res: Response) {
       const saveTransaction = await prisma.transaction.create({
         data: {
           transactee: transactee[i],
-          amount: amount[i],
+          amount: amount[i] * 100,
           ...otherTransactionProperties,
         },
       });
