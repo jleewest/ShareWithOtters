@@ -58,7 +58,6 @@ const StepThree = ({ handleNext, activeStep, steps }: StepThreeProps) => {
     } else {
       payeeAmounts = defaultAmounts;
     }
-    console.log(payeeAmounts);
     setTransactionData({
       ...transactionData,
       amount: payeeAmounts,

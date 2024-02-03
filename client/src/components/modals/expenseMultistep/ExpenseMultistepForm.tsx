@@ -4,6 +4,7 @@ import StepOne from './StepOne';
 import { useTransactionDataContext } from '../../..';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
+import ReviewTransaction from './ReviewTransaction';
 
 type AddExpenseFormProps = {
   openExpense: boolean;
@@ -19,7 +20,13 @@ const ExpenseMultiStepForm = ({
 
   //CREATE STEPS
   function getSteps() {
-    return ['ADD EXPENSE DETAILS', 'ADD OTTERS', 'ADD SPLIT', 'SUBMIT'];
+    return [
+      'ADD EXPENSE DETAILS',
+      'ADD OTTERS',
+      'ADD SPLIT',
+      'REVIEW',
+      'SUBMIT',
+    ];
   }
   const steps = getSteps();
   function getStepsContent(stepIndex: number) {
@@ -49,6 +56,14 @@ const ExpenseMultiStepForm = ({
           />
         );
       case 3:
+        return (
+          <ReviewTransaction
+            handleNext={handleNext}
+            activeStep={activeStep}
+            steps={steps}
+          />
+        );
+      case 4:
         return 'Step Four (SUBMIT)';
       default:
         return 'Unknown Step';
