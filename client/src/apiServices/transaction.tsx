@@ -73,3 +73,13 @@ export async function editTransaction(
   }
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }
+
+export async function getAllTransactions(): Promise<Transaction[]> {
+  const response = await fetch(`${BASE_URL}/transactions`);
+  if (response.ok) {
+    const data = await response.json();
+    return data as Promise<Transaction[]>;
+  }
+  return Promise.reject(new Error('Something went 🦖RA-WRong'));
+}
+
