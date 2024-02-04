@@ -61,7 +61,7 @@ const StepOne = ({ handleNext, activeStep, steps }: StepOneProps) => {
   }
 
   return (
-    <div className='AddExpenseForm'>
+    <div className='StepOne'>
       {/* Expense form fields */}
       <form action=''>
         <MobileDatePicker
@@ -70,6 +70,7 @@ const StepOne = ({ handleNext, activeStep, steps }: StepOneProps) => {
           defaultValue={dayjs(Date.now())}
         />
         <TextField
+          style={{ margin: '1rem auto' }}
           autoFocus
           margin='dense'
           id='name'
@@ -97,14 +98,16 @@ const StepOne = ({ handleNext, activeStep, steps }: StepOneProps) => {
       <div>
         <>
           {date && description && amount && (
-            <Button
+            <button
+              className='primary-btn'
+              style={{ backgroundColor: 'var(--secondary-color)' }}
               onClick={() => {
                 handleNext();
                 setTransaction();
               }}
             >
               {activeStep === steps.length ? 'Finish' : 'Next'}
-            </Button>
+            </button>
           )}
         </>
       </div>

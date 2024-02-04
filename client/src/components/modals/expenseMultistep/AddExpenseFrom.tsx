@@ -1,8 +1,8 @@
 import { useUser } from '@clerk/clerk-react';
-import { useTransactionDataContext } from '../../index';
+import { useTransactionDataContext } from '../../../index';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import ExpenseMultiStepForm from './expenseMultistep/ExpenseMultistepForm';
+import ExpenseMultiStepForm from './ExpenseMultistepForm';
 
 type AddExpenseFormProps = {
   openExpense: boolean;

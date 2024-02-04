@@ -1,4 +1,12 @@
-import { Stepper, Step, StepLabel, Button, Dialog } from '@mui/material';
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  Button,
+  Dialog,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 import { useState } from 'react';
 import StepOne from './StepOne';
 import { useTransactionDataContext, Transaction } from '../../..';
@@ -11,6 +19,45 @@ type AddExpenseFormProps = {
   openExpense: boolean;
   onCloseExpense: () => void;
 };
+
+//FORM STYLE THEME
+const theme = createTheme({
+  components: {
+    MuiStepIcon: {
+      styleOverrides: {
+        root: {
+          '&.Mui-completed': {
+            color: 'var(--secondary-color)',
+          },
+          '&.Mui-active': {
+            color: 'var(--light-accent-color)',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: 'var(--secondary-color)',
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            '&:hover fieldset': {
+              borderColor: 'var(--light-accent-color)',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'var(--light-accent-color)',
+            },
+          },
+        },
+      },
+    },
+  },
+});
 
 const ExpenseMultiStepForm = ({
   onCloseExpense,
@@ -104,39 +151,54 @@ const ExpenseMultiStepForm = ({
   };
 
   return (
-    <div className='ExpenseForm'>
-      <Dialog
-        open={openExpense}
-        onClose={() => {
-          onCloseExpense();
-        }}
-      >
-        <Stepper alternativeLabel activeStep={activeStep}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {activeStep === steps.length ? (
-            submissionResponse.length > 0 ? (
-              <h2>Your transaction has been added!</h2>
+    <ThemeProvider theme={theme}>
+      <div className='MultistepExpenseForm'>
+        <Dialog
+          open={openExpense}
+          onClose={() => {
+            onCloseExpense();
+          }}
+        >
+          <Stepper
+            alternativeLabel
+            activeStep={activeStep}
+            style={{ padding: '1.5rem' }}
+          >
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div style={{ padding: '1rem 1.5rem' }}>
+            {activeStep === steps.length ? (
+              submissionResponse.length > 0 ? (
+                <h2>Your transaction has been added!</h2>
+              ) : (
+                <h2>
+                  Whoops! Something went wrong. Try adding your transaction
+                  again.
+                </h2>
+              )
             ) : (
-              <h2>
-                Whoops! Something went wrong. Try adding your transaction again.
-              </h2>
-            )
-          ) : (
-            <h2>{getStepsContent(activeStep)}</h2>
-          )}
-        </div>
-        <Button onClick={handleCancel}>
-          {' '}
-          {activeStep === steps.length ? 'FINISH' : 'CANCEL'}
-        </Button>
-      </Dialog>
-    </div>
+              <h2>{getStepsContent(activeStep)}</h2>
+            )}
+          </div>
+          <div
+            style={{
+              padding: '0 1rem 1rem 0',
+              display: 'flex',
+              justifyContent: 'right',
+            }}
+          >
+            <Button onClick={handleCancel}>
+              {' '}
+              {activeStep === steps.length ? 'FINISH' : 'CANCEL'}
+            </Button>
+          </div>
+        </Dialog>
+      </div>
+    </ThemeProvider>
   );
 };
 

@@ -2,7 +2,7 @@ import logo from '../assets/otter-logo.svg';
 import '../css/GroupOptions.css';
 import { useState } from 'react';
 import AddPaymentForm from './modals/AddPaymentForm';
-import ExpenseForm from './modals/ExpenseForm';
+import ExpenseFormContext from './modals/expenseMultistep/ExpenseFormContext';
 import InviteForm from './modals/InviteForm';
 
 const GroupOptions = () => {
@@ -38,7 +38,7 @@ const GroupOptions = () => {
         onClose={closePaymentForm}
         // SetTransactions={refreshTransactions}
       />
-      <ExpenseForm
+      <ExpenseFormContext
         open={isExpenseFormOpen}
         onClose={closeExpenseForm} /*refreshTransactions={refreshTransactions}*/
       />

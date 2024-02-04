@@ -71,14 +71,16 @@ const StepThree = ({
   };
 
   return (
-    <div className='AddExpenseForm'>
+    <div className='StepThree'>
       {/* Expense form fields */}
       <form action=''>
         {payees.length > 0 ? (
           payees.map((payee: User, index: number) => {
             return (
-              <div key={index}>
-                <label>{payee.firstName}</label>
+              <div style={{ margin: '1rem auto' }} key={index}>
+                <label style={{ fontSize: '1.25rem', fontWeight: '400' }}>
+                  {payee.firstName}
+                </label>
                 <TextField
                   autoFocus
                   margin='dense'
@@ -107,14 +109,16 @@ const StepThree = ({
         </Button>
         <>
           {payees.length > 0 && (
-            <Button
+            <button
+              className='primary-btn'
+              style={{ backgroundColor: 'var(--secondary-color)' }}
               onClick={() => {
                 handleNext();
                 setTransaction();
               }}
             >
               {activeStep === steps.length ? 'Finish' : 'Next'}
-            </Button>
+            </button>
           )}
         </>
       </div>

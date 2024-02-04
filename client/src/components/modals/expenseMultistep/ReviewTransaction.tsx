@@ -47,16 +47,42 @@ const ReviewTransaction = ({
   }, []);
 
   return (
-    <div className='AddExpenseForm'>
+    <div className='ReviewTransaction'>
       {/* Expense form fields */}
       <form action=''>
         {transactionData ? (
-          <div>
-            <h2>Ready to Submit?</h2>
-            <div>Date: {moment(transactionData.date).format('ll')}</div>
-            <div>Description: {transactionData.description}</div>
-            <div>
-              Split:{' '}
+          <div style={{ textAlign: 'center', paddingBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '400' }}>
+              Ready to Submit?
+            </h2>
+            <div
+              style={{
+                fontSize: '1rem',
+                fontWeight: '400',
+                color: 'var(--primary-color)',
+                lineHeight: '1.3rem',
+              }}
+            >
+              Date: {moment(transactionData.date).format('ll')}
+            </div>
+            <div
+              style={{
+                fontSize: '1rem',
+                fontWeight: '400',
+                color: 'var(--primary-color)',
+                lineHeight: '1.3rem',
+              }}
+            >
+              Description: {transactionData.description}
+            </div>
+            <div
+              style={{
+                fontSize: '1rem',
+                fontWeight: '400',
+                color: 'var(--primary-color)',
+                lineHeight: '1.3rem',
+              }}
+            >
               {userAmountSplit &&
                 userAmountSplit.map((user) => {
                   return (
@@ -80,14 +106,16 @@ const ReviewTransaction = ({
           BACK{' '}
         </Button>
         <>
-          <Button
+          <button
+            className='primary-btn'
+            style={{ backgroundColor: 'var(--secondary-color)' }}
             onClick={() => {
               handleNext();
               handleSubmit();
             }}
           >
             {activeStep === steps.length ? 'Finish' : 'Submit'}
-          </Button>
+          </button>
         </>
       </div>
     </div>

@@ -63,7 +63,7 @@ const StepTwo = ({
   };
 
   return (
-    <div className='AddExpenseForm'>
+    <div className='StepTwo'>
       {/* Expense form fields */}
       <form action=''>
         <Autocomplete
@@ -89,14 +89,16 @@ const StepTwo = ({
         </Button>
         <>
           {newFriendList.length > 0 && (
-            <Button
+            <button
+              className='primary-btn'
+              style={{ backgroundColor: 'var(--secondary-color)' }}
               onClick={() => {
                 handleNext();
                 setTransaction();
               }}
             >
               {activeStep === steps.length ? 'Finish' : 'Next'}
-            </Button>
+            </button>
           )}
         </>
       </div>
