@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useTransactionDataContext, User } from '../../../index';
+import { useTransactionDataContext } from '../../../index';
 import { getUserByClerkId } from '../../../apiServices/user';
 import { Button } from '@mui/material';
 import moment from 'moment';
 
 type ReviewTransactionProps = {
   handleNext: () => void;
+  handleSubmit: () => void;
   steps: string[];
   activeStep: number;
 };
@@ -17,16 +18,10 @@ type userAmountSplit = {
 
 const ReviewTransaction = ({
   handleNext,
+  handleSubmit,
   activeStep,
   steps,
 }: ReviewTransactionProps) => {
-  //const [isSubmissionResponseOpen, setSubmissionResponseOpen] =
-  //  useState(false);
-  ////const openSubmissionResponse = () => setSubmissionResponseOpen(true);
-  ////const closeSubmissionResponse = () => setSubmissionResponseOpen(false);
-  //const [submissionResponse, setSubmissionResponse] = useState<Transaction[]>(
-  //  []
-  //);
   const [userAmountSplit, setUserAmountSplit] = useState<userAmountSplit[]>();
   const { transactionData } = useTransactionDataContext();
 
@@ -48,15 +43,6 @@ const ReviewTransaction = ({
     };
     getUserAmountSplit();
   }, []);
-
-  //const handleSubmission = () => {
-  //  console.log(transactionData);
-  //  createTransaction(transactionData).then((data) => {
-  //    setSubmissionResponse(data);
-  //  });
-  //  openSubmissionResponse();
-  //  onCloseSubmitForm();
-  //};
 
   return (
     <div className='AddExpenseForm'>
@@ -88,10 +74,10 @@ const ReviewTransaction = ({
           <Button
             onClick={() => {
               handleNext();
-              //handleSubmit();
+              handleSubmit();
             }}
           >
-            Submit
+            {activeStep === steps.length ? 'Finish' : 'Submit'}
           </Button>
         </>
       </div>

@@ -1,10 +1,11 @@
 import { Stepper, Step, StepLabel, Button, Dialog } from '@mui/material';
 import { useState } from 'react';
 import StepOne from './StepOne';
-import { useTransactionDataContext } from '../../..';
+import { useTransactionDataContext, Transaction } from '../../..';
 import StepTwo from './StepTwo';
 import StepThree from './StepThree';
 import ReviewTransaction from './ReviewTransaction';
+import { createTransaction } from '../../../apiServices/transaction';
 
 type AddExpenseFormProps = {
   openExpense: boolean;
@@ -15,8 +16,13 @@ const ExpenseMultiStepForm = ({
   onCloseExpense,
   openExpense,
 }: AddExpenseFormProps) => {
-  const { setTransactionData } = useTransactionDataContext();
+  const { setTransactionData, transactionData } = useTransactionDataContext();
   const [activeStep, setActiveStep] = useState(0);
+  const [submissionResponse, setSubmissionResponse] = useState<Transaction[]>(
+    []
+  );
+
+  console.log('submissionResponse', submissionResponse);
 
   //CREATE STEPS
   function getSteps() {
@@ -24,8 +30,7 @@ const ExpenseMultiStepForm = ({
       'ADD EXPENSE DETAILS',
       'ADD OTTERS',
       'ADD SPLIT',
-      'REVIEW',
-      'SUBMIT',
+      'REVIEW & SUBMIT',
     ];
   }
   const steps = getSteps();
@@ -59,12 +64,11 @@ const ExpenseMultiStepForm = ({
         return (
           <ReviewTransaction
             handleNext={handleNext}
+            handleSubmit={handleSubmit}
             activeStep={activeStep}
             steps={steps}
           />
         );
-      case 4:
-        return 'Step Four (SUBMIT)';
       default:
         return 'Unknown Step';
     }
@@ -77,6 +81,13 @@ const ExpenseMultiStepForm = ({
   //const handleBack = () => {
   //  setActiveStep((prevActiveStep) => prevActiveStep - 1);
   //};
+
+  const handleSubmit = () => {
+    console.log(transactionData);
+    createTransaction(transactionData).then((data) => {
+      setSubmissionResponse(data);
+    });
+  };
 
   const handleCancel = () => {
     setActiveStep(0);
@@ -107,14 +118,23 @@ const ExpenseMultiStepForm = ({
             </Step>
           ))}
         </Stepper>
-        <>
+        <div>
           {activeStep === steps.length ? (
-            'The Steps Completed'
+            submissionResponse.length > 0 ? (
+              <h2>Your transaction has been added!</h2>
+            ) : (
+              <h2>
+                Whoops! Something went wrong. Try adding your transaction again.
+              </h2>
+            )
           ) : (
-            <>{getStepsContent(activeStep)}</>
+            <h2>{getStepsContent(activeStep)}</h2>
           )}
-        </>
-        <Button onClick={handleCancel}>CANCEL</Button>
+        </div>
+        <Button onClick={handleCancel}>
+          {' '}
+          {activeStep === steps.length ? 'FINISH' : 'CANCEL'}
+        </Button>
       </Dialog>
     </div>
   );
