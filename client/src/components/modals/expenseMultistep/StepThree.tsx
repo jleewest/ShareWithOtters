@@ -5,12 +5,18 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
 type StepThreeProps = {
+  handleBack: () => void;
   handleNext: () => void;
   steps: string[];
   activeStep: number;
 };
 
-const StepThree = ({ handleNext, activeStep, steps }: StepThreeProps) => {
+const StepThree = ({
+  handleNext,
+  activeStep,
+  steps,
+  handleBack,
+}: StepThreeProps) => {
   const [payees, setPayees] = useState<User[]>([]);
   const [defaultAmounts, setDefaultAmounts] = useState<number[]>([]);
   const [evenSplitAmount, setEvenSplitAmount] = useState<number>(0);
@@ -92,6 +98,13 @@ const StepThree = ({ handleNext, activeStep, steps }: StepThreeProps) => {
         )}
       </form>
       <div>
+        <Button
+          onClick={() => {
+            handleBack();
+          }}
+        >
+          BACK{' '}
+        </Button>
         <>
           {payees.length > 0 && (
             <Button

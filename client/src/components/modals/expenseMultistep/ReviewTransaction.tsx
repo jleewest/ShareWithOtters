@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 import moment from 'moment';
 
 type ReviewTransactionProps = {
+  handleBack: () => void;
   handleNext: () => void;
   handleSubmit: () => void;
   steps: string[];
@@ -17,6 +18,7 @@ type userAmountSplit = {
 };
 
 const ReviewTransaction = ({
+  handleBack,
   handleNext,
   handleSubmit,
   activeStep,
@@ -70,6 +72,13 @@ const ReviewTransaction = ({
         )}
       </form>
       <div>
+        <Button
+          onClick={() => {
+            handleBack();
+          }}
+        >
+          BACK{' '}
+        </Button>
         <>
           <Button
             onClick={() => {

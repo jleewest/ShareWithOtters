@@ -7,12 +7,18 @@ import { Button } from '@mui/material';
 import { useUser } from '@clerk/clerk-react';
 
 type StepTwoProps = {
+  handleBack: () => void;
   handleNext: () => void;
   steps: string[];
   activeStep: number;
 };
 
-const StepTwo = ({ handleNext, activeStep, steps }: StepTwoProps) => {
+const StepTwo = ({
+  handleNext,
+  activeStep,
+  handleBack,
+  steps,
+}: StepTwoProps) => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [newFriendList, setNewFriendList] = useState<User[]>([]);
   const { user } = useUser();
@@ -74,6 +80,13 @@ const StepTwo = ({ handleNext, activeStep, steps }: StepTwoProps) => {
         />
       </form>
       <div>
+        <Button
+          onClick={() => {
+            handleBack();
+          }}
+        >
+          BACK{' '}
+        </Button>
         <>
           {newFriendList.length > 0 && (
             <Button

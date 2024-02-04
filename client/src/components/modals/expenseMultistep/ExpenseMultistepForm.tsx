@@ -22,8 +22,6 @@ const ExpenseMultiStepForm = ({
     []
   );
 
-  console.log('submissionResponse', submissionResponse);
-
   //CREATE STEPS
   function getSteps() {
     return [
@@ -47,6 +45,7 @@ const ExpenseMultiStepForm = ({
       case 1:
         return (
           <StepTwo
+            handleBack={handleBack}
             handleNext={handleNext}
             activeStep={activeStep}
             steps={steps}
@@ -55,6 +54,7 @@ const ExpenseMultiStepForm = ({
       case 2:
         return (
           <StepThree
+            handleBack={handleBack}
             handleNext={handleNext}
             activeStep={activeStep}
             steps={steps}
@@ -63,6 +63,7 @@ const ExpenseMultiStepForm = ({
       case 3:
         return (
           <ReviewTransaction
+            handleBack={handleBack}
             handleNext={handleNext}
             handleSubmit={handleSubmit}
             activeStep={activeStep}
@@ -78,12 +79,11 @@ const ExpenseMultiStepForm = ({
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  //const handleBack = () => {
-  //  setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  //};
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
   const handleSubmit = () => {
-    console.log(transactionData);
     createTransaction(transactionData).then((data) => {
       setSubmissionResponse(data);
     });
