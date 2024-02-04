@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TransactionData, TransactionsDataContext } from '../../index';
+import { TransactionData, TransactionsDataContext } from '../../../index';
 import AddExpenseForm from './AddExpenseFrom';
 import { useUser } from '@clerk/clerk-react';
 

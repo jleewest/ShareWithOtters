@@ -15,7 +15,7 @@ export async function getTransactionsByClerkId(
 
 export async function createTransaction(
   transaction: TransactionData
-): Promise<TransactionData> {
+): Promise<Transaction[]> {
   const response = await fetch(`${BASE_URL}/transaction`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -23,7 +23,7 @@ export async function createTransaction(
   });
   if (response.ok) {
     const data = await response.json();
-    return data as Promise<TransactionData>;
+    return data as Promise<Transaction[]>;
   }
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }
