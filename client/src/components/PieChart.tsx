@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartData } from 'chart.js';
 import { getAllUsers } from '../apiServices/user';
 import { getTransactionsByClerkId } from '../apiServices/transaction';
+import '../css/PieChart.css';
+import { chartBackgroundColors, chartHoverBackgroundColors } from '../css/PieChartColors';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PieChart: React.FC = () => {
-  const [chartData, setChartData] = useState({
+  const [chartData, setChartData] = useState<ChartData<'pie', number[], string>>({
     labels: [],
     datasets: [
       {
         data: [],
-        backgroundColor: [],
-        hoverBackgroundColor: []
-      }
-    ]
+        backgroundColor: chartBackgroundColors,
+        hoverBackgroundColor: chartHoverBackgroundColors,
+      },
+    ],
   });
+  const [showAmount, setShowAmount] = useState<boolean>(true); // State variable for toggling
 
   const fetchData = async () => {
     const users = await getAllUsers();
@@ -24,46 +27,30 @@ const PieChart: React.FC = () => {
 
     for (const user of users) {
       const transactions = await getTransactionsByClerkId(user.clerkId);
-      userExpenses[user.firstName] = transactions.active.expense.confirmedExpenses.reduce((acc, curr) => acc + curr.amount, 0);
+      userExpenses[user.firstName] = transactions.active.expense.confirmedExpenses.reduce((acc, curr) => showAmount ? acc + curr.amount : acc + 1, 0);
     }
 
+    // Update chartData state
     setChartData({
       labels: Object.keys(userExpenses),
-      datasets: [
-        {
-          data: Object.values(userExpenses),
-          backgroundColor: [
-            '#FF6384', // Radical Red
-            '#36A2EB', // Picton Blue
-            '#FFCE56', // Supernova
-            '#9966FF', // Amethyst
-            '#4BC0C0', // Medium Turquoise
-            '#c931a9', // Steel Pink
-            '#FF9F40', // Orange Peel
-            '#6ACF53', // Sushi
-          ],
-          hoverBackgroundColor: [
-            '#FF6384', // Radical Red
-            '#36A2EB', // Picton Blue
-            '#FFCE56', // Supernova
-            '#9966FF', // Amethyst
-            '#4BC0C0', // Medium Turquoise
-            '#c931a9', // Steel Pink
-            '#FF9F40', // Orange Peel
-            '#6ACF53', // Sushi
-          ]
-        }
-      ]
+      datasets: [{
+        data: Object.values(userExpenses),
+        backgroundColor: chartBackgroundColors,
+        hoverBackgroundColor: chartHoverBackgroundColors,
+      }],
     });
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [showAmount]);
 
   return (
-    <div>
+    <div className="pie-chart-container">
       <h2>Expense Distribution</h2>
+      <button onClick={() => setShowAmount(!showAmount)} className="pie-chart-toggle-btn">
+        {showAmount ? 'Show Number of Expenses' : 'Show Amount'}
+      </button>
       <Pie data={chartData} />
     </div>
   );

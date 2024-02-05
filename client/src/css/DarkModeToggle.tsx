@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import sun from '../assets/sun.svg'; // Ensure the path is correct
-import moon from '../assets/moon.svg'; // Ensure the path is correct
+import sun from '../assets/sun.svg';
+import moon from '../assets/moon.svg';
 
 const DarkModeToggle: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
