@@ -214,7 +214,6 @@ const WaveChart = () => {
   };
   //@ts-expect-error type mismatch between chartjs and react-chartjs
   const footer = (tooltipItems) => {
-    console.log(tooltipItems);
     let sum = 0;
 
     //@ts-expect-error type mismatch between chartjs and react-chartjs
