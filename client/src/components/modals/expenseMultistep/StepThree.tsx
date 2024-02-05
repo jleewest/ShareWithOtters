@@ -3,6 +3,7 @@ import { useTransactionDataContext, User } from '../../../index';
 import { getUserByClerkId } from '../../../apiServices/user';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import _ from 'lodash';
 
 type StepThreeProps = {
   handleBack: () => void;
@@ -21,6 +22,7 @@ const StepThree = ({
   const [defaultAmounts, setDefaultAmounts] = useState<number[]>([]);
   const [evenSplitAmount, setEvenSplitAmount] = useState<number>(0);
   const [customAmounts, setCustomAmounts] = useState<number[]>([]);
+
   const { transactionData, setTransactionData } = useTransactionDataContext();
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +61,7 @@ const StepThree = ({
   const setTransaction = () => {
     let payeeAmounts;
     if (customAmounts.length > 0) {
-      payeeAmounts = customAmounts;
+      payeeAmounts = _.defaults(customAmounts, defaultAmounts);
     } else {
       payeeAmounts = defaultAmounts;
     }
