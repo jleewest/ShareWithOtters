@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartData } from 'chart.js';
 import { getAllUsers } from '../apiServices/user';
 import { getTransactionsByClerkId } from '../apiServices/transaction';
 import '../css/PieChart.css';
@@ -9,15 +9,15 @@ import { chartBackgroundColors, chartHoverBackgroundColors } from '../css/PieCha
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PieChart: React.FC = () => {
-  const [chartData, setChartData] = useState({
+  const [chartData, setChartData] = useState<ChartData<'pie', number[], string>>({
     labels: [],
     datasets: [
       {
         data: [],
-        backgroundColor: [],
-        hoverBackgroundColor: []
-      }
-    ]
+        backgroundColor: chartBackgroundColors,
+        hoverBackgroundColor: chartHoverBackgroundColors,
+      },
+    ],
   });
   const [showAmount, setShowAmount] = useState<boolean>(true); // State variable for toggling
 
@@ -30,15 +30,14 @@ const PieChart: React.FC = () => {
       userExpenses[user.firstName] = transactions.active.expense.confirmedExpenses.reduce((acc, curr) => showAmount ? acc + curr.amount : acc + 1, 0);
     }
 
+    // Update chartData state
     setChartData({
       labels: Object.keys(userExpenses),
-      datasets: [
-        {
-          data: Object.values(userExpenses),
-          backgroundColor: chartBackgroundColors,
-          hoverBackgroundColor: chartHoverBackgroundColors,
-        },
-      ],
+      datasets: [{
+        data: Object.values(userExpenses),
+        backgroundColor: chartBackgroundColors,
+        hoverBackgroundColor: chartHoverBackgroundColors,
+      }],
     });
   };
 
