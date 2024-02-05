@@ -17,10 +17,10 @@ type balanceMsg = {
 
 const LendingSummary = () => {
   const [lentUsers, setLentUsers] = useState<friendList[]>([]);
-  const [netLent, setNetLent] = useState<number>();
-  const [netOwed, setNetOwed] = useState<number>();
-  const [netBalanceMsg, setNetBalanceMsg] = useState<balanceMsg>();
   const [owedUsers, setOwedUsers] = useState<friendList[]>([]);
+  const [netLent, setNetLent] = useState<number | null>(null);
+  const [netOwed, setNetOwed] = useState<number | null>(null);
+  const [netBalanceMsg, setNetBalanceMsg] = useState<balanceMsg>();
   const [friendList, setFriendList] = useState<friendList[]>([]);
   const { transactions } = useTransactionContext();
   const { user } = useUser();
@@ -28,6 +28,7 @@ const LendingSummary = () => {
   useEffect(() => {
     //
     if (transactions && user) {
+      console.log(transactions);
       //create array of friends involved in all transactions
       const updatedFriendList: friendList[] = [];
 
@@ -127,7 +128,7 @@ const LendingSummary = () => {
     if (lentUsers) {
       let sum: number = 0;
       lentUsers.forEach((user) => (sum += -user.amount));
-      setNetLent(sum);
+      setNetLent(Number(sum.toFixed(2)));
     }
   }, [lentUsers]);
 
@@ -136,16 +137,17 @@ const LendingSummary = () => {
     if (owedUsers) {
       let sum: number = 0;
       owedUsers.forEach((user) => (sum += user.amount));
-      setNetOwed(sum);
+      setNetOwed(Number(sum.toFixed(2)));
     }
   }, [owedUsers]);
 
   //combine total for current balance and set message
   useEffect(() => {
-    if (netOwed && netLent) {
+    if (netOwed !== null && netLent !== null) {
       let balanceColor = '';
       let balanceMsg;
       const netBalance = netOwed - netLent;
+      console.log(netBalance);
       if (netBalance === 0) {
         balanceMsg = 'All Otters paid up!';
         balanceColor = 'var(--light-accent-color)';

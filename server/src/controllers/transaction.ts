@@ -28,7 +28,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
 
     //filter expenses in which user is transactor
     const allTransactions = allTransactionData.map((transaction) => {
-      const dollarAmount = transaction.amount / 100;
+      const dollarAmount = Number((transaction.amount / 100).toFixed(2));
 
       if (
         transaction.status === 'pending' &&
@@ -204,7 +204,7 @@ export async function getAllTransactions(req: Request, res: Response) {
 
     res.json(allTransactions);
   } catch (error) {
-    console.error("Failed to get all transactions", error);
-    res.status(500).send("Internal Server Error");
+    console.error('Failed to get all transactions', error);
+    res.status(500).send('Internal Server Error');
   }
 }
