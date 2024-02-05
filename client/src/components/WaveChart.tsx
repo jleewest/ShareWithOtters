@@ -199,22 +199,46 @@ const WaveChart = () => {
         data: netDataAmount,
         borderColor: 'rgb(15, 121, 134, 0.5)',
         fill: true,
-        pointBorderColor: (context: any) => {
+        //@ts-expect-error type mismatch between chartjs and react-chartjs
+        pointBorderColor: (context) => {
           const value = context.raw || 0;
           return value >= 0 ? '#0f7986' : '#c931a9';
         },
-        backgroundColor: (context: any) => {
+        //@ts-expect-error type mismatch between chartjs and react-chartjs
+        backgroundColor: (context) => {
           const value = context.raw || 0;
           return value >= 0 ? 'rgb(15, 121, 134, 0.5)' : '#c931a9';
         },
       },
     ],
   };
+  //@ts-expect-error type mismatch between chartjs and react-chartjs
+  const footer = (tooltipItems) => {
+    console.log(tooltipItems);
+    let sum = 0;
+
+    //@ts-expect-error type mismatch between chartjs and react-chartjs
+    tooltipItems.forEach(function (tooltipItem) {
+      sum += tooltipItem.parsed.y;
+    });
+    return 'Sum: ' + sum;
+  };
 
   const options = {
     scales: {
       x: { display: true },
       y: { display: true },
+    },
+    interaction: {
+      intersect: false,
+      mode: 'index',
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          footer: footer,
+        },
+      },
     },
   };
   return (
@@ -225,6 +249,7 @@ const WaveChart = () => {
         borderRadius: '10px',
       }}
     >
+      {/* @ts-expect-error type mismatch between chartjs and react-chartjs */}
       <Line data={data} options={options}></Line>
     </div>
   );

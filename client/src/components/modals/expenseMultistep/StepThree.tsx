@@ -47,7 +47,6 @@ const StepThree = ({
     const defaultAmount = Array(payees.length).fill(defaultEvenSplit);
     setDefaultAmounts(defaultAmount);
   }, [payees.length, transactionData.amount]);
-  const totalAmountToSplit = transactionData.amount[0];
 
   // Form field change handling
   const handleChange =

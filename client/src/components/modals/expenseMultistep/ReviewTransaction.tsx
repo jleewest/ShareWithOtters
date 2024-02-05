@@ -44,7 +44,7 @@ const ReviewTransaction = ({
       setUserAmountSplit(userAmountArray);
     };
     getUserAmountSplit();
-  }, []);
+  }, [transactionData]);
 
   return (
     <div className='ReviewTransaction'>

@@ -3,7 +3,6 @@ import { useTransactionDataContext } from '../../../index';
 import TextField from '@mui/material/TextField';
 import { MobileDatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { Button } from '@mui/material';
 import { useUser } from '@clerk/clerk-react';
 
 type StepOneProps = {
