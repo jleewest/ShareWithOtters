@@ -28,7 +28,6 @@ const LendingSummary = () => {
   useEffect(() => {
     //
     if (transactions && user) {
-      console.log(transactions);
       //create array of friends involved in all transactions
       const updatedFriendList: friendList[] = [];
 
@@ -147,7 +146,6 @@ const LendingSummary = () => {
       let balanceColor = '';
       let balanceMsg;
       const netBalance = netOwed - netLent;
-      console.log(netBalance);
       if (netBalance === 0) {
         balanceMsg = 'All Otters paid up!';
         balanceColor = 'var(--light-accent-color)';

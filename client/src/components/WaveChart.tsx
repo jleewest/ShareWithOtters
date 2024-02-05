@@ -2,6 +2,7 @@ import { useTransactionContext } from '../index';
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { Line } from 'react-chartjs-2';
+import moment from 'moment';
 import {
   Chart as ChartJS,
   LineElement,
@@ -174,10 +175,18 @@ const WaveChart = () => {
             (acc, transaction) => acc + transaction.amount,
             0
           );
-          return { date: date, amount: cumulativeBalance };
+          return {
+            date: date,
+            amount: cumulativeBalance,
+          };
         });
-        setNetDataAmount(dailyBalance.map((balance) => balance.amount));
-        setNetDataDate(dailyBalance.map((balance) => balance.date));
+        const limitedBalance = dailyBalance.slice(
+          Math.max(0, dailyBalance.length - 10)
+        );
+        setNetDataAmount(limitedBalance.map((balance) => balance.amount));
+        setNetDataDate(
+          limitedBalance.map((balance) => moment(balance.date).format('MMM D'))
+        );
       };
       calculateDailyNetBalance();
     }
@@ -187,17 +196,13 @@ const WaveChart = () => {
     labels: netDataDate,
     datasets: [
       {
-        fill: 'origin',
-      },
-      {
         data: netDataAmount,
         borderColor: 'rgb(15, 121, 134, 0.5)',
-        // eslint-disable-next-line
+        fill: true,
         pointBorderColor: (context: any) => {
           const value = context.raw || 0;
           return value >= 0 ? '#0f7986' : '#c931a9';
         },
-        // eslint-disable-next-line
         backgroundColor: (context: any) => {
           const value = context.raw || 0;
           return value >= 0 ? 'rgb(15, 121, 134, 0.5)' : '#c931a9';
@@ -207,7 +212,10 @@ const WaveChart = () => {
   };
 
   const options = {
-    plugins: {},
+    scales: {
+      x: { display: true },
+      y: { display: true },
+    },
   };
   return (
     <div
@@ -217,7 +225,6 @@ const WaveChart = () => {
         borderRadius: '10px',
       }}
     >
-      {/*@ts-expect-error fill not available on react-chartjs*/}
       <Line data={data} options={options}></Line>
     </div>
   );
