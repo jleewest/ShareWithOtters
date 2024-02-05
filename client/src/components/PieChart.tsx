@@ -47,9 +47,9 @@ const PieChart: React.FC = () => {
 
   return (
     <div className="pie-chart-container">
-      <h2>Expense Distribution</h2>
+      <h2>Who's Covering Otters</h2>
       <button onClick={() => setShowAmount(!showAmount)} className="pie-chart-toggle-btn">
-        {showAmount ? 'Show Number of Expenses' : 'Show Amount'}
+        {showAmount ? 'Total Amount' : 'How Many Expenses' }
       </button>
       <Pie data={chartData} />
     </div>
