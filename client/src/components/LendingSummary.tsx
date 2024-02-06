@@ -74,7 +74,6 @@ const LendingSummary = () => {
             updatedFriendList
           );
         });
-
       setFriendList(updatedFriendList);
     }
   }, [transactions, user]);
@@ -92,6 +91,7 @@ const LendingSummary = () => {
 
     if (existingFriend) {
       existingFriend.amount += amount;
+      existingFriend.amount = Math.round(existingFriend.amount * 100) / 100;
     } else {
       updatedFriendList.push({
         clerkId,
@@ -99,7 +99,7 @@ const LendingSummary = () => {
           clerkId === transaction.transactor
             ? transaction.userActor.firstName
             : transaction.userActee.firstName,
-        amount: amount,
+        amount: Math.round(amount * 100) / 100,
       });
     }
   }
@@ -127,7 +127,7 @@ const LendingSummary = () => {
     if (lentUsers) {
       let sum: number = 0;
       lentUsers.forEach((user) => (sum += -user.amount));
-      setNetLent(Number(sum.toFixed(2)));
+      setNetLent(sum);
     }
   }, [lentUsers]);
 
@@ -136,7 +136,7 @@ const LendingSummary = () => {
     if (owedUsers) {
       let sum: number = 0;
       owedUsers.forEach((user) => (sum += user.amount));
-      setNetOwed(Number(sum.toFixed(2)));
+      setNetOwed(sum);
     }
   }, [owedUsers]);
 
@@ -145,7 +145,7 @@ const LendingSummary = () => {
     if (netOwed !== null && netLent !== null) {
       let balanceColor = '';
       let balanceMsg;
-      const netBalance = netOwed - netLent;
+      const netBalance = Math.round((netOwed - netLent) * 100) / 100;
       if (netBalance === 0) {
         balanceMsg = 'All Otters paid up!';
         balanceColor = 'var(--light-accent-color)';
