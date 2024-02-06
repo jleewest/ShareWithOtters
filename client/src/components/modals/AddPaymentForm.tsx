@@ -16,7 +16,7 @@ import { getUsersByGroup } from '../../apiServices/user-group';
 
 type AddPaymentFormProps = {
   open: boolean;
-  onClose: (name: string) => void;
+  onClose: () => void;
 };
 
 const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {

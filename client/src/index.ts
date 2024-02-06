@@ -13,6 +13,12 @@ export type Group = {
   description: string;
 };
 
+export type NewGroup = {
+  title: string;
+  description: string;
+  user: string;
+};
+
 export type User_Group = {
   id: number;
   userId: string;

@@ -6,9 +6,18 @@ const prisma = new PrismaClient();
 export async function postGroup(req: Request, res: Response) {
   try {
     const group = req.body;
-    const saveGroup = await prisma.group.create({ data: group });
-    res.json(saveGroup);
-    res.status(201);
+    const saveGroup = await prisma.group.create({
+      data: { title: group.title, description: group.description },
+    });
+    const findUserInGroup = await prisma.user_Group.findFirst({
+      where: { userId: group.user, groupId: saveGroup.id },
+    });
+    if (findUserInGroup === null) {
+      await prisma.user_Group.create({
+        data: { userId: group.user, groupId: saveGroup.id },
+      });
+      res.status(201).json(saveGroup);
+    }
   } catch (err) {
     res.sendStatus(500);
     console.log(err);
