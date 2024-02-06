@@ -63,7 +63,10 @@ function Home() {
       </header>
       <main className='home-container'>
         <div>
-          <h2 className='your-groups'>Your Groups</h2>
+          <div className='group-title'>
+            <h2 className='your-groups'>Your Otter Rafts</h2>
+            <button className='primary-btn add-family'>Add Raft</button>
+          </div>
           {/* List of user's groups */}
           <div className='group-display'>
             {userGroups.length > 0 ? (
