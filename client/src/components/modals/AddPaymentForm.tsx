@@ -8,11 +8,11 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { Autocomplete } from '@mui/material';
-import { getAllUsers } from '../../apiServices/user';
-import { User, TransactionData } from '../../index'; // Ensure TransactionData is correctly imported
+import { TransactionData, User_GroupUsers } from '../../index'; // Ensure TransactionData is correctly imported
 import { createTransaction } from '../../apiServices/transaction';
 import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';
+import { getUsersByGroup } from '../../apiServices/user-group';
 
 type AddPaymentFormProps = {
   open: boolean;
@@ -24,17 +24,18 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
   const [amount, setAmount] = useState<string>('');
-  const [selectedFriends, setSelectedFriends] = useState<User | null>();
-  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [selectedFriends, setSelectedFriends] =
+    useState<User_GroupUsers | null>();
+  const [allUsers, setAllUsers] = useState<User_GroupUsers[]>([]);
   const params = useParams();
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await getAllUsers();
-      setAllUsers(users.filter((u) => u.clerkId !== user?.id));
+      const users = await getUsersByGroup(Number(params.id));
+      setAllUsers(users.filter((u) => u.user.clerkId !== user?.id));
     };
     fetchUsers();
-  }, [user]);
+  }, [user, params]);
 
   const handleSubmit = async () => {
     if (!date || !description || !amount || !user) {
@@ -46,7 +47,7 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
       type: 'payment',
       date: date.toISOString(),
       transactor: user.id,
-      transactee: [selectedFriends?.clerkId || 'No transactee yet'],
+      transactee: [selectedFriends?.user.clerkId || 'No transactee yet'],
       description,
       groupId: Number(params.id),
       amount: [parseFloat(amount)],
@@ -90,7 +91,9 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
         />
         <Autocomplete
           options={allUsers}
-          getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+          getOptionLabel={(option) =>
+            `${option.user.firstName} ${option.user.lastName}`
+          }
           onChange={(_, newValue) => setSelectedFriends(newValue)}
           renderInput={(params) => (
             <TextField {...params} label='Select friends' />
