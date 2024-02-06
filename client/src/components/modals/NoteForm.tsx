@@ -5,6 +5,10 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Transaction } from '../../index';
+import dayjs from 'dayjs';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/clerk-react';
 
 type NoteFormProps = {
   open: boolean;
@@ -13,6 +17,15 @@ type NoteFormProps = {
 };
 
 const NoteForm = ({ open, onClose, transaction }: NoteFormProps) => {
+  const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
+  const [amount, setAmount] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [note, setNote] = useState<string>('');
+  const { user } = useUser();
+
+  useEffect(() => {
+    //set all fields
+  });
   // Form submission handler (to be implemented)
   const handleSubmit = () => {
     console.log(transaction);
@@ -21,14 +34,34 @@ const NoteForm = ({ open, onClose, transaction }: NoteFormProps) => {
     onClose();
   };
 
-  //FIELDS SHOULD POPULATE CONDITIONALLY BASED ON WHETHER USER IS TRANSACTOR OR TRANSACTEE
-  //HANDLE SUBMIT SHOULD SEND POST REQUEST: EDITTRANSACTION(TRANSACTION.ID)
-
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add a Note</DialogTitle>
+      <DialogTitle>Edit and Add Notes</DialogTitle>
       <DialogContent>
         {/* Note form fields */}
+        {user && transaction.transactor === user.id && (
+          <div>
+            <MobileDatePicker label='Date' value={date} onChange={setDate} />
+
+            <TextField
+              margin='dense'
+              label='Amount'
+              type='number'
+              fullWidth
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+          </div>
+        )}
+        <TextField
+          autoFocus
+          margin='dense'
+          label='Payment description'
+          type='text'
+          fullWidth
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
         <TextField
           autoFocus
           margin='dense'
