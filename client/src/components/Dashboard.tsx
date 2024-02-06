@@ -10,19 +10,20 @@ import { getTransactionsByClerkId } from '../apiServices/transaction';
 import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { TransactionReturn, TransactionsContext } from '../index';
+import { useParams } from 'react-router-dom';
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState<TransactionReturn>();
-
+  const params = useParams();
   const { user } = useUser();
-  if (!user) {
+  if (!user || !params) {
     return null;
   }
 
   //GET transactions from server
   useEffect(() => {
-    if (user) {
-      getTransactionsByClerkId(user.id).then((data) => {
+    if (user && params) {
+      getTransactionsByClerkId(user.id, params.id).then((data) => {
         setTransactions(data);
       });
     }
@@ -30,8 +31,11 @@ const Dashboard = () => {
 
   // Function to refresh the transactions data after a new payment is added
   const refreshTransactions = async () => {
-    if (user) {
-      const updatedTransactions = await getTransactionsByClerkId(user.id);
+    if (user && params) {
+      const updatedTransactions = await getTransactionsByClerkId(
+        user.id,
+        params.id
+      );
       setTransactions(updatedTransactions);
     }
   };

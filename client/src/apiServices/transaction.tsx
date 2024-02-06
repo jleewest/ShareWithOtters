@@ -3,9 +3,10 @@ import { Transaction, TransactionData, TransactionReturn } from '../index';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getTransactionsByClerkId(
-  id: string
+  userId: string,
+  groupId: string
 ): Promise<TransactionReturn> {
-  const response = await fetch(`${BASE_URL}/transaction/${id}`);
+  const response = await fetch(`${BASE_URL}/transaction/${groupId}/${userId}/`);
   if (response.ok) {
     const data = await response.json();
     return data as Promise<TransactionReturn>;
@@ -82,4 +83,3 @@ export async function getAllTransactions(): Promise<Transaction[]> {
   }
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }
-

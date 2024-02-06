@@ -37,6 +37,7 @@ function Home() {
   useEffect(() => {
     if (user) {
       getGroupsByClerkId(user.id).then((data) => {
+        console.log(data);
         setUserGroups(data);
       });
     }
