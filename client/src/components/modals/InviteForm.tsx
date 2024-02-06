@@ -8,20 +8,18 @@ import { Autocomplete } from '@mui/material';
 import { getAllUsers } from '../../apiServices/user';
 import { useEffect, useState } from 'react';
 import { User, User_GroupUsers } from '../..';
-import { useUser } from '@clerk/clerk-react';
 import { addUserToGroup, getUsersByGroup } from '../../apiServices/user-group';
 import { useParams } from 'react-router-dom';
 
 type InviteFormProps = {
   open: boolean;
-  onClose: () => void;
+  onClose: (name: string) => void;
 };
 
 const InviteForm = ({ open, onClose }: InviteFormProps) => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<User | null>();
   const [allUsersInGroup, setAllUsersInGroup] = useState<User_GroupUsers[]>([]);
-  const { user } = useUser();
   const params = useParams();
 
   useEffect(() => {
@@ -50,7 +48,6 @@ const InviteForm = ({ open, onClose }: InviteFormProps) => {
     });
     // Placeholder for form submission logic
     console.log('Form submitted');
-    onClose();
   };
 
   return (

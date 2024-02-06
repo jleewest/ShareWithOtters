@@ -26,22 +26,11 @@ const Dashboard = () => {
     }
   }, [user, params]);
 
-  // Function to refresh the transactions data after a new payment is added
-  const refreshTransactions = async () => {
-    if (user && params) {
-      const updatedTransactions = await getTransactionsByClerkId(
-        user.id,
-        params.id
-      );
-      setTransactions(updatedTransactions);
-    }
-  };
-
   return (
     <div className='Dashboard'>
       <TransactionsContext.Provider value={{ transactions, setTransactions }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <GroupOptions refreshTransactions={refreshTransactions} />
+          <GroupOptions />
           {/* Render only pending transactions here */}
           <PendingTransactionTable />
           {/* Render summary of debts here */}

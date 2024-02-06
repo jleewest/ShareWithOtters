@@ -4,7 +4,7 @@ import { addUser } from '../apiServices/user';
 import { useUser } from '@clerk/clerk-react';
 import { getGroupsByClerkId } from '../apiServices/user-group';
 import { User_GroupWithTransactions } from '../index';
-import GroupDetails from './GroupDetails';
+import { GroupDetails } from './GroupDetails';
 import { Link } from 'react-router-dom';
 
 type GroupDetails = {
@@ -23,9 +23,9 @@ function Home() {
     if (user) {
       addUser({
         clerkId: user.id,
-        firstName: user.firstName || 'no first name',
-        lastName: user.lastName || 'no last name',
-        email: user.primaryEmailAddress?.emailAddress || 'no email',
+        firstName: user.firstName ?? 'no first name',
+        lastName: user.lastName ?? 'no last name',
+        email: user.primaryEmailAddress?.emailAddress ?? 'no email',
       });
     }
   }, [user]);

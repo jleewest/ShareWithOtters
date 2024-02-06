@@ -25,3 +25,20 @@
   background-color: var(--light-accent-color);
   transition: all 3sec ease-in-out;
 }
+
+.current-otters,
+.otter-list {
+  color: var(--dark-accent-color);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.current-otters {
+  color: var(--dark-accent-color);
+  font-weight: 500;
+}
+
+.otter-list {
+  color: var(--dark-accent-color);
+  font-weight: 400;
+}
