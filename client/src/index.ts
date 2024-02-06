@@ -46,6 +46,13 @@ export type Transaction = {
   notes: string;
 };
 
+export type EditedTransaction = {
+  date: string;
+  description: string;
+  amount: number;
+  notes: string;
+};
+
 export type TransactionData = {
   type: string;
   date: string;

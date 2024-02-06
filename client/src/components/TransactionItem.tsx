@@ -119,7 +119,7 @@ const TransactionItem = ({ transaction, status }: TransactionItemProps) => {
             {transaction.description}
           </div>
         </div>
-        <div className='transaction-note'></div>
+        <div className='transaction-note'>{transaction.notes}</div>
       </div>
       <div>
         <div className='amount-with-date'>

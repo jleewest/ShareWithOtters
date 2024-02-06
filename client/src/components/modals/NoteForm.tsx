@@ -7,8 +7,9 @@ import TextField from '@mui/material/TextField';
 import { Transaction } from '../../index';
 import dayjs from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
+import { editTransaction } from '../../apiServices/transaction';
 
 type NoteFormProps = {
   open: boolean;
@@ -17,19 +18,32 @@ type NoteFormProps = {
 };
 
 const NoteForm = ({ open, onClose, transaction }: NoteFormProps) => {
-  const [date, setDate] = useState<dayjs.Dayjs | null>(dayjs());
-  const [amount, setAmount] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [note, setNote] = useState<string>('');
+  const [date, setDate] = useState<string>(transaction.date);
+  const [amount, setAmount] = useState<number>(transaction.amount);
+  const [description, setDescription] = useState<string>(
+    transaction.description
+  );
+  const [note, setNote] = useState<string>(transaction.notes);
   const { user } = useUser();
 
-  useEffect(() => {
-    //set all fields
-  });
-  // Form submission handler (to be implemented)
+  //date change handling
+  //@ts-expect-error date is coming from Day.js
+  const handleChangeDate = (date) => {
+    if (date && typeof date === 'object' && '$d' in date) {
+      const newDate = new Date(date);
+      setDate(newDate.toString());
+    }
+  };
+
+  // Form submission handler
   const handleSubmit = () => {
-    console.log(transaction);
-    // Placeholder for form submission logic
+    const updatedTransaction = {
+      date: date,
+      amount: amount,
+      description: description,
+      notes: note,
+    };
+    editTransaction(updatedTransaction, transaction.id);
     console.log('Form submitted');
     onClose();
   };
@@ -41,7 +55,11 @@ const NoteForm = ({ open, onClose, transaction }: NoteFormProps) => {
         {/* Note form fields */}
         {user && transaction.transactor === user.id && (
           <div>
-            <MobileDatePicker label='Date' value={date} onChange={setDate} />
+            <MobileDatePicker
+              label='Date'
+              value={dayjs(date)}
+              onChange={handleChangeDate}
+            />
 
             <TextField
               margin='dense'
@@ -49,7 +67,7 @@ const NoteForm = ({ open, onClose, transaction }: NoteFormProps) => {
               type='number'
               fullWidth
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => setAmount(Number(e.target.value))}
             />
           </div>
         )}
@@ -68,6 +86,8 @@ const NoteForm = ({ open, onClose, transaction }: NoteFormProps) => {
           id='note'
           label='Note'
           type='text'
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
           fullWidth
           multiline
           rows={4}

@@ -1,4 +1,9 @@
-import { Transaction, TransactionData, TransactionReturn } from '../index';
+import {
+  EditedTransaction,
+  Transaction,
+  TransactionData,
+  TransactionReturn,
+} from '../index';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -55,9 +60,9 @@ export async function updateTransactionStatus(
 }
 
 export async function editTransaction(
-  transaction: Transaction,
+  transaction: EditedTransaction,
   id: number
-): Promise<Transaction> {
+): Promise<EditedTransaction> {
   const response = await fetch(`${BASE_URL}/transaction/edit/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -70,7 +75,7 @@ export async function editTransaction(
   });
   if (response.ok) {
     const data = await response.json();
-    return data as Promise<Transaction>;
+    return data as Promise<EditedTransaction>;
   }
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }
