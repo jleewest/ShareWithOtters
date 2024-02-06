@@ -1,10 +1,8 @@
-import Home from './components/Home';
 import './css/App.css';
 import DarkModeToggle from './css/DarkModeToggle';
 import { SignedOut, SignedIn, SignInButton } from '@clerk/clerk-react';
 import logo from './assets/otter-logo.svg';
-import { Route, Routes } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
+import Display from './components/Display';
 
 function App() {
   return (
@@ -23,10 +21,7 @@ function App() {
       </SignedOut>
       <div className='signed-in'>
         <SignedIn>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/group/:id' element={<Dashboard />} />
-          </Routes>
+          <Display />
         </SignedIn>
       </div>
     </div>

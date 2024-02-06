@@ -2,12 +2,10 @@ import '../css/Home.css';
 import { useState, useEffect } from 'react';
 import { addUser } from '../apiServices/user';
 import { useUser } from '@clerk/clerk-react';
-import { SignOutButton } from '@clerk/clerk-react';
-import { Link } from 'react-router-dom';
-import DarkModeToggle from '../css/DarkModeToggle';
 import { getGroupsByClerkId } from '../apiServices/user-group';
 import { User_GroupWithTransactions } from '../index';
 import GroupDetails from './GroupDetails';
+import { Link } from 'react-router-dom';
 
 type GroupDetails = {
   title: string;
@@ -48,20 +46,7 @@ function Home() {
 
   return (
     <div className='Home'>
-      <header className='app-header'>
-        <Link className='otter-home' to='/'>
-          ShareWithOtter
-        </Link>
-        <div className='header-right'>
-          <div className='login-dark-mode'>
-            <DarkModeToggle />
-          </div>
-          <SignOutButton afterSignOutUrl='/'>
-            <button className='primary-btn logout-button'>Logout</button>
-          </SignOutButton>
-        </div>
-      </header>
-      <main className='home-container'>
+      <div className='home-container'>
         <div>
           <div className='group-title'>
             <h2 className='your-groups'>Your Otter Rafts</h2>
@@ -86,10 +71,7 @@ function Home() {
             )}
           </div>
         </div>
-      </main>
-      <footer className='app-footer'>
-        <a href='https://github.com/jleewest/IOU.git'>Open source code</a>
-      </footer>
+      </div>
     </div>
   );
 }
