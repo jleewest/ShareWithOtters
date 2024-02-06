@@ -42,6 +42,7 @@ export type TransactionData = {
   transactor: string;
   transactee: string[];
   description: string;
+  groupId: number;
   amount: number[];
   notes: string;
 };

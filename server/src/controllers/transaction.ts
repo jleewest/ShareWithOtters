@@ -115,7 +115,6 @@ export async function createTransaction(req: Request, res: Response) {
   try {
     const { transactee, amount, ...otherTransactionProperties } = req.body;
     const savedTransactions = [];
-
     //iterate through all transactees and post new transaction for each transactee
     for (let i = 0; i < transactee.length; i++) {
       const saveTransaction = await prisma.transaction.create({
@@ -127,7 +126,6 @@ export async function createTransaction(req: Request, res: Response) {
       });
       savedTransactions.push(saveTransaction);
     }
-    console.log(savedTransactions);
     res.json(savedTransactions);
     res.status(201);
   } catch (err) {
