@@ -19,6 +19,10 @@ export type User_Group = {
   groupId: number;
 };
 
+export type User_GroupWithTransactions = User_Group & {
+  group: { description: string; title: string };
+};
+
 export type Transaction = {
   id: number;
   groupId: number;

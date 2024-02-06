@@ -7,13 +7,26 @@ import LendingSummary from './LendingSummary';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { getTransactionsByClerkId } from '../apiServices/transaction';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { TransactionReturn } from '../index';
+import { TransactionReturn, TransactionsContext } from '../index';
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState<TransactionReturn>();
+
   const { user } = useUser();
+  if (!user) {
+    return null;
+  }
+
+  //GET transactions from server
+  useEffect(() => {
+    if (user) {
+      getTransactionsByClerkId(user.id).then((data) => {
+        setTransactions(data);
+      });
+    }
+  }, [user]);
 
   // Function to refresh the transactions data after a new payment is added
   const refreshTransactions = async () => {
@@ -23,21 +36,21 @@ const Dashboard = () => {
     }
   };
 
-  console.log(transactions);
-
   return (
     <div className='Dashboard'>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <GroupOptions refreshTransactions={refreshTransactions} />
-        {/* Render only pending transactions here */}
-        <PendingTransactionTable />
-        {/* Render summary of debts here */}
-        <LendingSummary />
-        {/* Render only approved transactions here */}
-        <RecentTransactionTable />
+      <TransactionsContext.Provider value={{ transactions, setTransactions }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <GroupOptions refreshTransactions={refreshTransactions} />
+          {/* Render only pending transactions here */}
+          <PendingTransactionTable />
+          {/* Render summary of debts here */}
+          <LendingSummary />
+          {/* Render only approved transactions here */}
+          <RecentTransactionTable />
 
-        <PieChart />
-      </LocalizationProvider>
+          <PieChart />
+        </LocalizationProvider>
+      </TransactionsContext.Provider>
     </div>
   );
 };

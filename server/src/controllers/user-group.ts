@@ -6,7 +6,17 @@ const prisma = new PrismaClient();
 export async function getGroupsByClerkId(req: Request, res: Response) {
   try {
     const id = req.params.id;
-    const data = await prisma.user_Group.findMany({ where: { userId: id } });
+    const data = await prisma.user_Group.findMany({
+      where: { userId: id },
+      include: {
+        group: {
+          select: {
+            title: true,
+            description: true,
+          },
+        },
+      },
+    });
     res.json(data);
     res.status(200);
   } catch (err) {
