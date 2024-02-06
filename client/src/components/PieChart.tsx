@@ -75,7 +75,7 @@ const PieChart: React.FC = () => {
       >
         {showAmount ? 'Total Amount' : 'How Many Expenses'}
       </button>
-      <Pie data={chartData} />
+      <Pie data={chartData} style={{ marginBottom: '2rem' }} />
     </div>
   );
 };
