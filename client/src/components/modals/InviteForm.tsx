@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 
 type InviteFormProps = {
   open: boolean;
-  onClose: (name: string) => void;
+  onClose: () => void;
 };
 
 const InviteForm = ({ open, onClose }: InviteFormProps) => {
@@ -48,6 +48,7 @@ const InviteForm = ({ open, onClose }: InviteFormProps) => {
     });
     // Placeholder for form submission logic
     console.log('Form submitted');
+    onClose();
   };
 
   return (
