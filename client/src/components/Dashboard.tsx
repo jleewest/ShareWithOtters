@@ -16,18 +16,15 @@ const Dashboard = () => {
   const [transactions, setTransactions] = useState<TransactionReturn>();
   const params = useParams();
   const { user } = useUser();
-  if (!user || !params) {
-    return null;
-  }
 
   //GET transactions from server
   useEffect(() => {
-    if (user && params) {
+    if (user) {
       getTransactionsByClerkId(user.id, params.id).then((data) => {
         setTransactions(data);
       });
     }
-  }, [user]);
+  }, [user, params]);
 
   // Function to refresh the transactions data after a new payment is added
   const refreshTransactions = async () => {
