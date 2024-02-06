@@ -12,8 +12,8 @@ import DarkModeToggle from '../css/DarkModeToggle';
 function Home() {
   const [transactions, setTransactions] = useState<TransactionReturn>();
   const { user } = useUser();
-  if (user) {
-    console.log(user);
+  if (!user) {
+    return null;
   }
 
   //POST user to DB if newUser
@@ -42,7 +42,7 @@ function Home() {
       <div className='Home'>
         <header className='app-header'>
           <Link className='otter-home' to='/'>
-            OtterShare
+            ShareWithOtter
           </Link>
           <div>
             <div className='login-dark-mode'>
@@ -69,7 +69,7 @@ function Home() {
     <div className='Home'>
       <header className='app-header'>
         <Link className='otter-home' to='/'>
-          OtterShare
+          ShareWithOtter
         </Link>
         <div className='header-right'>
           <div className='login-dark-mode'>

@@ -12,7 +12,7 @@ function App() {
           <div className='logout-dark-mode'>
             <DarkModeToggle />
           </div>
-          <h1>OtterShare</h1>
+          <h1>ShareWithOtter</h1>
           <img className='login-logo' src={logo} alt='logo' />
           <SignInButton redirectUrl='/'>
             <button className='login-btn'>Log In</button>
