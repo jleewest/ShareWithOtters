@@ -29,7 +29,7 @@ const GroupOptions = () => {
           Add payment
         </button>
         <button className='primary-btn' onClick={openInviteForm}>
-          Invite friends
+          Add Otter
         </button>
       </section>
       {/* Modals for forms with refreshTransactions passed as a prop */}

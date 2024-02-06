@@ -28,7 +28,10 @@ export async function getUsersByGroup(
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }
 
-export async function addUserToGroup(body: User_Group): Promise<User_Group> {
+export async function addUserToGroup(body: {
+  userId: string | undefined;
+  groupId: number;
+}): Promise<User_Group> {
   const response = await fetch(`${BASE_URL}/user-group/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
