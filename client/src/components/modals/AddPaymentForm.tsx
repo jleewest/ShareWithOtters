@@ -12,7 +12,7 @@ import { getAllUsers } from '../../apiServices/user';
 import { User, TransactionData } from '../../index'; // Ensure TransactionData is correctly imported
 import { createTransaction } from '../../apiServices/transaction';
 import dayjs from 'dayjs';
-import { Params, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 type AddPaymentFormProps = {
   open: boolean;

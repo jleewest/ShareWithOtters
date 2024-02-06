@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import { MobileDatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { useUser } from '@clerk/clerk-react';
+import { useParams } from 'react-router-dom';
 
 type StepOneProps = {
   handleNext: () => void;
@@ -16,7 +17,7 @@ const StepOne = ({ handleNext, activeStep, steps }: StepOneProps) => {
   const [description, setDescription] = useState<string>();
   const [date, setDate] = useState<string>(new Date().toString());
   const [amount, setAmount] = useState<string>();
-
+  const params = useParams();
   const { user } = useUser();
   if (!user) return null;
 
@@ -31,6 +32,7 @@ const StepOne = ({ handleNext, activeStep, steps }: StepOneProps) => {
       transactor: user.id,
       transactee: [user.id],
       description: description,
+      groupId: Number(params.id),
       amount: [Number(amount)],
       notes: '',
     });
