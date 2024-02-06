@@ -23,6 +23,10 @@ export type User_GroupWithTransactions = User_Group & {
   group: { description: string; title: string };
 };
 
+export type User_GroupUsers = User_Group & {
+  user: { clerkId: string; firstName: string; lastName: string };
+};
+
 export type Transaction = {
   id: number;
   groupId: number;

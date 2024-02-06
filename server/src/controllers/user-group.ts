@@ -27,6 +27,32 @@ export async function getGroupsByClerkId(req: Request, res: Response) {
   }
 }
 
+//TO GET ALL USERS THAT BELONGS TO A GROUP (id = groupId)
+export async function getUsersByGroup(req: Request, res: Response) {
+  try {
+    const id = req.params.groupId;
+    const data = await prisma.user_Group.findMany({
+      where: { groupId: Number(id) },
+      include: {
+        user: {
+          select: {
+            clerkId: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+    res.json(data);
+    res.status(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 //TO ADD USER TO A GROUP (body=userID and groupID)
 export async function addUserToGroup(req: Request, res: Response) {
   try {

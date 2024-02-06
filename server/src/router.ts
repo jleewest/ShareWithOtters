@@ -14,6 +14,7 @@ import {
   getGroupsByClerkId,
   addUserToGroup,
   deleteUserFromGroup,
+  getUsersByGroup,
 } from './controllers/user-group';
 
 //USER ROUTES
@@ -35,6 +36,7 @@ router.put('/group/edit/:id', editGroup);
 
 //USER_GROUP ROUTES
 router.get('/user-group/:id', getGroupsByClerkId);
+router.get('/user-group/users/:groupId', getUsersByGroup);
 router.post('/user-group', addUserToGroup);
 router.delete('/user-group/delete', deleteUserFromGroup);
 
