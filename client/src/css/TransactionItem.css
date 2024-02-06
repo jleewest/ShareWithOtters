@@ -24,7 +24,7 @@
 
 /* INDIVIDUAL COMPONENT */
 .TransactionItem .transaction-user {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--secondary-color);
   font-weight: 700;
 }
