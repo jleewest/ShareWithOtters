@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { TransactionData, TransactionsDataContext } from '../../../index';
 import AddExpenseForm from './AddExpenseFrom';
 import { useUser } from '@clerk/clerk-react';
+import { useParams } from 'react-router-dom';
 
 type ExpenseFormProps = {
   open: boolean;
@@ -11,6 +12,7 @@ type ExpenseFormProps = {
 const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
   const [transactionData, setTransactionData] =
     useState<TransactionData | null>(null);
+  const params = useParams();
   const { user } = useUser();
 
   useEffect(() => {
@@ -21,6 +23,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
         transactor: user.id,
         transactee: [user.id],
         description: '',
+        groupId: Number(params.id),
         amount: [],
         notes: '',
       });

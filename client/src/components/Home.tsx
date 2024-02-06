@@ -1,16 +1,21 @@
-import Dashboard from './Dashboard';
 import '../css/Home.css';
-import { TransactionReturn, TransactionsContext } from '../index';
 import { useState, useEffect } from 'react';
-import { getTransactionsByClerkId } from '../apiServices/transaction';
 import { addUser } from '../apiServices/user';
 import { useUser } from '@clerk/clerk-react';
-import { SignOutButton } from '@clerk/clerk-react';
+import { getGroupsByClerkId } from '../apiServices/user-group';
+import { User_GroupWithTransactions } from '../index';
+import GroupDetails from './GroupDetails';
 import { Link } from 'react-router-dom';
-import DarkModeToggle from '../css/DarkModeToggle';
+
+type GroupDetails = {
+  title: string;
+  description: string;
+};
 
 function Home() {
-  const [transactions, setTransactions] = useState<TransactionReturn>();
+  const [userGroups, setUserGroups] = useState<User_GroupWithTransactions[]>(
+    []
+  );
   const { user } = useUser();
   if (!user) {
     return null;
@@ -28,66 +33,43 @@ function Home() {
     }
   }, [user]);
 
-  //GET transactions from server
+  //get all group connected to user
   useEffect(() => {
     if (user) {
-      getTransactionsByClerkId(user.id).then((data) => {
-        setTransactions(data);
+      getGroupsByClerkId(user.id).then((data) => {
+        setUserGroups(data);
       });
     }
   }, [user]);
 
-  if (!user) {
-    return (
-      <div className='Home'>
-        <header className='app-header'>
-          <Link className='otter-home' to='/'>
-            ShareWithOtter
-          </Link>
-          <div>
-            <div className='login-dark-mode'>
-              <DarkModeToggle />
-            </div>
-            <SignOutButton afterSignOutUrl='/'>
-              <button className='primary-btn logout-button'>Logout</button>
-            </SignOutButton>
-          </div>
-        </header>
-        <main className='home-container'>
-          <div>
-            Something has gone 🦖RAW-WRong! Please logout and log back in
-          </div>
-        </main>
-        <footer className='app-footer'>
-          <a href='https://github.com/jleewest/IOU.git'>Open source code</a>
-        </footer>
-      </div>
-    );
-  }
-
   return (
     <div className='Home'>
-      <header className='app-header'>
-        <Link className='otter-home' to='/'>
-          ShareWithOtter
-        </Link>
-        <div className='header-right'>
-          <div className='login-dark-mode'>
-            <DarkModeToggle />
+      <div className='home-container'>
+        <div>
+          <div className='group-title'>
+            <h2 className='your-groups'>Your Otter Rafts</h2>
+            <button className='primary-btn add-family'>Add Raft</button>
           </div>
-          <SignOutButton afterSignOutUrl='/'>
-            <button className='primary-btn logout-button'>Logout</button>
-          </SignOutButton>
+          {/* List of user's groups */}
+          <div className='group-display'>
+            {userGroups.length > 0 ? (
+              userGroups.map((group) => {
+                return (
+                  <Link
+                    style={{ textDecoration: 'none' }}
+                    to={{ pathname: `/group/${group.groupId}` }}
+                    key={group.groupId}
+                  >
+                    <GroupDetails group={group.group} />
+                  </Link>
+                );
+              })
+            ) : (
+              <p>There are no groups yet</p>
+            )}
+          </div>
         </div>
-      </header>
-      <main className='home-container'>
-        <TransactionsContext.Provider value={{ transactions, setTransactions }}>
-          <Dashboard />
-        </TransactionsContext.Provider>
-      </main>
-      <footer className='app-footer'>
-        <a href='https://github.com/jleewest/IOU.git'>Open source code</a>
-      </footer>
+      </div>
     </div>
   );
 }

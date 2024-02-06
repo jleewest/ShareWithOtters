@@ -12,6 +12,7 @@ import { getAllUsers } from '../../apiServices/user';
 import { User, TransactionData } from '../../index'; // Ensure TransactionData is correctly imported
 import { createTransaction } from '../../apiServices/transaction';
 import dayjs from 'dayjs';
+import { useParams } from 'react-router-dom';
 
 type AddPaymentFormProps = {
   open: boolean;
@@ -25,6 +26,7 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
   const [amount, setAmount] = useState<string>('');
   const [selectedFriends, setSelectedFriends] = useState<User | null>();
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const params = useParams();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -46,6 +48,7 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
       transactor: user.id,
       transactee: [selectedFriends?.clerkId || 'No transactee yet'],
       description,
+      groupId: Number(params.id),
       amount: [parseFloat(amount)],
       notes: '',
     };

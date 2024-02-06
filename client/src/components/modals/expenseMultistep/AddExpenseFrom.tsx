@@ -3,6 +3,7 @@ import { useTransactionDataContext } from '../../../index';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import ExpenseMultiStepForm from './ExpenseMultistepForm';
+import { useParams } from 'react-router-dom';
 
 type AddExpenseFormProps = {
   openExpense: boolean;
@@ -15,6 +16,7 @@ const AddExpenseForm = ({
 }: AddExpenseFormProps) => {
   const { setTransactionData } = useTransactionDataContext();
   const { user } = useUser();
+  const params = useParams();
   if (!user) return null;
 
   const resetTransactionData = () => {
@@ -24,6 +26,7 @@ const AddExpenseForm = ({
       transactor: user.id,
       transactee: [user.id],
       description: '',
+      groupId: Number(params.id),
       amount: [],
       notes: '',
     });

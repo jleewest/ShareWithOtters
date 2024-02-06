@@ -22,7 +22,7 @@ router.get('/user', getAllUsers);
 router.post('/user', addUser);
 
 //TRANSACTION ROUTES
-router.get('/transaction/:id', getTransactionsByClerkId);
+router.get('/transaction/:groupId/:userId', getTransactionsByClerkId);
 router.get('/transactions', getAllTransactions);
 router.post('/transaction', createTransaction);
 router.delete('/transaction/delete/:id', deleteTransaction);

@@ -5,10 +5,15 @@ const prisma = new PrismaClient();
 //GET ALL TRANSACTIONS FOR USER (by user.id)
 export async function getTransactionsByClerkId(req: Request, res: Response) {
   try {
-    const id = req.params.id;
+    const groupId = req.params.groupId;
+    const userId = req.params.userId;
     const allTransactionData = await prisma.transaction.findMany({
       where: {
-        OR: [{ transactor: id }, { transactee: id, transactor: { not: id } }],
+        OR: [
+          { transactor: userId },
+          { transactee: userId, transactor: { not: userId } },
+        ],
+        groupId: Number(groupId),
       },
       include: {
         userActor: {
@@ -33,8 +38,8 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
       if (
         transaction.status === 'pending' &&
         transaction.type === 'expense' &&
-        transaction.transactee === id &&
-        transaction.transactor === id
+        transaction.transactee === userId &&
+        transaction.transactor === userId
       ) {
         return { ...transaction, status: 'active', amount: dollarAmount };
       } else {
@@ -49,14 +54,14 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
           (transaction) =>
             transaction.status === 'pending' &&
             transaction.type === 'expense' &&
-            transaction.transactee === id &&
-            transaction.transactor !== id
+            transaction.transactee === userId &&
+            transaction.transactor !== userId
         ),
         payment: allTransactions.filter(
           (transaction) =>
             transaction.status === 'pending' &&
             transaction.type === 'payment' &&
-            transaction.transactee === id
+            transaction.transactee === userId
         ),
       },
       active: {
@@ -69,8 +74,8 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
             (transaction) =>
               transaction.status === 'pending' &&
               transaction.type === 'expense' &&
-              transaction.transactor === id &&
-              transaction.transactee !== id
+              transaction.transactor === userId &&
+              transaction.transactee !== userId
           ),
         },
         payment: {
@@ -78,20 +83,20 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
             (transaction) =>
               transaction.status === 'pending' &&
               transaction.type === 'payment' &&
-              transaction.transactor === id &&
-              transaction.transactee !== id
+              transaction.transactor === userId &&
+              transaction.transactee !== userId
           ),
           paid: allTransactions.filter(
             (transaction) =>
               transaction.status === 'active' &&
               transaction.type === 'payment' &&
-              transaction.transactor === id
+              transaction.transactor === userId
           ),
           received: allTransactions.filter(
             (transaction) =>
               transaction.status === 'active' &&
               transaction.type === 'payment' &&
-              transaction.transactee === id
+              transaction.transactee === userId
           ),
         },
       },
@@ -110,7 +115,6 @@ export async function createTransaction(req: Request, res: Response) {
   try {
     const { transactee, amount, ...otherTransactionProperties } = req.body;
     const savedTransactions = [];
-
     //iterate through all transactees and post new transaction for each transactee
     for (let i = 0; i < transactee.length; i++) {
       const saveTransaction = await prisma.transaction.create({
@@ -122,7 +126,6 @@ export async function createTransaction(req: Request, res: Response) {
       });
       savedTransactions.push(saveTransaction);
     }
-    console.log(savedTransactions);
     res.json(savedTransactions);
     res.status(201);
   } catch (err) {
