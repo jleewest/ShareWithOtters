@@ -44,9 +44,10 @@ const GroupOptions = () => {
 
   // Handlers for opening and closing each modal
   const openForm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLButtonElement;
     setFormState((prevFormState) => ({
       ...prevFormState,
-      [e.target.name]: true,
+      [target.name]: true,
     }));
   };
   const closeForm = (name: string) =>
@@ -54,17 +55,6 @@ const GroupOptions = () => {
       ...prevFormState,
       [name]: false,
     }));
-  //const [isPaymentFormOpen, setPaymentFormOpen] = useState(false);
-  //const [isExpenseFormOpen, setExpenseFormOpen] = useState(false);
-  //const [isInviteFormOpen, setInviteFormOpen] = useState(false);
-
-  //// Handlers for opening and closing each modal
-  //const openPaymentForm = () => setPaymentFormOpen(true);
-  //const openExpenseForm = () => setExpenseFormOpen(true);
-  //const openInviteForm = () => setInviteFormOpen(true);
-  //const closePaymentForm = () => setPaymentFormOpen(false);
-  //const closeExpenseForm = () => setExpenseFormOpen(false);
-  //const closeInviteForm = () => setInviteFormOpen(false);
 
   return (
     <div>
