@@ -17,9 +17,6 @@ function Home() {
     []
   );
   const { user } = useUser();
-  if (!user) {
-    return null;
-  }
 
   //POST user to DB if newUser
   useEffect(() => {

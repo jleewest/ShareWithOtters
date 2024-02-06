@@ -33,38 +33,38 @@ const PieChart: React.FC = () => {
   });
   const [showAmount, setShowAmount] = useState<boolean>(true); // State variable for toggling
   const params = useParams();
-  const fetchData = async () => {
-    const users = await getAllUsers();
-    const userExpenses: { [key: string]: number } = {};
-
-    for (const user of users) {
-      const transactions = await getTransactionsByClerkId(
-        user.clerkId,
-        params.id
-      );
-      userExpenses[user.firstName] =
-        transactions.active.expense.confirmedExpenses.reduce(
-          (acc, curr) => (showAmount ? acc + curr.amount : acc + 1),
-          0
-        );
-    }
-
-    // Update chartData state
-    setChartData({
-      labels: Object.keys(userExpenses),
-      datasets: [
-        {
-          data: Object.values(userExpenses),
-          backgroundColor: chartBackgroundColors,
-          hoverBackgroundColor: chartHoverBackgroundColors,
-        },
-      ],
-    });
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const users = await getAllUsers();
+      const userExpenses: { [key: string]: number } = {};
+
+      for (const user of users) {
+        const transactions = await getTransactionsByClerkId(
+          user.clerkId,
+          params.id
+        );
+        userExpenses[user.firstName] =
+          transactions.active.expense.confirmedExpenses.reduce(
+            (acc, curr) => (showAmount ? acc + curr.amount : acc + 1),
+            0
+          );
+      }
+
+      // Update chartData state
+      setChartData({
+        labels: Object.keys(userExpenses),
+        datasets: [
+          {
+            data: Object.values(userExpenses),
+            backgroundColor: chartBackgroundColors,
+            hoverBackgroundColor: chartHoverBackgroundColors,
+          },
+        ],
+      });
+    };
     fetchData();
-  }, [showAmount]);
+  }, [showAmount, params]);
 
   return (
     <div className='pie-chart-container'>

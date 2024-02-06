@@ -28,7 +28,7 @@ const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
         notes: '',
       });
     }
-  }, [user]);
+  }, [user, params.id]);
 
   return (
     <div className='ExpenseForm'>

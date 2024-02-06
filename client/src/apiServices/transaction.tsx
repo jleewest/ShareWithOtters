@@ -4,7 +4,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getTransactionsByClerkId(
   userId: string,
-  groupId: string
+  groupId: string | undefined
 ): Promise<TransactionReturn> {
   const response = await fetch(`${BASE_URL}/transaction/${groupId}/${userId}/`);
   if (response.ok) {
