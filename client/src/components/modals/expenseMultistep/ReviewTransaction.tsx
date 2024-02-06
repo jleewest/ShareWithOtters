@@ -3,6 +3,7 @@ import { useTransactionDataContext } from '../../../index';
 import { getUserByClerkId } from '../../../apiServices/user';
 import { Button } from '@mui/material';
 import moment from 'moment';
+import { useUser } from '@clerk/clerk-react';
 
 type ReviewTransactionProps = {
   handleBack: () => void;
@@ -14,6 +15,7 @@ type ReviewTransactionProps = {
 
 type userAmountSplit = {
   user: string;
+  userId: string;
   amount: number;
 };
 
@@ -26,6 +28,7 @@ const ReviewTransaction = ({
 }: ReviewTransactionProps) => {
   const [userAmountSplit, setUserAmountSplit] = useState<userAmountSplit[]>();
   const { transactionData } = useTransactionDataContext();
+  const { user } = useUser();
 
   useEffect(() => {
     const getUserAmountSplit = async () => {
@@ -37,6 +40,7 @@ const ReviewTransaction = ({
           );
           userAmountArray.push({
             user: userById.firstName,
+            userId: userById.clerkId,
             amount: transactionData.amount[i],
           });
         }
@@ -84,10 +88,11 @@ const ReviewTransaction = ({
               }}
             >
               {userAmountSplit &&
-                userAmountSplit.map((user) => {
+                userAmountSplit.map((users) => {
                   return (
-                    <div key={user.user}>
-                      {user.user}: ${user.amount}
+                    <div key={users.user}>
+                      {user && users.userId === user.id ? 'You' : users.user}: $
+                      {users.amount}
                     </div>
                   );
                 })}

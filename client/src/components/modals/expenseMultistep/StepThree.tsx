@@ -3,6 +3,7 @@ import { useTransactionDataContext, User } from '../../../index';
 import { getUserByClerkId } from '../../../apiServices/user';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import { useUser } from '@clerk/clerk-react';
 import _ from 'lodash';
 
 type StepThreeProps = {
@@ -22,6 +23,7 @@ const StepThree = ({
   const [defaultAmounts, setDefaultAmounts] = useState<number[]>([]);
   const [evenSplitAmount, setEvenSplitAmount] = useState<number>(0);
   const [customAmounts, setCustomAmounts] = useState<number[]>([]);
+  const { user } = useUser();
 
   const { transactionData, setTransactionData } = useTransactionDataContext();
   useEffect(() => {
@@ -80,7 +82,7 @@ const StepThree = ({
             return (
               <div style={{ margin: '1rem auto' }} key={index}>
                 <label style={{ fontSize: '1.25rem', fontWeight: '400' }}>
-                  {payee.firstName}
+                  {user && payee.clerkId === user.id ? 'You' : payee.firstName}
                 </label>
                 <TextField
                   autoFocus
