@@ -7,7 +7,6 @@ import {
   Legend,
   ChartData,
 } from 'chart.js';
-import { getAllUsers } from '../apiServices/user';
 import { getTransactionsByClerkId } from '../apiServices/transaction';
 import '../css/PieChart.css';
 import {
@@ -15,6 +14,7 @@ import {
   chartHoverBackgroundColors,
 } from '../css/PieChartColors';
 import { useParams } from 'react-router-dom';
+import { getUsersByGroup } from '../apiServices/user-group';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -36,15 +36,15 @@ const PieChart: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const users = await getAllUsers();
+      const users = await getUsersByGroup(Number(params.id));
       const userExpenses: { [key: string]: number } = {};
 
       for (const user of users) {
         const transactions = await getTransactionsByClerkId(
-          user.clerkId,
+          user.user.clerkId,
           params.id
         );
-        userExpenses[user.firstName] =
+        userExpenses[user.user.firstName] =
           transactions.active.expense.confirmedExpenses.reduce(
             (acc, curr) => (showAmount ? acc + curr.amount : acc + 1),
             0
