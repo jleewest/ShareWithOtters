@@ -30,6 +30,13 @@ const AddPaymentForm: React.FC<AddPaymentFormProps> = ({ open, onClose }) => {
   const params = useParams();
 
   useEffect(() => {
+    setDescription('');
+    setDate(dayjs());
+    setAmount('');
+    setSelectedFriends(null);
+  }, [open]);
+
+  useEffect(() => {
     const fetchUsers = async () => {
       const users = await getUsersByGroup(Number(params.id));
       setAllUsers(users.filter((u) => u.user.clerkId !== user?.id));

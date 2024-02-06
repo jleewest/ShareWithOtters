@@ -32,7 +32,6 @@ const StepTwo = ({
   useEffect(() => {
     if (user) {
       getUsersByGroup(Number(params.id)).then((data) => {
-        console.log(data);
         const filteredUsers = data.filter(
           (users) => users.user.clerkId !== user.id
         );

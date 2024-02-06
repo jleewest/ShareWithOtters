@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 type ExpenseFormProps = {
   open: boolean;
-  onClose: (name:string) => void;
+  onClose: () => void;
 };
 
 const ExpenseForm = ({ open, onClose }: ExpenseFormProps) => {
