@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useTransactionDataContext, User } from '../../../index';
-import { getAllUsers } from '../../../apiServices/user';
+import { useTransactionDataContext, User_GroupUsers } from '../../../index';
+import { getUsersByGroup } from '../../../apiServices/user-group';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@mui/material';
 import { Button } from '@mui/material';
 import { useUser } from '@clerk/clerk-react';
+import { useParams } from 'react-router-dom';
 
 type StepTwoProps = {
   handleBack: () => void;
@@ -13,30 +14,38 @@ type StepTwoProps = {
   activeStep: number;
 };
 
+type UsersWithLabels = User_GroupUsers & {
+  label: string;
+};
+
 const StepTwo = ({
   handleNext,
   activeStep,
   handleBack,
   steps,
 }: StepTwoProps) => {
-  const [allUsers, setAllUsers] = useState<User[]>([]);
-  const [newFriendList, setNewFriendList] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<User_GroupUsers[]>([]);
+  const [newFriendList, setNewFriendList] = useState<UsersWithLabels[]>([]);
   const { user } = useUser();
+  const params = useParams();
 
   useEffect(() => {
     if (user) {
-      getAllUsers().then((data) => {
-        const filteredUsers = data.filter((users) => users.clerkId !== user.id);
+      getUsersByGroup(Number(params.id)).then((data) => {
+        console.log(data);
+        const filteredUsers = data.filter(
+          (users) => users.user.clerkId !== user.id
+        );
         setAllUsers(filteredUsers);
       });
     }
-  }, [user]);
+  }, [user, params]);
 
   const { transactionData, setTransactionData } = useTransactionDataContext();
 
-  let allUsersWithLabels = allUsers.map((user) => ({
-    ...user,
-    label: `${user.firstName} ${user.lastName}`,
+  let allUsersWithLabels = allUsers.map((users) => ({
+    ...users,
+    label: `${users.user.firstName} ${users.user.lastName}`,
   }));
   // Form field change handling
   const handleChange = (
@@ -52,9 +61,8 @@ const StepTwo = ({
   };
 
   const setTransaction = () => {
-    const clerkIds = newFriendList.map((friend) => friend.clerkId);
+    const clerkIds = newFriendList.map((friend) => friend.user.clerkId);
     const newFriendIds = [...transactionData.transactee, ...clerkIds];
-
     setTransactionData({
       ...transactionData,
       transactee: newFriendIds,

@@ -18,9 +18,9 @@ export async function getGroupsByClerkId(
 }
 
 export async function getUsersByGroup(
-  groupId: number
+  groupId: number | undefined
 ): Promise<User_GroupUsers[]> {
-  const response = await fetch(`${BASE_URL}/user-group/${groupId}`);
+  const response = await fetch(`${BASE_URL}/user-group/users/${groupId}`);
   if (response.ok) {
     const data = await response.json();
     return data as Promise<User_GroupUsers[]>;

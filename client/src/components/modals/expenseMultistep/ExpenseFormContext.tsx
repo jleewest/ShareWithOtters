@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TransactionData, TransactionsDataContext } from '../../../index';
-import AddExpenseForm from './AddExpenseFrom';
+import AddExpenseForm from './AddExpenseForm';
 import { useUser } from '@clerk/clerk-react';
 import { useParams } from 'react-router-dom';
 
