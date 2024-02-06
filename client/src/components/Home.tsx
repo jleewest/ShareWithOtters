@@ -6,6 +6,7 @@ import { getGroupsByClerkId } from '../apiServices/user-group';
 import { User_GroupWithTransactions } from '../index';
 import { GroupDetails } from './GroupDetails';
 import { Link } from 'react-router-dom';
+import RaftForm from './modals/AddRaftForm';
 
 type GroupDetails = {
   title: string;
@@ -16,6 +17,9 @@ function Home() {
   const [userGroups, setUserGroups] = useState<User_GroupWithTransactions[]>(
     []
   );
+  const [isRaftFormOpen, setRaftFormOpen] = useState(false);
+  const openRaftForm = () => setRaftFormOpen(true);
+  const closeRaftForm = () => setRaftFormOpen(false);
   const { user } = useUser();
 
   //POST user to DB if newUser
@@ -45,7 +49,9 @@ function Home() {
         <div>
           <div className='group-title'>
             <h2 className='your-groups'>Your Otter Rafts</h2>
-            <button className='primary-btn add-family'>Add Raft</button>
+            <button className='primary-btn add-family' onClick={openRaftForm}>
+              Add Raft
+            </button>
           </div>
           {/* List of user's groups */}
           <div className='group-display'>
@@ -67,6 +73,7 @@ function Home() {
           </div>
         </div>
       </div>
+      <RaftForm open={isRaftFormOpen} onClose={closeRaftForm} />
     </div>
   );
 }
