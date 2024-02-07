@@ -15,6 +15,7 @@ import {
 } from '../css/PieChartColors';
 import { useParams } from 'react-router-dom';
 import { getUsersByGroup } from '../apiServices/user-group';
+import { useUser } from '@clerk/clerk-react';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -33,22 +34,24 @@ const PieChart: React.FC = () => {
   });
   const [showAmount, setShowAmount] = useState<boolean>(true); // State variable for toggling
   const params = useParams();
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchData = async () => {
       const users = await getUsersByGroup(Number(params.id));
       const userExpenses: { [key: string]: number } = {};
 
-      for (const user of users) {
+      for (const otter of users) {
         const transactions = await getTransactionsByClerkId(
-          user.user.clerkId,
+          otter.user.clerkId,
           params.id
         );
-        userExpenses[user.user.firstName] =
-          transactions.active.expense.confirmedExpenses.reduce(
-            (acc, curr) => (showAmount ? acc + curr.amount : acc + 1),
-            0
-          );
+        userExpenses[
+          user && otter.user.clerkId === user.id ? 'You' : otter.user.firstName
+        ] = transactions.active.expense.confirmedExpenses.reduce(
+          (acc, curr) => (showAmount ? acc + curr.amount : acc + 1),
+          0
+        );
       }
 
       // Update chartData state
