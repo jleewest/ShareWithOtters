@@ -31,7 +31,7 @@ const StepThree = ({
   //set transaction amount total
   useEffect(() => {
     setTotalAmount(transactionData.amount.reduce((a, b) => a + b));
-  });
+  }, [transactionData]);
 
   //set all users involved in the transaction
   useEffect(() => {
@@ -61,7 +61,7 @@ const StepThree = ({
       const defaultAmount = Array(payees.length).fill(defaultEvenSplit);
       setDefaultAmounts(defaultAmount);
     }
-  }, [payees.length, transactionData.amount]);
+  }, [payees.length, totalAmount]);
 
   // Form field change handling
   const handleChange =
