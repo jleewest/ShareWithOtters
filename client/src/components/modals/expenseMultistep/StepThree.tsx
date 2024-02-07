@@ -3,6 +3,7 @@ import { useTransactionDataContext, User } from '../../../index';
 import { getUserByClerkId } from '../../../apiServices/user';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import { useUser } from '@clerk/clerk-react';
 import _ from 'lodash';
 
 type StepThreeProps = {
@@ -22,8 +23,17 @@ const StepThree = ({
   const [defaultAmounts, setDefaultAmounts] = useState<number[]>([]);
   const [evenSplitAmount, setEvenSplitAmount] = useState<number>(0);
   const [customAmounts, setCustomAmounts] = useState<number[]>([]);
+  const [totalAmount, setTotalAmount] = useState<number>();
+  const { user } = useUser();
 
   const { transactionData, setTransactionData } = useTransactionDataContext();
+
+  //set transaction amount total
+  useEffect(() => {
+    setTotalAmount(transactionData.amount.reduce((a, b) => a + b));
+  });
+
+  //set all users involved in the transaction
   useEffect(() => {
     const fetchData = async () => {
       const payeesData = [];
@@ -41,13 +51,16 @@ const StepThree = ({
     fetchData();
   }, [transactionData]);
 
+  //set default transaction split amounts
   useEffect(() => {
-    const transactionDataAmount = transactionData.amount[0];
-    const defaultEvenSplit =
-      Math.round((transactionDataAmount / payees.length) * 100) / 100;
-    setEvenSplitAmount(defaultEvenSplit);
-    const defaultAmount = Array(payees.length).fill(defaultEvenSplit);
-    setDefaultAmounts(defaultAmount);
+    if (totalAmount) {
+      const transactionDataAmount = totalAmount;
+      const defaultEvenSplit =
+        Math.round((transactionDataAmount / payees.length) * 100) / 100;
+      setEvenSplitAmount(defaultEvenSplit);
+      const defaultAmount = Array(payees.length).fill(defaultEvenSplit);
+      setDefaultAmounts(defaultAmount);
+    }
   }, [payees.length, transactionData.amount]);
 
   // Form field change handling
@@ -75,12 +88,13 @@ const StepThree = ({
     <div className='StepThree'>
       {/* Expense form fields */}
       <form action=''>
+        {totalAmount && <div>Total: ${totalAmount}</div>}
         {payees.length > 0 ? (
           payees.map((payee: User, index: number) => {
             return (
               <div style={{ margin: '1rem auto' }} key={index}>
                 <label style={{ fontSize: '1.25rem', fontWeight: '400' }}>
-                  {payee.firstName}
+                  {user && payee.clerkId === user.id ? 'You' : payee.firstName}
                 </label>
                 <TextField
                   autoFocus

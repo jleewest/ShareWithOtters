@@ -13,6 +13,12 @@ export type Group = {
   description: string;
 };
 
+export type NewGroup = {
+  title: string;
+  description: string;
+  user: string;
+};
+
 export type User_Group = {
   id: number;
   userId: string;
@@ -23,6 +29,10 @@ export type User_GroupWithTransactions = User_Group & {
   group: { description: string; title: string };
 };
 
+export type User_GroupUsers = User_Group & {
+  user: { clerkId: string; firstName: string; lastName: string };
+};
+
 export type Transaction = {
   id: number;
   groupId: number;
@@ -31,6 +41,13 @@ export type Transaction = {
   status: 'pending' | 'active';
   transactor: string;
   transactee: string;
+  description: string;
+  amount: number;
+  notes: string;
+};
+
+export type EditedTransaction = {
+  date: string;
   description: string;
   amount: number;
   notes: string;

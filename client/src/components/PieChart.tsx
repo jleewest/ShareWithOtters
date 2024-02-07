@@ -7,7 +7,6 @@ import {
   Legend,
   ChartData,
 } from 'chart.js';
-import { getAllUsers } from '../apiServices/user';
 import { getTransactionsByClerkId } from '../apiServices/transaction';
 import '../css/PieChart.css';
 import {
@@ -15,6 +14,8 @@ import {
   chartHoverBackgroundColors,
 } from '../css/PieChartColors';
 import { useParams } from 'react-router-dom';
+import { getUsersByGroup } from '../apiServices/user-group';
+import { useUser } from '@clerk/clerk-react';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -33,22 +34,24 @@ const PieChart: React.FC = () => {
   });
   const [showAmount, setShowAmount] = useState<boolean>(true); // State variable for toggling
   const params = useParams();
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchData = async () => {
-      const users = await getAllUsers();
+      const users = await getUsersByGroup(Number(params.id));
       const userExpenses: { [key: string]: number } = {};
 
-      for (const user of users) {
+      for (const otter of users) {
         const transactions = await getTransactionsByClerkId(
-          user.clerkId,
+          otter.user.clerkId,
           params.id
         );
-        userExpenses[user.firstName] =
-          transactions.active.expense.confirmedExpenses.reduce(
-            (acc, curr) => (showAmount ? acc + curr.amount : acc + 1),
-            0
-          );
+        userExpenses[
+          user && otter.user.clerkId === user.id ? 'You' : otter.user.firstName
+        ] = transactions.active.expense.confirmedExpenses.reduce(
+          (acc, curr) => (showAmount ? acc + curr.amount : acc + 1),
+          0
+        );
       }
 
       // Update chartData state
@@ -75,7 +78,7 @@ const PieChart: React.FC = () => {
       >
         {showAmount ? 'Total Amount' : 'How Many Expenses'}
       </button>
-      <Pie data={chartData} />
+      <Pie data={chartData} style={{ marginBottom: '2rem' }} />
     </div>
   );
 };

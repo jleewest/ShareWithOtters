@@ -1,6 +1,6 @@
 import '../css/TransactionItem.css';
 import { TransactionWithRenderType } from '../index';
-import NoteForm from './NoteForm';
+import NoteForm from './modals/NoteForm';
 import { updateTransactionStatus } from '../apiServices/transaction';
 import { useState } from 'react';
 import moment from 'moment';

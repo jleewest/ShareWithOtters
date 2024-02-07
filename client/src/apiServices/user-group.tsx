@@ -1,4 +1,8 @@
-import { User_Group, User_GroupWithTransactions } from '../index';
+import {
+  User_Group,
+  User_GroupWithTransactions,
+  User_GroupUsers,
+} from '../index';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -13,7 +17,21 @@ export async function getGroupsByClerkId(
   return Promise.reject(new Error('Something went 🦖RA-WRong'));
 }
 
-export async function addUserToGroup(body: User_Group): Promise<User_Group> {
+export async function getUsersByGroup(
+  groupId: number | undefined
+): Promise<User_GroupUsers[]> {
+  const response = await fetch(`${BASE_URL}/user-group/users/${groupId}`);
+  if (response.ok) {
+    const data = await response.json();
+    return data as Promise<User_GroupUsers[]>;
+  }
+  return Promise.reject(new Error('Something went 🦖RA-WRong'));
+}
+
+export async function addUserToGroup(body: {
+  userId: string | undefined;
+  groupId: number;
+}): Promise<User_Group> {
   const response = await fetch(`${BASE_URL}/user-group/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
