@@ -67,7 +67,7 @@ const PieChart: React.FC = () => {
       });
     };
     fetchData();
-  }, [showAmount, params]);
+  }, [showAmount, params, user]);
 
   return (
     <div className='pie-chart-container'>
