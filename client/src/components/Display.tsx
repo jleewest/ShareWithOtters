@@ -10,7 +10,7 @@ const Display = () => {
     <div className='Home'>
       <header className='app-header'>
         <Link className='otter-home' to='/'>
-          ShareWithOtter
+          ShareWithOtters
         </Link>
         <div className='header-right'>
           <div className='login-dark-mode'>
