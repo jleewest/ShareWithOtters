@@ -10,7 +10,9 @@ export const GroupDetails: React.FC<GroupDetailsProps> = (props) => {
     <div className='GroupDetails'>
       <img className='login-logo group-img' src={logo} alt='logo' />
       <div className='group-details'>
-        <div className='group-name'>{props.group.title}</div>
+        <div className='group-name' data-testid='group-name'>
+          {props.group.title}
+        </div>
         <div className='group-description'>{props.group.description}</div>
       </div>
     </div>

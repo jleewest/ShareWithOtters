@@ -49,7 +49,11 @@ function Home() {
         <div>
           <div className='group-title'>
             <h2 className='your-groups'>Your Otter Rafts</h2>
-            <button className='primary-btn add-family' onClick={openRaftForm}>
+            <button
+              className='primary-btn add-family'
+              data-testid='add-family-btn'
+              onClick={openRaftForm}
+            >
               Add Raft
             </button>
           </div>
