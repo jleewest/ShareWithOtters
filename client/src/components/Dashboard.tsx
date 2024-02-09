@@ -1,4 +1,3 @@
-import '../css/Dashboard.css';
 import GroupOptions from './GroupOptions';
 import RecentTransactionTable from './RecentTransactionTable';
 import PendingTransactionTable from './PendingTransactionTable';
