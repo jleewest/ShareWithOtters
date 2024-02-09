@@ -102,7 +102,7 @@ export async function getTransactionsByClerkId(req: Request, res: Response) {
       },
     };
 
-    //RETURN NESTED OBJECT OF SORTED TRANSACTIONS
+    //return nested object of sorted transactions
     return res.json(sortedTransactions);
   } catch (err) {
     console.error(err);
@@ -184,8 +184,7 @@ export async function editTransaction(req: Request, res: Response) {
   }
 }
 
-// GetAllTransactions
-
+// GET ALL TRANSACTIONS
 export async function getAllTransactions(req: Request, res: Response) {
   try {
     const allTransactions = await prisma.transaction.findMany({
