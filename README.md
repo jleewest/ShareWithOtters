@@ -53,3 +53,14 @@ Jenna Westendorf:
 Giovanny Garcia:
 
 - GitHub: [GGar99 · GitHub](https://github.com/GGar99)
+
+
+![Screenshot 2024-02-09 112650](https://github.com/jleewest/ShareWithOtters/assets/132169274/630524cb-50ed-4832-87c8-d69d7cafefd8)
+
+![Screenshot 2024-02-09 112842](https://github.com/jleewest/ShareWithOtters/assets/132169274/dc24852e-7ac1-4dc0-947f-a16d9503cd07)
+
+![Screenshot 2024-02-09 112909](https://github.com/jleewest/ShareWithOtters/assets/132169274/00f37a21-b623-4608-b907-fd8a19f12984)
+
+![Screenshot 2024-02-09 112925](https://github.com/jleewest/ShareWithOtters/assets/132169274/b501aa56-dc67-454e-a06d-a4c899ea1ad3)
+
+![Screenshot 2024-02-09 112958](https://github.com/jleewest/ShareWithOtters/assets/132169274/582f633d-490f-4c75-8360-3ebe30e5bf27)
