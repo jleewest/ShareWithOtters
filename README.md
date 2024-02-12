@@ -53,7 +53,7 @@ Jenna Westendorf:
 Giovanny Garcia:
 
 - GitHub: [GGar99 · GitHub](https://github.com/GGar99)
-- LinkedIn: [Giovanny Garcia | LinkedIn](www.linkedin.com/in/giovanny-garcia24)
+- LinkedIn: [Giovanny Garcia | LinkedIn](http://www.linkedin.com/in/giovanny-garcia24)
 
 
 ![Screenshot 2024-02-09 112650](https://github.com/jleewest/ShareWithOtters/assets/132169274/630524cb-50ed-4832-87c8-d69d7cafefd8)
