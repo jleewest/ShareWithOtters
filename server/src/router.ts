@@ -41,7 +41,7 @@ router.post('/user-group', addUserToGroup);
 router.delete('/user-group/delete', deleteUserFromGroup);
 
 router.get('/*', (_, res) => {
-  res.status(404).send('RAWR! Requested resource not found 🦖\n');
+  res.status(404).send('Requested resource not found 🦖\n');
 });
 
 export default router;
